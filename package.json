@@ -1,0 +1,32 @@
+{
+  "name": "isande2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martin-cu/isande2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martin-cu/isande2/issues"
+  },
+  "homepage": "https://github.com/martin-cu/isande2#readme",
+  "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.3",
+    "compression": "^1.7.4",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.17.1",
+    "flash": "^1.1.0",
+    "handlebars": "^4.7.6",
+    "mysql": "^2.18.1"
+  }
+}

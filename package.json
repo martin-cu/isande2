@@ -1,5 +1,5 @@
 {
-  "name": "isict4d",
+  "name": "isande2",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/martin-cu/isict4d.git"
+    "url": "git+https://github.com/martin-cu/isande2.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/martin-cu/isict4d/issues"
+    "url": "https://github.com/martin-cu/isande2/issues"
   },
-  "homepage": "https://github.com/martin-cu/isict4d#readme",
+  "homepage": "https://github.com/martin-cu/isande2#readme",
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.3",
     "compression": "^1.7.4",

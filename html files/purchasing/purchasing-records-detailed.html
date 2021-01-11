@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,700,400italic,300italic,700italic">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.css">
+    <link rel="stylesheet" href="assets/css/Google-Style-Login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/Navbar.css">
+    <link rel="stylesheet" href="assets/css/NZDropdown---Single.css">
+    <link rel="stylesheet" href="assets/css/NZDropdown-Singlee.css">
+    <link rel="stylesheet" href="assets/css/reports.css">
+    <link rel="stylesheet" href="assets/css/TR-Form.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(3,52,97);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"></div><img src="assets/img/cropped_logo.png" style="width: 100PX;margin-top: 15px;background: #ffffff;">
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar" style="margin-top: 50px;">
+                    <li class="nav-item"><a class="nav-link" href="purchasing-home.html" style="height: 50px;margin-top: 20px;margin-bottom: 15px;"><img src="assets/img/icons/1.png" style="width: 30px;height: 30px;"><span style="font-size: 16px;margin-left: 10px;font-weight: 0;">Dashboard</span></a></li>
+                    <li class="nav-item" style="font-size: 16px;">
+                        <div class="nav-item dropdown show" style="font-size: 16px;color: rgb(205,214,224);"><a data-toggle="dropdown" aria-expanded="true" href="#" style="color: rgb(199,212,224);margin-left: 15px;"><img src="assets/img/icons/3.png" style="width: 30px;height: 30px;">&nbsp; Purchases</a>
+                            <div class="dropdown-menu show" style="background: rgb(3,52,97);border-color: rgba(133,135,150,0);"><a class="dropdown-item" href="purchasing-recommendation.html" style="color: rgb(248,249,252);background: rgb(3,52,97);font-size: 16px;font-weight: normal;height: 40px;margin-top: 10px;">Recommendation&nbsp;</a><a class="dropdown-item" href="purchasing-createorder.html" style="color: rgb(205,214,224);background: rgb(3,52,97);font-size: 16px;height: 40px;margin-top: 10px;">Create Purchase Order</a><a class="dropdown-item" href="purchasing-trackorders.html" style="color: rgb(205,214,224);background: rgb(3,52,97);font-size: 16px;height: 40px;margin-top: 10px;">Track Orders</a><a class="dropdown-item" href="purchasing-records.html" style="color: rgb(3,52,97);background: rgb(248,249,252);font-size: 16px;height: 40px;margin-top: 10px;font-weight: bold;">Purchase Records</a></div>
+                        </div>
+                    </li>
+                    <li class="nav-item" style="font-size: 16px;"></li>
+                    <li class="nav-item" style="font-size: 16px;"></li>
+                    <li class="nav-item" style="font-size: 16px;">
+                        <div class="nav-item dropdown" style="font-size: 16px;color: rgb(205,214,224);"><a data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(199,212,224);margin-left: 15px;"><img src="assets/img/icons/6.png" style="width: 30px;height: 30px;">&nbsp; Inventory</a>
+                            <div class="dropdown-menu" style="background: rgb(3,52,97);border-color: rgba(133,135,150,0);"><a class="dropdown-item" href="inventory-overview.html" style="color: rgb(247,248,251);background: rgba(3,52,97,0);font-size: 16px;font-weight: normal;height: 40px;margin-top: 10px;">Overview</a><a class="dropdown-item" href="inventory-catalogue.html" style="color: rgb(248,249,252);background: rgb(3,52,97);font-size: 16px;height: 40px;margin-top: 10px;font-weight: normal;">Product Catalogue</a></div>
+                        </div><a class="nav-link" href="register.html" style="font-size: 16px;height: 50px;"><img src="assets/img/icons/4.png" style="width: 30px;height: 30px;"><span style="font-size: 16px;margin-left: 10px;">Reports</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand shadow mb-4 topbar static-top" style="background: rgb(251,179,90);">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav flex-nowrap ml-auto"></ul>
+                        <ul class="nav navbar-nav float-right flex-nowrap ml-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"></a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="mr-3">
+                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 12, 2019</span>
+                                                <p>A new monthly report is ready to download!</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="mr-3">
+                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 7, 2019</span>
+                                                <p>$290.29 has been deposited into your account!</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="mr-3">
+                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                            </div>
+                                            <div><span class="small text-gray-500">December 2, 2019</span>
+                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                            </div>
+                                        </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-bell fa-fw" style="color: rgb(0,0,0);"></i><span class="badge badge-danger badge-counter">7</span></a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
+                                        <h6 class="dropdown-header" style="background: rgb(3,52,97);">NOTIFICATIONS</h6><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>LO 47329 has been scheduled for delivery</span></div>
+                                                <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>LO 47329 has been scheduled for delivery</span></div>
+                                                <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>LO 47329 has been scheduled for delivery</span></div>
+                                                <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>LO 47329 has been scheduled for delivery</span></div>
+                                                <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                            </div>
+                                        </a><a class="d-flex align-items-center dropdown-item" href="#">
+                                            <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate"><span>LO 47329 has been scheduled for delivery</span></div>
+                                                <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                            </div>
+                                        </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(255,255,255);"><span class="d-none d-lg-inline mr-2 text-gray-600 small" style="font-weight: bold;color: #ffffff;font-size: 14px;">Purchasing Employee</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Purchase Records&nbsp;</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
+                            <form>
+                                <section></section>
+                            </form>
+                            <div class="card">
+                                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);"></i>
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item"><a class="nav-link active" href="#" style="font-weight: bold;">Load Number: 20200110001</a></li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 1px;">Date Scheduled</th>
+                                                    <th style="width: 50px;"><input type="date" required="" readonly=""></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr></tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Customer Information</td>
+                                                    <td style="width: 50px;"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">SO Number</td>
+                                                    <td><input type="text" required="" readonly=""></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">DR Number</td>
+                                                    <td><input type="text" required="" readonly=""></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Order Details</td>
+                                                    <td style="width: 0px;"></td>
+                                                    <td style="width: 0px;font-weight: bold;">Delivery Information</td>
+                                                    <td style="width: 0px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Product<br></td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                            <option value="12" selected="">Select / Single</option>
+                                                        </select></td>
+                                                    <td style="width: 100px;">Truck Plate Number</td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly=""></select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Product Price<br></td>
+                                                    <td style="width: 100px;"><input type="text" readonly=""><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                                    <td style="width: 100px;">Driver</td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly=""></select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Quantity</td>
+                                                    <td style="width: 100px;"><input type="text" required="" readonly=""><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                                    <td style="width: 100px;">Time Out</td>
+                                                    <td style="width: 100px;"><input type="text" required="" readonly=""></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Total Amount</td>
+                                                    <td style="width: 100px;"><input type="text" readonly=""><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                                    <td style="width: 100px;"></td>
+                                                    <td style="width: 100px;"></td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div><a class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" role="button" href="purchasing-records.html">Back</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © JM Aquino Trading and Services 2021</span></div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/Multi-step-form.js"></script>
+    <script src="assets/js/theme.js"></script>
+</body>
+
+</html>

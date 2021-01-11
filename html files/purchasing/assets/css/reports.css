@@ -1,0 +1,10 @@
+.report-value {
+  font-weight: 800;
+  color: rgb(99,99,99);
+  text-align: right;
+}
+
+.report-upper-table {
+  border-left: 1px solid rgb(205,205,205);
+}
+

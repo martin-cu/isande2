@@ -23,13 +23,14 @@
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
-       
-        {{> nav}}
-
-        {{> content}}
-
-    </div>
+    {{#if session}}
+        <div id="wrapper">
+            {{> nav}}
+            {{> content}}
+        </div>
+    {{else}}
+        {{> login}}
+    {{/if}}
 
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>

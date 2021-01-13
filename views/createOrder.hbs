@@ -7,99 +7,144 @@
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item"><a class="nav-link active" href="#">Order Number: 00001</a></li>
+                        <li class="nav-item"><div class="nav-link active">Order Number: {{{drCount}}}</div></li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th style="width: 1px;">Date Scheduled</th>
-                                    <th style="width: 50px;"><input type="date" required=""></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr></tr>
-                                <tr>
-                                    <td style="font-weight: bold;">Customer Information</td>
-                                    <td style="width: 50px;"></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: normal;">Customer</td>
-                                    <td><input type="text" required=""></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: normal;">Customer Address</td>
-                                    <td><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 200px;" required=""></select></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold;">Order Details</td>
-                                    <td style="width: 0px;"></td>
-                                    <td style="width: 0px;font-weight: bold;">Payment</td>
-                                    <td style="width: 0px;"></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: normal;">Product</td>
-                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
-                                            <option value="FCC" selected="">FCC</option>
-                                            <option value="">RCC</option>
-                                        </select></td>
-                                    <td style="width: 100px;">Payment Terms</td>
-                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
-                                            <option value="Cash" selected="">Cash</option>
-                                            <option value="NET7">NET7</option>
-                                            <option value="NET15">NET15</option>
-                                            <option value="NET30">NET30</option>
-                                        </select></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: normal;">Quantity</td>
-                                    <td><input type="text" required=""><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
-                                    <td>Order Type</td>
-                                    <td>
-                                        <div>
-                                            <fieldset>
-                                                <div class="custom-control custom-radio"><input type="radio" id="customRadio1" class="custom-control-input" name="customRadio" checked=""><label class="custom-control-label" for="customRadio1">Delivery</label></div>
-                                                <div class="custom-control custom-radio"><input type="radio" id="customRadio2" class="custom-control-input" name="customRadio"><label class="custom-control-label" for="customRadio2">Pick-up</label></div>
-                                            </fieldset>
-                                            <fieldset></fieldset>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: normal;">Total Price</td>
-                                    <td style="font-weight: normal;"><input type="text" readonly="" style="background: rgb(237,237,237);"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
-                                    <td style="font-weight: normal;"></td>
-                                    <td class="d-xl-flex align-items-xl-center">
-                                        <div class="d-xl-flex align-items-xl-start"></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div><a class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" role="button" href="sales-createorder-review.html">Next</a>
+                        <form action="/create_sales" method="post" autocomplete="off">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 1px;">Date Scheduled</th>
+                                        <th style="width: 50px;"><input type="date" required=""></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Customer Information</td>
+                                        <td style="width: 50px;"></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Customer</td>
+                                        <td>
+                                            <div class="autocomplete">
+                                                <input type="text" id="customerName" required=""></td>
+                                            </div>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Customer Address</td>
+                                        <td><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 200px;" required=""></select></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Order Details</td>
+                                        <td style="width: 0px;"></td>
+                                        <td style="width: 0px;font-weight: bold;">Payment</td>
+                                        <td style="width: 0px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Product</td>
+                                        <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="product" name="product">
+                                                {{#each products}}
+                                                    <option value="{{product_id}}">{{product_name}}</option>
+                                                {{/each}}
+                                            </select></td>
+                                        <td style="width: 100px;">Payment Terms</td>
+                                        <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
+                                                <option value="Cash" selected="">Cash</option>
+                                                <option value="NET7">NET7</option>
+                                                <option value="NET15">NET15</option>
+                                                <option value="NET30">NET30</option>
+                                            </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Quantity</td>
+                                        <td><input type="text" required="" id="qty" name="qty"><input class="form-control-plaintext d-inline-flex" type="text" readonly value="bag/s" style="margin-left: 10px;width: 42px;"></td>
+                                        <td>Order Type</td>
+                                        <td>
+                                            <div>
+                                                <fieldset>
+                                                    <div class="custom-control custom-radio"><input type="radio" id="customRadio1" class="custom-control-input" name="customRadio" checked=""><label class="custom-control-label" for="customRadio1">Delivery</label></div>
+                                                    <div class="custom-control custom-radio"><input type="radio" id="customRadio2" class="custom-control-input" name="customRadio"><label class="custom-control-label" for="customRadio2">Pick-up</label></div>
+                                                </fieldset>
+                                                <fieldset></fieldset>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Total Price</td>
+                                        <td style="font-weight: normal;"><input type="text" id="total" name="total" readonly="" style="background: rgb(237,237,237);"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                        <td style="font-weight: normal;"></td>
+                                        <td class="d-xl-flex align-items-xl-center">
+                                            <div class="d-xl-flex align-items-xl-start"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <a class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" role="button" href="sales-createorder-review.html">Next</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var obj = {};
+    var locs = {};
+    var customers = [];
+    var customers_arr = [];
+
+    var productPrices = [];
+    var productObj = {};
+    var selectedProduct = {{products.[0].selling_price}}; 
+    {{#each products}}
+        productObj = {};
+        productObj['product_id'] = {{this.product_id}};
+        productObj['product_name'] = '{{this.product_name}}';
+        productObj['purchase_price'] = {{this.purchase_price}};
+        productObj['selling_price'] = {{this.selling_price}};
+        productPrices.push(productObj);
+    {{/each}}
+
+
+    {{#each customers}}
+        obj = {};
+        obj['customer_name'] = '{{this.customer_name}}';
+        obj['customer_id'] = '{{this.customer_id}}';
+        obj['locations'] = [];
+
+        customers_arr.push('{{this.customer_name}}');
+        {{#each this.locations}}
+            locs = {};
+            locs['location_id'] = '{{this.location_id}}';
+            locs['location_name'] = '{{this.location_name}}';
+            obj['locations'].push(locs);
+        {{/each}}
+        customers.push(obj);
+    {{/each}}
+</script>
+
+<script src="../assets/js/formFormatter.js"></script>

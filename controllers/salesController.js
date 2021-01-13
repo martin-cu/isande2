@@ -1,0 +1,619 @@
+const customerModel = require('../models/customerModel');
+const productModel = require('../models/productModel');
+const salesModel = require('../models/salesModel');
+//const deliveryDetailModel = require('../models/deliveryDetailModel');
+const employeeModel = require('../models/employeeModel');
+//const truckModel = require('../models/truckModel');
+const js = require('../public/assets/js/session.js');
+const dataformatter = require('../public/assets/js/dataformatter.js');
+
+exports.getFilteredSaleHistory = function(req, res) {
+	var offset = parseInt(req.query.page.offset);
+	var limit = parseInt(req.query.page.limit);
+	salesModel.getSaleRecords(req.query.sh_filter, offset, limit, function(err, sale_record) {
+		if (err)
+			throw err;
+		else {
+			var year, month, day;
+			var html_data;
+			for (var i = 0; i < sale_record.length; i++) {
+				// for scheduled_date to MM/DD/YYYY
+				sale_record[i].scheduled_date = dataformatter.formatDate(sale_record[i].scheduled_date, 'MM/DD/YYYY')
+				// format due_date to MM/DD/YYYY
+				sale_record[i].due_date = dataformatter.formatDate(sale_record[i].due_date, 'MM/DD/YYYY')
+				// format total_amt separated by thousands and with decimal
+				sale_record[i].total_amt = dataformatter.formatMoney(sale_record[i].total_amt.toFixed(2), 'Php ');
+				sale_record[i].price = dataformatter.formatMoney(sale_record[i].price.toFixed(2), '');
+			}
+			var temp_data = { delivery_receipt: '&nbsp' };
+			while (sale_record.length < 9) {
+				sale_record.push(temp_data);
+			}
+			html_data = {
+				sales: sale_record
+			}
+			res.send(html_data);
+		}
+	});
+}
+
+exports.getFilteredSalesCount = function(req, res) {
+	salesModel.getSaleRecordCount(req.query.sh_filter, function(err, count) {
+		if (err)
+			throw err;
+		else {
+			var html_data = { count: count.length };
+			res.send(html_data);
+		}
+	});
+}
+
+exports.getSaleOrderForm = function(req, res) {
+	var status = [
+		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
+	];
+	var terms = [
+		{ name: 'Cash', id: 'Cash' }, { name: 'NET 7', id: 'NET7' }, { name: 'NET 15', id: 'NET15' }, { name: 'NET 30', id: 'NET30' }
+	];
+	var payment_status = [
+		{ name: 'Paid' }, { name: 'Unpaid' }
+	];
+	var order_type = [
+		{ name: 'Delivery' }, { name: 'Pick-up' }
+	];
+	customerModel.queryLocationbyCustomer(function(err, customers) {
+		if (err)
+			throw err;
+		else {
+			customerModel.queryCustomers(function(err, customerArr) {
+				if (err)
+					throw err;
+				else {
+					productModel.queryProductbyPrice(function(err, products) {
+						if (err)
+							throw err;
+						else {
+							salesModel.getMonthlyCount(function(err, monthlyCount) {
+								if (err)
+									throw err;
+								else {
+									var date, month, year, count, due_date, dr, add_days;
+									date = new Date();
+									year = date.getFullYear();
+									month = new Date().getMonth()+1;
+									if (month < 10)
+										month = '0'+month;
+									count = ("000" + monthlyCount.length+1).slice(-3)
+									dr = year+month+count;
+
+									var customer_arr = [];
+									customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+
+									html_data = { 
+										drCount: dr,
+										products: products,
+										customers: customer_arr,
+										try: customerArr
+									};
+									console.log(products);
+									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+									res.render('createOrder', html_data);
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+	});
+}
+
+exports.getSalesHistory = function(req, res) {
+	var status = [
+		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
+	];
+	var terms = [
+		{ name: 'Cash', id: 'Cash' }, { name: 'NET 7', id: 'NET7' }, { name: 'NET 15', id: 'NET15' }, { name: 'NET 30', id: 'NET30' }
+	];
+	var payment_status = [
+		{ name: 'Paid' }, { name: 'Unpaid' }
+	];
+	var order_type = [
+		{ name: 'Delivery' }, { name: 'Pick-up' }
+	];
+	var offset = 0;
+	var limit = 10;
+	salesModel.getSaleRecordCount({}, function(err, count) {
+		if (err)
+			throw err;
+		else {
+			if(count.length == 0){
+
+			}
+			else{
+				var page_obj = dataformatter.formatPage(limit, offset, count[0].count);
+				
+			}
+			var limit = 10;
+			var offset = 0;
+			customerModel.queryCustomers(function(err, customer_data) {
+				if (err)
+					throw err;
+				else {
+					salesModel.getSaleFilters(function(err, filter_data) {
+						if (err)
+							throw err;
+						else {
+							if(filter_data.length == 0){
+
+							}
+							else{
+								//filter_data[0].start_date = dataformatter.formatDate(filter_data[0].start_date, 'MM/DD/YYYY');
+							}
+							productModel.getProducts(function(err, product_data) {
+								if (err)
+									throw err;
+								else {
+									employeeModel.getActiveDrivers(function(err, drivers) {
+										if (err)
+											throw err;
+										else {
+											truckModel.getActiveTrucks(function(err, trucks) {
+												if (err)
+													throw err;
+												else {
+													customerModel.queryLocationbyCustomer(function(err, customers) {
+														if (err) {
+															throw err;
+															res.redirect('/');
+														}
+														else {
+															productModel.queryProductbyPrice(function(err, products) {
+																if (err) {
+																	throw err;
+																	res.redirect('/');
+																}
+																else {
+																	var filter = {};
+																	salesModel.getSaleRecords(filter, offset, limit,  function(err, sale_record) {
+																		if (err)
+																			throw err;
+																		else {
+																			// prep data structure for customer and their locations for create order
+																			var customer_arr = [];
+																			customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+
+																			var data = [ {customers: customer_arr}, {products: products}];
+																			data = JSON.stringify(data);	
+																			// prep sale record data
+																			var year, month, day;
+																			for (var i = 0; i < sale_record.length; i++) {
+																				// for scheduled_date to MM/DD/YYYY
+																				sale_record[i].scheduled_date = dataformatter.formatDate(sale_record[i].scheduled_date, 'MM/DD/YYYY');
+																				// format due_date to MM/DD/YYYY
+																				sale_record[i].due_date = dataformatter.formatDate(sale_record[i].due_date, 'MM/DD/YYYY');
+																				// format total_amt separated by thousands and with decimal
+																				sale_record[i].total_amt = dataformatter.formatMoney(sale_record[i].total_amt.toFixed(2), 'Php ');
+																				sale_record[i].price = dataformatter.formatMoney(sale_record[i].price.toFixed(2), '');
+																			}
+																			
+																			var html_data = { 
+																				num_records: count.length,
+																				origin: offset+1,
+																				end: sale_record.length+offset,
+																				status: status,
+																				terms: terms,
+																				payment_status: payment_status,
+																				order_type: order_type,
+																				customers: customer_data,
+																				products: product_data,
+																				drivers: drivers,
+																				trucks: trucks,
+																				filter_data: filter_data[0]
+																			};
+																			var temp_data = { delivery_receipt: '&nbsp' };
+																			while (sale_record.length < 9) {
+																				sale_record.push(temp_data);
+																			}
+																			html_data['sales'] = sale_record;
+																			html_data['sale_record_data'] = data;
+
+																			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+																			html_data = js.innit_pagination(html_data, offset, sale_record.length+offset, count.length);
+
+																			res.render('sales_record', html_data);
+																		}
+																	})	
+																}
+															});
+														}
+													});
+												}
+											});
+										}
+									});
+								}
+							})
+						}
+					});
+				}
+			})
+		}
+	});
+};
+
+exports.createSaleRecord = function(req, res) {
+	var { sale_schedule, customer_sale, address_sale,
+		product_order, product_price, product_qty, payment_sale, order_type } = req.body;
+	salesModel.getDailyCount(function(err, monthlycount) {
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/sales_history');
+		}
+		else {
+			var date, month, year, count, due_date, dr, add_days;
+			date = new Date();
+			year = date.getFullYear();
+			month = new Date().getMonth()+1;
+			if (month < 10)
+				month = '0'+month;
+			count = ("000" + monthlycount.length).slice(-3)
+			dr = year+month+count;
+			due_date = dataformatter.formatDueDate(sale_schedule, payment_sale);
+
+			var sale_obj = {
+				delivery_receipt: dr,
+				scheduled_date: sale_schedule,
+				customer_id: customer_sale,
+				product_id: product_order,
+				qty: product_qty,
+				amount: product_price,
+				due_date: due_date,
+				time_recorded: date,
+				order_type: order_type,
+				payment_terms: payment_sale
+			}
+
+			if (order_type === 'Pick-up') {
+				salesModel.createSales(sale_obj, function(err, result) {
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/sales_history');
+					}
+					else {
+						res.redirect('/sales_history');
+					}
+				});
+			}
+			else {
+				salesModel.createSales(sale_obj, function(err, result) {
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/sales_history');
+					}
+					else {
+						var delivery_detail = {
+							delivery_receipt: dr,
+							delivery_address: address_sale,
+							status: 'Pending'
+						}
+						deliveryDetailModel.create(delivery_detail, function(err, delivery_result) {
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/sales_history');
+							}
+							else {
+								var update, query;
+								query = { delivery_receipt: dr };
+
+								deliveryDetailModel.singleQuery(query, function(err, dr_result) {
+									if (err) {
+										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										res.redirect('/sales_history');
+									}
+									else {
+										update = { delivery_details: dr_result[0].delivery_detail_id };
+										salesModel.updateSaleRecord(update, query, function(err, update_result) {
+											if (err) {
+												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												res.redirect('/sales_history');
+											}
+											else {
+												req.flash('dialog_success_msg', 'Successfully created sale record!')
+												res.redirect('/sales_history');
+											}
+										});
+									}
+								});
+							
+							}
+						});
+					}
+				});
+			}
+		}
+
+	});
+};
+
+exports.getSaleRecordDetails = function(req, res) {
+	var { dr } = req.params;
+	var query = { delivery_receipt: dr };
+
+	salesModel.getSaleRecordDetail(query, function(err, record) {
+		if (err)
+			throw err;
+		else {
+			salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
+				if (err)
+					throw err;
+				else {
+					sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
+					productModel.getProductPriceByDate(sale_date, function(err, products) {
+						if (err)
+							throw err;
+						else {
+							customerModel.queryLocationbyCustomer(function(err, customers) {
+								if (err)
+									throw err;
+								else {
+									var order_status = [
+										{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }, { name: 'Cancelled' }
+									];
+									var payment_terms = [
+										{ name: 'Cash' }, { name: 'NET 7' }, { name: 'NET 15' }, { name: 'NET 30' }
+									];
+									var customer_obj = { customer_id: '', customer_name: '', locations: [] };
+									var location_obj = { location_id: '', location_name: '' };
+									var customer_arr = [];
+									var json_customer_arr;
+									
+									customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+									json_customer_arr = JSON.stringify(customer_arr);
+
+									record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'YYYY-MM-DD')
+									record[0].due_date = dataformatter.formatDate(record[0].due_date, 'YYYY-MM-DD')
+									record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+
+									var html_data = { 
+										sale_record: record[0],
+										carriers: carriers,
+										customers: json_customer_arr,
+										customer_list: customer_arr,
+										products: products,
+										product_json: JSON.stringify(products),
+										status: order_status,
+										terms: payment_terms
+									};
+									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+									
+									res.render('sale_details', html_data);
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+	});
+};
+
+exports.editSaleRecordDetails = function(req, res) {
+	var { sale_dr, sale_terms, sale_date, sale_payment_due, sale_customer,
+	sale_amt, sale_status, sale_order_type, sale_delivery_loc, sale_product, sale_price, sale_qty,
+	sale_damaged, sale_pickup, sale_payment_status, sale_payment_check } = req.body;
+
+	if (sale_pickup === '')
+		sale_pickup = null;
+	if (sale_damaged === '')
+		sale_damaged = 0;
+
+	var payment_det = {
+		check_num: sale_payment_check
+	};
+
+	var update = {
+		scheduled_date: sale_date,
+		customer_id: sale_customer,
+		qty: sale_qty,
+		amount: sale_price,
+		due_date: dataformatter.formatDueDate(sale_date, sale_terms),
+		order_type: sale_order_type,
+		payment_terms: sale_terms,
+		order_status: sale_status,
+		payment_status: sale_payment_status,
+		pickup_plate: sale_pickup
+	};
+
+	if (sale_order_type === 'Delivery') {
+		var update1 = {
+			delivery_address: sale_delivery_loc
+		}
+	}
+
+	salesModel.updateSaleRecord(update, { delivery_receipt: sale_dr }, function(err, result) {
+		if (err)
+			throw err;
+		else {
+			if (sale_order_type === 'Delivery') {
+				deliveryDetailModel.singleQuery({ delivery_receipt: sale_dr }, function(err, exists) {
+					if (err)
+						throw err;
+					else {
+						if (exists.length) {
+							deliveryDetailModel.editDeliveryDetails({ delivery_receipt: sale_dr }, update1, function(err, details) {
+								if (err)
+									throw err;
+								else {
+									if (sale_payment_check !== '') {
+										salesModel.createPaymentDetails(payment_det, function(err, payment_det) {
+											if (err)
+												throw err;
+											else {
+												salesModel.updateSaleRecord({ payment_id: payment_det.insertId }, { delivery_receipt: sale_dr }, function(err, last) {
+													if (err)
+														throw err;
+													else {
+														res.redirect('/sales_record/'+sale_dr);
+													}
+												});
+											}
+										});
+									}
+									else
+										res.redirect('/sales_record/'+sale_dr);
+								}
+							});
+						}
+						else {
+							update1['delivery_receipt'] = sale_dr;
+							update1['status'] = 'Pending';
+							deliveryDetailModel.create(update1, function(err, create) {
+								if (err)
+									throw err;
+								else {
+									if (sale_payment_check !== '') {
+										salesModel.createPaymentDetails(payment_det, function(err, payment_det) {
+											if (err)
+												throw err;
+											else {
+												salesModel.updateSaleRecord({ payment_id: payment_det.insertId }, { delivery_receipt: sale_dr }, function(err, last) {
+													if (err)
+														throw err;
+													else {
+														res.redirect('/sales_record/'+sale_dr);
+													}
+												});
+											}
+										});
+									}
+									else
+										res.redirect('/sales_record/'+sale_dr);
+								}
+							});
+						}
+					}
+				});
+			}
+			else {
+				deliveryDetailModel.singleQuery({ delivery_receipt: sale_dr }, function(err, q) {
+					if (err)
+						throw err;
+					else {
+						var pickup_update = {
+							delivery_details: null
+						}
+						if (q.length) {
+							pickup_update['qty'] = parseInt(sale_qty) + parseInt(q[0].damaged_bags);
+						}
+						salesModel.updateSaleRecord(pickup_update, { delivery_receipt: sale_dr}, function(err, edit_res) {
+							if (err)
+								throw err;
+							else {
+								deliveryDetailModel.deleteDeliveryDetails({ delivery_receipt: sale_dr }, function(err, delete_res) {
+									if (err)
+										throw err;
+									else {
+										if (sale_payment_check !== '') {
+											salesModel.createPaymentDetails(payment_det, function(err, payment_det) {
+												if (err)
+													throw err;
+												else {
+													salesModel.updateSaleRecord({ payment_id: payment_det.insertId }, { delivery_receipt: sale_dr }, function(err, last) {
+														if (err)
+															throw err;
+														else {
+															res.redirect('/sales_record/'+sale_dr);
+														}
+													});
+												}
+											});
+										}
+										else
+											res.redirect('/sales_record/'+sale_dr);
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		}
+	});
+};
+
+exports.confirmPayment = function(req, res) {
+	var { dr } = req.params;
+	var check_num = req.body.sale_payment_check;
+	salesModel.updateSaleRecord({ payment_status: 'Paid' }, { delivery_receipt: dr }, function(err, payment_status) {
+		if (err)
+			throw err;
+		else {
+			salesModel.createPaymentDetails({ check_num: check_num }, function(err, payment_det) {
+				if (err)
+					throw err;
+				else {
+					salesModel.updateSaleRecord({ payment_id: payment_det.insertId }, { delivery_receipt: dr }, function(err, last) {
+						if (err) {
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/sales_record/'+dr);
+						}
+						else {
+							req.flash('dialog_success_msg', 'Successfully confirmed sale!');
+							res.redirect('/sales_record/'+dr);
+						}
+					});
+				}
+			});
+		}
+	});
+};
+
+exports.confirmOrder = function(req, res) {
+	var { dr } = req.params;
+	var plate = req.body.sale_pickup;
+	var sale_order_type = 'Pick-up';
+
+	salesModel.updateSaleRecord({ order_status: 'Completed', pickup_plate: plate }, { delivery_receipt: dr }, function(err, sale_status) {
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/sales_record/'+dr);
+		}
+		else {
+			if (sale_order_type === 'Delivery') {
+				deliveryDetailModel.singleQuery({ delivery_receipt: dr }, function(err, exists) {
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/sales_record/'+dr);
+					}
+					else {
+						if (exists.length) {
+							deliveryDetailModel.editDeliveryDetails({ delivery_receipt: dr }, { status: 'Completed' }, function(err, details) {
+								if (err) {
+									req.flash('dialog_error_msg', 'Oops something went wrong!');
+									res.redirect('/sales_record/'+dr);
+								}
+								else {
+									req.flash('dialog_success_msg', 'Successfully finished sale order status!');
+									res.redirect('/sales_record/'+dr);
+								}
+							});
+						}
+						else {
+							//Send an error message!!
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/sales_record/'+dr);
+						}
+					}
+				});
+			}
+			else if (sale_order_type === 'Pick-up') {
+				req.flash('dialog_success_msg', 'Successfully finished sale order status!');
+				res.redirect('/sales_record/'+dr);
+			}
+			else {
+				res.send(404);
+			}
+		}
+	});
+}

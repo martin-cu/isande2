@@ -20,18 +20,21 @@
     <link rel="stylesheet" href="../assets/css/NZDropdown-Singlee.css">
     <link rel="stylesheet" href="../assets/css/reports.css">
     <link rel="stylesheet" href="../assets/css/TR-Form.css">
+    <link rel="stylesheet" href="../assets/css/AutoComplete.css">
+
+    <script src="../assets/js/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
-       
-        {{> nav}}
+    {{#if session}}
+        <div id="wrapper">
+            {{> nav}}
+            {{> content}}
+        </div>
+    {{else}}
+        {{> login}}
+    {{/if}}
 
-        {{> content}}
-
-    </div>
-
-    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/js/chart.min.js"></script>
     <script src="../assets/js/bs-init.js"></script>

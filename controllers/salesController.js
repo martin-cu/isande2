@@ -7,47 +7,6 @@ const employeeModel = require('../models/employeeModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
-exports.getFilteredSaleHistory = function(req, res) {
-	var offset = parseInt(req.query.page.offset);
-	var limit = parseInt(req.query.page.limit);
-	salesModel.getSaleRecords(req.query.sh_filter, offset, limit, function(err, sale_record) {
-		if (err)
-			throw err;
-		else {
-			var year, month, day;
-			var html_data;
-			for (var i = 0; i < sale_record.length; i++) {
-				// for scheduled_date to MM/DD/YYYY
-				sale_record[i].scheduled_date = dataformatter.formatDate(sale_record[i].scheduled_date, 'MM/DD/YYYY')
-				// format due_date to MM/DD/YYYY
-				sale_record[i].due_date = dataformatter.formatDate(sale_record[i].due_date, 'MM/DD/YYYY')
-				// format total_amt separated by thousands and with decimal
-				sale_record[i].total_amt = dataformatter.formatMoney(sale_record[i].total_amt.toFixed(2), 'Php ');
-				sale_record[i].price = dataformatter.formatMoney(sale_record[i].price.toFixed(2), '');
-			}
-			var temp_data = { delivery_receipt: '&nbsp' };
-			while (sale_record.length < 9) {
-				sale_record.push(temp_data);
-			}
-			html_data = {
-				sales: sale_record
-			}
-			res.send(html_data);
-		}
-	});
-}
-
-exports.getFilteredSalesCount = function(req, res) {
-	salesModel.getSaleRecordCount(req.query.sh_filter, function(err, count) {
-		if (err)
-			throw err;
-		else {
-			var html_data = { count: count.length };
-			res.send(html_data);
-		}
-	});
-}
-
 exports.getSaleOrderForm = function(req, res) {
 	var status = [
 		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
@@ -96,7 +55,7 @@ exports.getSaleOrderForm = function(req, res) {
 										try: customerArr
 									};
 
-									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'create_sales_tab');
 									res.render('createOrder', html_data);
 								}
 							});
@@ -108,6 +67,217 @@ exports.getSaleOrderForm = function(req, res) {
 	});
 }
 
+exports.createSaleRecord = function(req, res) {
+	var { dateScheduled, customerName, qty,
+		orderType, saleAddress, product, paymentTerms } = req.body;
+	salesModel.getMonthlyCount(function(err, monthlycount) {
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/create_sales');
+		}
+		else {
+			productModel.queryProductbyPrice(function(err, price) {
+				if (err)
+					throw err;
+				else {
+					customerModel.queryLocationbyCustomer(function(err, customer_id) {
+						if (err)
+							throw err;
+						else {
+							var date, month, year, count, due_date, dr, add_days, productPrice, customerID;
+							date = new Date();
+							year = date.getFullYear();
+							month = new Date().getMonth()+1;
+							if (month < 10)
+								month = '0'+month;
+							count = ("000" + parseInt(monthlyCount.length+1) ).slice(-3)
+							dr = year+month+count;
+							due_date = dataformatter.formatDueDate(dateScheduled, paymentTerms);
+
+							for (var i = 0; i < price.length; i++) {
+								if (price[i].product_id == product)
+									productPrice = price[i].selling_price;
+							}
+							for (var i = 0; i < customer_id.length; i++) {
+								if (customer_id[i].customer_name == customerName)
+									customerID = customer_id[i].customer_id;
+							}
+
+							var sale_obj = {
+								delivery_receipt: dr,
+								scheduled_date: dateScheduled,
+								customer_id: customerID,
+								product_id: product,
+								qty: qty,
+								amount: productPrice,
+								due_date: due_date,
+								time_recorded: date,
+								order_type: orderType,
+								payment_terms: paymentTerms
+							}
+							console.log(sale_obj);
+
+							/********** PICK UP **********/
+							if (orderType === 'Pick-up') {
+								salesModel.createSales(sale_obj, function(err, result) {
+									if (err) {
+										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										res.redirect('/create_sales');
+									}
+									else {
+										res.redirect('/create_sales');
+									}
+								});
+							}
+							/********** DELIVERY TODO**********/
+							else {
+								salesModel.createSales(sale_obj, function(err, result) {
+									if (err) {
+										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										res.redirect('/create_sales');
+									}
+									else {
+										var delivery_detail = {
+											delivery_receipt: dr,
+											delivery_address: saleAddress,
+											status: 'Pending'
+										}
+										deliveryDetailModel.create(delivery_detail, function(err, delivery_result) {
+											if (err) {
+												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												res.redirect('/create_sales');
+											}
+											else {
+												var update, query;
+												query = { delivery_receipt: dr };
+
+												deliveryDetailModel.singleQuery(query, function(err, dr_result) {
+													if (err) {
+														req.flash('dialog_error_msg', 'Oops something went wrong!');
+														res.redirect('/create_sales');
+													}
+													else {
+														update = { delivery_details: dr_result[0].delivery_detail_id };
+														salesModel.updateSaleRecord(update, query, function(err, update_result) {
+															if (err) {
+																req.flash('dialog_error_msg', 'Oops something went wrong!');
+																res.redirect('/create_sales');
+															}
+															else {
+																req.flash('dialog_success_msg', 'Successfully created sale record!')
+																res.redirect('/create_sales');
+															}
+														});
+													}
+												});
+											
+											}
+										});
+									}
+								});
+							}
+						}
+					})
+				}
+			});
+		}
+	});
+};
+
+exports.getPaymentsPage = function(req, res) {
+	salesModel.getUnpaidOrders(function(err, unpaidOrders) {
+		if (err)
+			throw err;
+		else {
+			customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
+				if (err)
+					throw err;
+				else {
+					var groupedCustomer;
+					groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
+
+					var html_data = {
+						unpaidOrderArr: unpaidOrders,
+						unpaidCustomerArr: groupedCustomer,
+						groupedUnpaidOrder: JSON.stringify(groupedCustomer)
+					};
+
+					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'payments_tab');
+					res.render('paymentsTable', html_data);
+				}
+			});
+		}
+	});
+}
+
+exports.getTrackOrdersPage = function(req, res) {
+	salesModel.getTrackOrders(function(err, orders) {
+		if (err)
+			throw err;
+		else {
+			var dates = [], curdate = dataformatter.startOfWeek(new Date());
+
+			dates.push(curdate);
+			curdate = new Date(curdate.toString());
+			for (var i = 1; i < 7; i++) {
+				dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+			}
+
+			var html_data = {
+				weeklyDate: dates,
+				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+			}
+			console.log(html_data);
+			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'track_orders_tab');
+			res.render('trackSalesOrders', html_data);
+		}
+	});
+}
+
+/*
+exports.getFilteredSaleHistory = function(req, res) {
+	var offset = parseInt(req.query.page.offset);
+	var limit = parseInt(req.query.page.limit);
+	salesModel.getSaleRecords(req.query.sh_filter, offset, limit, function(err, sale_record) {
+		if (err)
+			throw err;
+		else {
+			var year, month, day;
+			var html_data;
+			for (var i = 0; i < sale_record.length; i++) {
+				// for scheduled_date to MM/DD/YYYY
+				sale_record[i].scheduled_date = dataformatter.formatDate(sale_record[i].scheduled_date, 'MM/DD/YYYY')
+				// format due_date to MM/DD/YYYY
+				sale_record[i].due_date = dataformatter.formatDate(sale_record[i].due_date, 'MM/DD/YYYY')
+				// format total_amt separated by thousands and with decimal
+				sale_record[i].total_amt = dataformatter.formatMoney(sale_record[i].total_amt.toFixed(2), 'Php ');
+				sale_record[i].price = dataformatter.formatMoney(sale_record[i].price.toFixed(2), '');
+			}
+			var temp_data = { delivery_receipt: '&nbsp' };
+			while (sale_record.length < 9) {
+				sale_record.push(temp_data);
+			}
+			html_data = {
+				sales: sale_record
+			}
+			res.send(html_data);
+		}
+	});
+}
+
+exports.getFilteredSalesCount = function(req, res) {
+	salesModel.getSaleRecordCount(req.query.sh_filter, function(err, count) {
+		if (err)
+			throw err;
+		else {
+			var html_data = { count: count.length };
+			res.send(html_data);
+		}
+	});
+}
+*/
+
+/*
 exports.getSalesHistory = function(req, res) {
 	var status = [
 		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
@@ -241,151 +411,9 @@ exports.getSalesHistory = function(req, res) {
 		}
 	});
 };
+*/
 
-exports.createSaleRecord = function(req, res) {
-	var { dateScheduled, customerName, qty,
-		orderType, saleAddress, product, paymentTerms } = req.body;
-	salesModel.getMonthlyCount(function(err, monthlycount) {
-		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
-			res.redirect('/create_sales');
-		}
-		else {
-			productModel.queryProductbyPrice(function(err, price) {
-				if (err)
-					throw err;
-				else {
-					customerModel.queryLocationbyCustomer(function(err, customer_id) {
-						if (err)
-							throw err;
-						else {
-							var date, month, year, count, due_date, dr, add_days, productPrice, customerID;
-							date = new Date();
-							year = date.getFullYear();
-							month = new Date().getMonth()+1;
-							if (month < 10)
-								month = '0'+month;
-							count = ("000" + parseInt(monthlyCount.length+1) ).slice(-3)
-							dr = year+month+count;
-							due_date = dataformatter.formatDueDate(dateScheduled, paymentTerms);
-
-							for (var i = 0; i < price.length; i++) {
-								if (price[i].product_id == product)
-									productPrice = price[i].selling_price;
-							}
-							for (var i = 0; i < customer_id.length; i++) {
-								if (customer_id[i].customer_name == customerName)
-									customerID = customer_id[i].customer_id;
-							}
-
-							var sale_obj = {
-								delivery_receipt: dr,
-								scheduled_date: dateScheduled,
-								customer_id: customerID,
-								product_id: product,
-								qty: qty,
-								amount: productPrice,
-								due_date: due_date,
-								time_recorded: date,
-								order_type: orderType,
-								payment_terms: paymentTerms
-							}
-							console.log(sale_obj);
-
-							/********** PICK UP **********/
-							if (orderType === 'Pick-up') {
-								salesModel.createSales(sale_obj, function(err, result) {
-									if (err) {
-										req.flash('dialog_error_msg', 'Oops something went wrong!');
-										res.redirect('/create_sales');
-									}
-									else {
-										res.redirect('/create_sales');
-									}
-								});
-							}
-							/********** DELIVERY TODO**********/
-							else {
-								salesModel.createSales(sale_obj, function(err, result) {
-									if (err) {
-										req.flash('dialog_error_msg', 'Oops something went wrong!');
-										res.redirect('/create_sales');
-									}
-									else {
-										var delivery_detail = {
-											delivery_receipt: dr,
-											delivery_address: saleAddress,
-											status: 'Pending'
-										}
-										deliveryDetailModel.create(delivery_detail, function(err, delivery_result) {
-											if (err) {
-												req.flash('dialog_error_msg', 'Oops something went wrong!');
-												res.redirect('/create_sales');
-											}
-											else {
-												var update, query;
-												query = { delivery_receipt: dr };
-
-												deliveryDetailModel.singleQuery(query, function(err, dr_result) {
-													if (err) {
-														req.flash('dialog_error_msg', 'Oops something went wrong!');
-														res.redirect('/create_sales');
-													}
-													else {
-														update = { delivery_details: dr_result[0].delivery_detail_id };
-														salesModel.updateSaleRecord(update, query, function(err, update_result) {
-															if (err) {
-																req.flash('dialog_error_msg', 'Oops something went wrong!');
-																res.redirect('/create_sales');
-															}
-															else {
-																req.flash('dialog_success_msg', 'Successfully created sale record!')
-																res.redirect('/create_sales');
-															}
-														});
-													}
-												});
-											
-											}
-										});
-									}
-								});
-							}
-						}
-					})
-				}
-			});
-		}
-	});
-};
-
-exports.getPaymentsPage = function(req, res) {
-
-	salesModel.getUnpaidOrders(function(err, unpaidOrders) {
-		if (err)
-			throw err;
-		else {
-			customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
-				if (err)
-					throw err;
-				else {
-					var groupedCustomer;
-					groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
-
-					var html_data = {
-						unpaidOrderArr: unpaidOrders,
-						unpaidCustomerArr: groupedCustomer,
-						groupedUnpaidOrder: JSON.stringify(groupedCustomer)
-					};
-					
-					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
-					res.render('paymentsTable', html_data);
-				}
-			});
-		}
-	});
-}
-
+/*
 exports.getSaleRecordDetails = function(req, res) {
 	var { dr } = req.params;
 	var query = { delivery_receipt: dr };
@@ -667,3 +695,4 @@ exports.confirmOrder = function(req, res) {
 		}
 	});
 }
+*/

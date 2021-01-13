@@ -8,3 +8,33 @@
   border-left: 1px solid rgb(205,205,205);
 }
 
+.status-data {
+	margin-bottom: 0px;
+	color: rgb(255,255,255);
+	text-align: center;
+}
+
+.processing {
+	background: #36b9cc;
+	border-radius: 5px;
+	padding: 2px;
+	min-height: 45px;
+	box-shadow: 0px 0px 1px;
+}
+
+.pending {
+	background: #e07027;
+	border-radius: 5px;
+	padding: 2px;
+	min-height: 45px;
+	box-shadow: 0px 0px 1px;
+}
+
+.completed {
+	background: #40c88a;
+	border-radius: 5px;
+	padding: 2px;
+	min-height: 45px;
+	box-shadow: 0px 0px 1px;
+}
+

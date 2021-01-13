@@ -117,8 +117,8 @@ exports.createRecommendation = function(obj, algo) {
 
 exports.formatDate = function(date, format) {
 	var year,month,day;
-	const monthNames = ["", "January", "February", "March", "April", "May", "June",
-	  "July", "August", "September", "October", "November", "December"
+	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	];
 	year = date.getFullYear();
 	month = date.getMonth()+1;
@@ -147,8 +147,8 @@ exports.formatDate = function(date, format) {
 
 function formatDate(date, format) {
 	var year,month,day;
-	const monthNames = ["", "January", "February", "March", "April", "May", "June",
-	  "July", "August", "September", "October", "November", "December"
+	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	];
 	year = date.getFullYear();
 	month = date.getMonth()+1;
@@ -345,4 +345,35 @@ exports.groupUnpaidCustomerOrders = function(arr) {
 		groupedArr.push(customerObj);
 	}
 	return groupedArr;
+}
+
+exports.startOfWeek = function(date) {
+	var diff = date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
+
+	return formatDate(new Date(date.setDate(diff)), "mm DD, YYYY");
+}
+
+exports.groupByDayofWeek = function(dates, orders) {
+	var arr = [];
+	var dayObj = {};
+	var orderObj;
+
+	for (var i = 0; i < dates.length; i++) {
+		dayObj = {};
+		dayObj['date'] = dates[i];
+		dayObj['orders'] = [];
+		for (var x = 0; x < orders.length; x++) {
+			if (orders[x].formattedSchedule === dates[i]) {
+				orderObj = {};
+				orderObj['deliveryReceipt'] = orders[x].delivery_receipt;
+				orderObj['customer'] = orders[x].customer_name;
+				orderObj['product'] = orders[x].product_name;
+				orderObj['qty'] = orders[x].qty;
+				orderObj['status'] = orders[x].order_status;
+				dayObj['orders'].push(orderObj);
+			}
+		}
+		arr.push(dayObj);
+	}
+	return arr;
 }

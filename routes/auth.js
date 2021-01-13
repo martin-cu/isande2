@@ -19,9 +19,7 @@ router.get('/home', isPrivate, homeController.queryOverview);
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);
 router.post('/create_sales', isPrivate, salesController.createSaleRecord);
 router.get('/view_payments', isPrivate, salesController.getPaymentsPage);
-router.get('/track_sale_orders', isPrivate, (req, res) => {
-  res.render('trackSalesOrders', {session: true});
-});
+router.get('/track_sale_orders', isPrivate, salesController.getTrackOrdersPage);
 router.get('/view_sales_records', isPrivate, (req, res) => {
   res.render('salesRecordTable', {session: true});
 });

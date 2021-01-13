@@ -20,6 +20,13 @@ exports.getUnpaidOrders = function(next) {
 	mysql.query(sql, next);
 };
 
+exports.getTrackOrders = function(next) {
+	var sql = "select sh.*, ct.*, pt.product_name, date_format(sh.scheduled_date, '%b %e, %Y') as formattedSchedule from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.scheduled_date between date(now() + INTERVAL ( - WEEKDAY(now())) DAY) and DATE(now() + INTERVAL (6 - WEEKDAY(now())) DAY) order by scheduled_date";
+
+	mysql.query(sql, next);
+}
+
+/*
 exports.updateSaleRecord = function(update, query, next) {
 	var sql = "update sales_history set ? where ?";
 	sql = mysql.format(sql, update);
@@ -187,3 +194,4 @@ exports.getSaleStatus = function(dr, next){
 
 	mysql.query(sql, next);
 }
+*/

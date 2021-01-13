@@ -17,9 +17,8 @@ router.get('/home', isPrivate, homeController.queryOverview);
 
 //Sales
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);
-router.get('/view_payments', isPrivate, (req, res) => {
-  res.render('paymentsTable', {session: true, payments_tab: true});
-});
+router.post('/create_sales', isPrivate, salesController.createSaleRecord);
+router.get('/view_payments', isPrivate, salesController.getPaymentsPage);
 router.get('/track_sale_orders', isPrivate, (req, res) => {
   res.render('trackSalesOrders', {session: true});
 });

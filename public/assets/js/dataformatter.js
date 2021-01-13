@@ -290,11 +290,11 @@ exports.formatDueDate = function(date, terms) {
 	var add_days;
 	if (terms == 'Cash')
 		add_days = 0;
-	else if (terms == 'NET 7')
+	else if (terms == 'NET7')
 		add_days = 7;
-	else if (terms == 'NET 15')
+	else if (terms == 'NET15')
 		add_days = 15;
-	else if (terms == 'NET 30')
+	else if (terms == 'NET30')
 		add_days = 30;
 	
 	return new Date( Date.parse(date) + add_days * 24 * 60 * 60 * 1000);
@@ -310,4 +310,39 @@ exports.formatPage = function(limit, offset, count) {
 		offset = 0;
 
 	return { limit: limit, offset: offset };
+}
+
+exports.groupUnpaidCustomerOrders = function(arr) {
+	var groupedArr = [];
+	var customerObj = {};
+	var orderObj = {};
+	console.log(arr);
+	for (var i = 0; i < arr.length; i++) {
+		orderObj = {
+			deliveryReceipt: arr[i].delivery_receipt,
+			productName: arr[i].product_name,
+			qty: arr[i].qty,
+			totalAmt: arr[i].total
+		};
+		customerObj = {
+			customerID: arr[i].customer_id,
+			customerName: arr[i].customer_name,
+			orderDetails: []
+		};
+		customerObj['orderDetails'].push(orderObj);
+		if (i < arr.length - 1) {
+			while (arr[i].customer_id === arr[i+1].customer_id) {
+				orderObj = {
+					deliveryReceipt: arr[i+1].delivery_receipt,
+					productName: arr[i+1].product_name,
+					qty: arr[i+1].qty,
+					totalAmt: arr[i+1].total
+				};
+				customerObj['orderDetails'].push(orderObj);
+				i++;
+			}
+		}
+		groupedArr.push(customerObj);
+	}
+	return groupedArr;
 }

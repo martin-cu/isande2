@@ -14,6 +14,12 @@ exports.createSales = function(query, next) {
 	mysql.query(sql, next);
 };
 
+exports.getUnpaidOrders = function(next) {
+	var sql = "SELECT c.customer_name , format((sh.qty*sh.amount), 2) as total , date_format(sh.due_date, '%m/%d/%Y') as formattedDue, case when datediff(now(), sh.due_date) > 0 then 1 else null end as overdue FROM sales_history as sh JOIN customer_table as c using(customer_id) where sh.payment_status = 'Unpaid' order by due_date asc, customer_name";
+
+	mysql.query(sql, next);
+};
+
 exports.updateSaleRecord = function(update, query, next) {
 	var sql = "update sales_history set ? where ?";
 	sql = mysql.format(sql, update);

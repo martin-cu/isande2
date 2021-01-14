@@ -38,3 +38,11 @@
 	box-shadow: 0px 0px 1px;
 }
 
+.stretched-link:hover {
+	text-decoration: none;
+}
+
+.stretched-link:hover {
+	transform: scale(1.05);
+}
+

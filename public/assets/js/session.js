@@ -38,7 +38,7 @@ exports.init_session = function(obj, role, name, username, tab) {
 		obj['delivery_tab'] = true;
 	else if (tab === 'inventory') 
 		obj['inventory_tab'] = true;
-	else if (tab === 'reports') 
+	else if (tab === 'reports_tab') 
 		obj['reports_tab'] = true;
 	else if (tab === 'resources') 
 		obj['resources_tab'] = true;

@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0">Sales Report<span>&nbsp;- {{reportTitle}}</span></h3>
+    </div>
+    <div class="row text-xl-left justify-content-center">
+        <div class="col-md-6 col-xl-3 mb-4" style="/*max-width: none;*//*min-width: 14vw;*/padding-top: 1rem;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Date Range</td>
+                            <td class="report-value">{{data.first_day}} to {{data.last_day}}<br></td>
+                        </tr>
+                        <tr>
+                            <td>Product</td>
+                            <td class="report-value">{{data.product_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4 report-upper-table" style="/*max-width: none;*/min-width: 14vw;">
+            <div class="table-responsive" style="padding-top: 1rem;">
+                <table class="table">
+                    <thead>
+                        <tr></tr>
+                    </thead>
+                    <tbody>
+                        {{#each metrics}}
+                            <tr>
+                                <td>{{this.metricName}}</td>
+                                <td class="report-value">{{this.metricData}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col" style="width: 25%;">
+            <div class="card shadow border-left-primary py-2" style="margin-right: 0px;width: 25rem;float: right;">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>{{cardObj.title}}</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{cardObj.data}}</span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table tablesorter" id="ipi-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="" style="width: 50px; color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Status</th>
+                            <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Date</th>
+                            <th class="" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Customer</th>
+                            <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Product</th>
+                            <th class="text-right" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">QTY</th>
+                            <th class="text-right" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Price</th>
+                            <th class="" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Order Type</th>
+                            <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">DR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if records}}
+                        {{#each records}}
+                            <tr>
+                                <td><a class="btn btn-primary text-center btn-sm reset" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="#">{{this.order_status}}</a></td>
+                                <td class="text-center">{{this.scheduled_date}}</td>
+                                <td>{{this.customer_name}}</td>
+                                <td class="text-center">{{this.product_name}}</td>
+                                <td class="text-right">{{this.qty}}</td>
+                                <td class="text-right">{{this.amount}}</td>
+                                <td>{{this.order_type}}</td>
+                                <td class="text-center">{{this.delivery_receipt}}</td>
+                            </tr>
+                        {{/each}}
+                        {{else}}
+                        <tr style="display: none;">
+                            <td></td>
+                        </tr>
+                        <tr>
+                           <td colspan="8" class="text-center">No records to show</td>
+                        </tr>
+                        {{/if}}
+                        <tr>
+                    </tbody>
+                </table>
+            </div><a class="btn btn-primary float-right" role="button" href="javascript:history.back()">Back</a>
+        </div>
+    </div>
+</div>

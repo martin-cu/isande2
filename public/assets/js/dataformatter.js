@@ -406,3 +406,37 @@ exports.groupedMonthlySales = function(data) {
 	}
 	return arr;
 }
+
+exports.formatReportMetrics = function(data) {
+	var obj;
+	var arr = [];
+
+	for (var i = 0; i < Object.keys(data).length; i++) {
+		if (Object.keys(data)[i] == 'total_qty') {
+			obj = { metricName: 'Total Quantity', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'count_orders') {
+			obj = { metricName: 'Order Count', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'max_qty') {
+			obj = { metricName: 'Max Quantity', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'min_qty') {
+			obj = { metricName: 'Minimum Quantity', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'avg_qty') {
+			obj = { metricName: 'Average Quantity/Order', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+	}
+	return arr;
+}

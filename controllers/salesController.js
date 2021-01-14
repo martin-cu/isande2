@@ -90,7 +90,7 @@ exports.createSaleRecord = function(req, res) {
 							month = new Date().getMonth()+1;
 							if (month < 10)
 								month = '0'+month;
-							count = ("000" + parseInt(monthlyCount.length+1) ).slice(-3)
+							count = ("000" + parseInt(monthlycount.length+1) ).slice(-3)
 							dr = year+month+count;
 							due_date = dataformatter.formatDueDate(dateScheduled, paymentTerms);
 
@@ -356,8 +356,8 @@ exports.getSalesRecords = function(req,res){
 																			html_data['sales'] = sale_record;
 																			html_data["blanks"] = blank;
 																			html_data['sale_record_data'] = data;
-
-																			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+																			console.log(req.session.initials);
+																			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
 																			html_data = js.innit_pagination(html_data, offset, sale_record.length+offset, count.length);
 																			
 																			res.render('salesRecordTable', html_data);
@@ -381,6 +381,84 @@ exports.getSalesRecords = function(req,res){
 	});
 };
 
+exports.viewSalesDetails = function(req,res){
+	var { dr } = req.params;
+	var query = { delivery_receipt: dr };
+
+	salesModel.getSaleRecordDetail(query, function(err, record) {
+		if (err)
+			throw err;
+		else {
+			salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
+				if (err)
+					throw err;
+				else {
+					sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
+					productModel.getProductPriceByDate(sale_date, function(err, products) {
+						if (err)
+							throw err;
+						else {
+							customerModel.queryLocationbyCustomer(function(err, customers) {
+								if (err)
+									throw err;
+								else {
+									var order_status = [
+										{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }, { name: 'Cancelled' }
+									];
+									var payment_terms = [
+										{ name: 'Cash' }, { name: 'NET 7' }, { name: 'NET 15' }, { name: 'NET 30' }
+									];
+									var customer_obj = { customer_id: '', customer_name: '', locations: [] };
+									var location_obj = { location_id: '', location_name: '' };
+									var customer_arr = [];
+									var json_customer_arr;
+
+									salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
+										if(err){
+											throw err;
+										}
+										else{
+											console.log(location[0]);
+											customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+											json_customer_arr = JSON.stringify(customer_arr);
+
+											record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'YYYY-MM-DD')
+											record[0].due_date = dataformatter.formatDate(record[0].due_date, 'YYYY-MM-DD')
+											record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+											record[0].qty = JSON.stringify(record[0].qty);
+											console.log(record[0]);
+
+											
+											var html_data = { 
+												sale_record: record[0],
+												carriers: carriers,
+												customers: json_customer_arr,
+												customer_list: customer_arr,
+												products: products,
+												product_json: JSON.stringify(products),
+												status: order_status,
+												terms: payment_terms,
+												customer_location : location[0].location_name
+											};
+											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
+																					
+											res.render('salesDetails', html_data);
+										}
+
+									});
+
+									
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+	});
+
+	
+};
 
 
 /*

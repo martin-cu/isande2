@@ -14,27 +14,30 @@
 	text-align: center;
 }
 
-.processing {
+.Processing {
 	background: #36b9cc;
 	border-radius: 5px;
 	padding: 2px;
-	min-height: 45px;
+	/*min-height: 45px;*/
+	min-width: 100%;
 	box-shadow: 0px 0px 1px;
 }
 
-.pending {
+.Pending {
 	background: #e07027;
 	border-radius: 5px;
 	padding: 2px;
-	min-height: 45px;
+	/*min-height: 45px;*/
+	min-width: 100%;
 	box-shadow: 0px 0px 1px;
 }
 
-.completed {
+.Completed {
 	background: #40c88a;
 	border-radius: 5px;
 	padding: 2px;
-	min-height: 45px;
+	/*min-height: 45px;*/
+	min-width: 100%;
 	box-shadow: 0px 0px 1px;
 }
 

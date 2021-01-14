@@ -9,7 +9,7 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col mr-2">
                             <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Earnings (monthly)</span></div>
-                            <div class="text-dark font-weight-bold h5 mb-0"><span>$40,000</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span>Php {{netMonth}}</span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
                     </div>
@@ -22,7 +22,7 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col mr-2">
                             <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Earnings (annual)</span></div>
-                            <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span>Php {{netYear}}</span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                     </div>
@@ -37,11 +37,11 @@
                             <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Tasks</span></div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
+                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>{{taskProgress}}</span></div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
+                                        <div class="progress-bar bg-info" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{taskProgress}}"><span class="sr-only">{{taskProgress}}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col mr-2">
                             <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pending Requests</span></div>
-                            <div class="text-dark font-weight-bold h5 mb-0"><span>18</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{pendingTasks}}</span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
                     </div>
@@ -65,6 +65,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-7 col-xl-8">
             <div class="card shadow mb-4">
@@ -78,8 +79,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                    <div class="chart-area"><canvas id="overviewSales" style="max-height: 100%; max-width: 100%;"></canvas></div>
                 </div>
+
             </div>
         </div>
         <div class="col-lg-5 col-xl-4">
@@ -95,46 +97,16 @@
                                 <tr></tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style="padding: 5px;">
-                                        <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;">
-                                        <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;">
-                                        <div class="text-center" style="background: #36b9cc;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;">
-                                        <div class="text-center" style="background: #36b9cc;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 5px;">
-                                        <div class="text-center" style="background: #40c88a;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                            <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {{#each recentOrders}}
+                                    <tr>
+                                        <td style="padding: 5px;">
+                                            <div class="text-center {{#compareTwoValues this.order_status 'Pending' operator='==='}}pending{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Completed' operator='==='}}completed{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Processing' operator='==='}}processing{{/compareTwoValues}} ">
+                                                <p class="text-center status-data">{{this.customer_name}}</p>
+                                                <p class="text-center status-data">{{this.product_name}} - {{this.qty}} bags</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>
@@ -207,27 +179,18 @@
                             <thead>
                                 <tr>
                                     <th class="text-nowrap">Customer</th>
-                                    <th class="text-nowrap">Amount Due</th>
-                                    <th data-toggle="tooltip" data-bs-tooltip="" title="DD/MM/YYYY">Due Date</th>
+                                    <th class="text-nowrap text-right">Amount Due</th>
+                                    <th class="text-center" data-toggle="tooltip" data-bs-tooltip="" title="DD/MM/YYYY">Due Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>ABC Hardware</td>
-                                    <td>Php 100,000.00</td>
-                                    <td class="text-nowrap">01/01/2021<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i></td>
-                                </tr>
-                                <tr>
-                                    <td>ABC Hardware</td>
-                                    <td>Php 100,000.00</td>
-                                    <td class="text-nowrap">01/01/2021<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i></td>
-                                </tr>
-                                <tr>
-                                    <td>ABC Hardware</td>
-                                    <td>Php 100,000.00</td>
-                                    <td class="text-nowrap">01/01/2021<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i></td>
-                                </tr>
-                                <tr></tr>
+                                {{#each overDueOrders}}
+                                    <tr>
+                                        <td>{{this.customer_name}}</td>
+                                        <td class="text-right">Php {{this.amt_due}}</td>
+                                        <td class="text-nowrap text-center">{{this.due_date }}<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i></td>
+                                    </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>
@@ -280,3 +243,10 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>
+<script src="../assets/js/chartFormatter.js"></script>
+<script type="text/javascript">
+    var view = '{{role}}';
+    var chartData = {{{monthlyEarnings}}};
+    createAreaChart({{{monthlyEarnings}}});
+</script>

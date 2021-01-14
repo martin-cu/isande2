@@ -1,9 +1,9 @@
 const customerModel = require('../models/customerModel');
 const productModel = require('../models/productModel');
 const salesModel = require('../models/salesModel');
-//const deliveryDetailModel = require('../models/deliveryDetailModel');
+const deliveryDetailModel = require('../models/deliveryDetailModel');
 const employeeModel = require('../models/employeeModel');
-//const truckModel = require('../models/truckModel');
+const truckModel = require('../models/truckModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
@@ -227,12 +227,161 @@ exports.getTrackOrdersPage = function(req, res) {
 				weeklyDate: dates,
 				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
 			}
-			console.log(html_data);
+			
 			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'track_orders_tab');
 			res.render('trackSalesOrders', html_data);
 		}
 	});
 }
+
+
+exports.getSalesRecords = function(req,res){
+	console.log("pumasok");
+	var status = [
+		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
+	];
+	var terms = [
+		{ name: 'Cash', id: 'Cash' }, { name: 'NET 7', id: 'NET7' }, { name: 'NET 15', id: 'NET15' }, { name: 'NET 30', id: 'NET30' }
+	];
+	var payment_status = [
+		{ name: 'Paid' }, { name: 'Unpaid' }
+	];
+	var order_type = [
+		{ name: 'Delivery' }, { name: 'Pick-up' }
+	];
+	var offset = 0;
+	var limit = 10;
+	salesModel.getSaleRecordCount({}, function(err, count) {
+		if (err)
+			throw err;
+		else {
+			if(count.length == 0){
+
+			}
+			else{
+				var page_obj = dataformatter.formatPage(limit, offset, count[0].count);
+				
+			}
+			var limit = 10;
+			var offset = 0;
+			customerModel.queryCustomers(function(err, customer_data) {
+				if (err)
+					throw err;
+				else {
+					salesModel.getSaleFilters(function(err, filter_data) {
+						if (err)
+							throw err;
+						else {
+							if(filter_data.length == 0){
+
+							}
+							else{
+								//filter_data[0].start_date = dataformatter.formatDate(filter_data[0].start_date, 'MM/DD/YYYY');
+							}
+							productModel.getProducts(function(err, product_data) {
+								if (err)
+									throw err;
+								else {
+									employeeModel.getActiveDrivers(function(err, drivers) {
+										if (err)
+											throw err;
+										else {
+											truckModel.getActiveTrucks(function(err, trucks) {
+												if (err)
+													throw err;
+												else {
+													customerModel.queryLocationbyCustomer(function(err, customers) {
+														if (err) {
+															throw err;
+															res.redirect('/');
+														}
+														else {
+															productModel.queryProductbyPrice(function(err, products) {
+																if (err) {
+																	throw err;
+																	res.redirect('/');
+																}
+																else {
+																	var filter = {};
+																	salesModel.getSaleRecords(filter, offset, limit,  function(err, sale_record) {
+																		if (err)
+																			throw err;
+																		else {
+																			// prep data structure for customer and their locations for create order
+																			var customer_arr = [];
+																			customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+
+																			var data = [ {customers: customer_arr}, {products: products}];
+																			data = JSON.stringify(data);	
+																			// prep sale record data
+																			var year, month, day;
+																			for (var i = 0; i < sale_record.length; i++) {
+																				// for scheduled_date to MM/DD/YYYY
+																				sale_record[i].scheduled_date = dataformatter.formatDate(sale_record[i].scheduled_date, 'MM/DD/YYYY');
+																				// format due_date to MM/DD/YYYY
+																				sale_record[i].due_date = dataformatter.formatDate(sale_record[i].due_date, 'MM/DD/YYYY');
+																				// format total_amt separated by thousands and with decimal
+																				sale_record[i].total_amt = dataformatter.formatMoney(sale_record[i].total_amt.toFixed(2), 'Php ');
+																				sale_record[i].price = dataformatter.formatMoney(sale_record[i].price.toFixed(2), '');
+																			}
+																			
+																			var html_data = { 
+																				num_records: count.length,
+																				origin: offset+1,
+																				end: sale_record.length+offset,
+																				status: status,
+																				terms: terms,
+																				payment_status: payment_status,
+																				order_type: order_type,
+																				customers: customer_data,
+																				products: product_data,
+																				drivers: drivers,
+																				trucks: trucks,
+																				filter_data: filter_data[0]
+																			};
+																			var temp_data = { delivery_receipt: '' };
+																			// while (sale_record.length < 9) {
+																			// 	sale_record.push(temp_data);
+																			// }
+																			var blank = [];
+																			console.log(sale_record.length);
+																			if(sale_record.length < 9){
+																				var x = sale_record.length;
+																				while(x != 0){
+																					blank.push("temp_data");
+																					x--;
+																				}
+																			}
+																			//console.log(sale_record);
+																			html_data['sales'] = sale_record;
+																			html_data["blanks"] = blank;
+																			html_data['sale_record_data'] = data;
+
+																			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales');
+																			html_data = js.innit_pagination(html_data, offset, sale_record.length+offset, count.length);
+																			
+																			res.render('salesRecordTable', html_data);
+																		}
+																	})	
+																}
+															});
+														}
+													});
+												}
+											});
+										}
+									});
+								}
+							})
+						}
+					});
+				}
+			})
+		}
+	});
+};
+
+
 
 /*
 exports.getFilteredSaleHistory = function(req, res) {

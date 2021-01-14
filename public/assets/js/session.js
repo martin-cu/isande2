@@ -13,8 +13,8 @@ exports.init_session = function(obj, role, name, username, tab) {
 	else if (role === 'Logistics Employee')
 		obj['logistics_role'] = true;
 
-	if (tab === 'home')
-		obj['home_tab'] = true;
+	if (tab === 'dashboard_tab')
+		obj['dashboard_tab'] = true;
 	/******* Sale Tabs ********/
 	else if (tab === 'create_sales_tab') 
 		obj['create_sales_tab'] = true;

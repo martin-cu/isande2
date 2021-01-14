@@ -43,6 +43,49 @@
                                 <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
                                 <td>01/10/2021<br></td>
                                 <td>20200106<br></td>
+                                <td>DEF Warehouse</td>
+                                <td>RCC</td>
+                                <td>648 bags<br></td>
+                                <td>Php 210.00</td>
+                                <td>Php 29,343.00<br></td>
+                                <td>Unpaid</td>
+                                <td>Delivery</td>
+                                <td>0<br></td>
+                            </tr>
+            {{#each sales}}
+                            <tr>
+                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">{{this.status}}</a></td>
+                                <td>{{this.scheduled_date}}<br></td>
+                                <td>{{this.delivery_receipt}}<br></td>
+                                <td>{{this.customer_name}}</td>
+                                <td>{{this.product_name}}</td>
+                                <td>{{this.qty}} bags<br></td>
+                                <td>Php {{this.price}}</td>
+                                <td>Php {{this.total_amt}}<br></td>
+                                <td>{{this.payment_status}}</td>
+                                <td>{{this.order_type}}</td>
+                                <td>{{this.damaged_bags}}<br></td>
+                            </tr>
+            {{/each}}
+            {{#each blanks}}
+                            <tr>
+                                <td></td>
+                                <td><br></td>
+                                <td><br></td>
+                                <td></td>
+                                <td></td>
+                                <td><br></td>
+                                <td></td>
+                                <td><br></td>
+                                <td></td>
+                                <td></td>
+                                <td><br></td>
+                            </tr>
+            {{/each}}
+                            <!-- <tr>
+                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
+                                <td>01/10/2021<br></td>
+                                <td>20200106<br></td>
                                 <td>ABC Hardware<br></td>
                                 <td>RCC</td>
                                 <td>648 bags<br></td>
@@ -168,7 +211,7 @@
                                 <td>Paid<br></td>
                                 <td>Pick-up<br></td>
                                 <td>0<br></td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

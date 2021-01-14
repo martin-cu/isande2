@@ -1,0 +1,218 @@
+ <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-6">
+                            <h3 class="text-dark mb-4">Inventory Overview</h3>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 text-right" style="margin-bottom: 30px;">
+                            <div>
+                                <div class="modal fade" role="dialog" tabindex="-1" id="myModalAddProduct">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="height: 50px;">
+                                                <h4>Add Product</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="text-left text-muted" style="margin-bottom: 30px;">Fill out the fields below to add a new product</p>
+                                                <form>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <form class="register-form">
+                                                                <fieldset>
+                                                                    <div class="form-row">
+                                                                        <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-formID" value="vr-campus-tours"><input class="form-control d-none" type="text" id="lp-pathID" value="<?php echo $_GET['path'];?>"></div>
+                                                                        <div class="col-6 col-sm-6 col-md-6">
+                                                                            <div id="lp-name-wrapper">
+                                                                                <h5 class="text-left" style="font-weight: bold;">Product Name</h5><input class="form-control" type="text" id="lp-name" placeholder="Product Name" required="">
+                                                                            </div>
+                                                                            <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Price</h5><input class="form-control" type="text" id="lp-telnumber" placeholder="Selling Price" required="">
+                                                                            <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Image</h5>
+                                                                        </div>
+                                                                        <div class="col-6 col-sm-6 col-md-6">
+                                                                            <div id="lp-lastname-wrapper">
+                                                                                <h5 class="text-left" style="font-weight: bold;">Product Code</h5><input class="form-control" type="text" id="lp-lastname" placeholder="Product Code (3 digits)" required="" minlength="3" maxlength="3">
+                                                                            </div>
+                                                                            <h5 class="text-left" style="margin-top: 50px;">pesos</h5>
+                                                                        </div>
+                                                                        <div class="col-12 col-sm-6 col-md-12">
+                                                                            <div id="lp-mail-wrapper"></div>
+                                                                        </div>
+                                                                        <div class="col-8 col-sm-4 col-md-7">
+                                                                            <div id="lp-telnumber-wrapper"><input type="file" style="margin-bottom: 0px;"></div>
+                                                                        </div>
+                                                                        <div class="col-12 col-sm-6 col-md-12">
+                                                                            <div id="customfield1-wrapper"></div>
+                                                                        </div>
+                                                                        <div class="col-12 col-sm-6 col-md-12">
+                                                                            <div id="lp-title-wrapper"></div>
+                                                                        </div>
+                                                                        <div class="col-12 col-sm-6 col-md-12">
+                                                                            <div id="lp-check1-wrapper"></div>
+                                                                        </div>
+                                                                        <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-country"><input class="form-control d-none" type="text" id="lp-website"><input class="form-control d-none" type="text" id="lp-city"><input class="form-control d-none" type="text" id="customfield10"><input class="form-control d-none" type="text" id="customfield9"><input class="form-control d-none" type="text" id="customfield8"><input class="form-control d-none" type="text" id="customfield7"><input class="form-control d-none" type="text" id="customfield6"><input class="form-control d-none" type="text" id="customfield5"><input class="form-control d-none" type="text" id="customfield4"><input class="form-control d-none" type="text" id="customfield3"><input class="form-control d-none" type="text" id="customfield2"><input class="form-control d-none" type="text" id="lp-select3"><input class="form-control d-none" type="text" id="lp-select2"><input class="form-control d-none" type="text" id="lp-check5"><input class="form-control d-none" type="text" id="lp-check4"><input class="form-control d-none" type="text" id="lp-check3"><input class="form-control d-none" type="text" id="lp-check2"><input class="form-control d-none" type="text" id="lp-telareacode"><input class="form-control d-none" type="text" id="lp-telcountrycode"></div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer"><button class="btn btn-light" data-dismiss="modal" type="button">Close</button><button class="btn btn-primary" type="submit">Save</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="TableSorterCard">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6 col-xl-3 mb-4">
+                                    <div class="card shadow border-left-primary py-2 card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span class="card-title">Current inventory</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0"><span class="card-value">4,000 Bags</span></div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-3 mb-4">
+                                    <div class="card shadow border-left-success py-2 card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span class="card-title">OUTGOING PRODUCTS</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0"><span class="card-value">1,200 Bags</span></div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-3 mb-4">
+                                    <div class="card shadow border-left-info py-2 card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span class="card-title">INCOMING PRODUCTS</span></div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span class="card-value">2,200 Bags</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-3 mb-4">
+                                    <div class="card shadow border-left-warning py-2 card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span class="card-title">Damaged Bags</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0"><span class="card-value">18 Bags</span></div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary font-weight-bold m-0">Daily Inventory</h6>
+                                    </div>
+                                    <div class="card-body" style="padding: 0px;">
+                                        <div style="padding: 20px;">
+                                            <table class="table table-sm table tablesorter" id="ipi-table">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">DATE</th>
+                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">pRODUCT</th>
+                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">QUANTITY</th>
+                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">DAMAGED</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>FCC</td>
+                                                        <td>648</td>
+                                                        <td>0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>RCC</td>
+                                                        <td>648</td>
+                                                        <td>2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>RCC</td>
+                                                        <td>648</td>
+                                                        <td>2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>FCC</td>
+                                                        <td>648</td>
+                                                        <td>1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>FCC</td>
+                                                        <td>648</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>RCC</td>
+                                                        <td>648</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>RCC</td>
+                                                        <td>648</td>
+                                                        <td>6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>12/12/2020</td>
+                                                        <td>FCC</td>
+                                                        <td>648</td>
+                                                        <td>7</td>
+                                                    </tr>
+                                                    <tr></tr>
+                                                    <tr></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/Data-Table-with-Search-Sort-Filter-and-Zoom-using-TableSorter.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/Multi-step-form.js"></script>
+    <script src="assets/js/theme.js"></script>

@@ -13,7 +13,7 @@ router.get('/logout', userController.logout);
 router.get('/', isPrivate, (req, res) => {
   res.render('home', {session: true});
 });
-router.get('/home', isPrivate, homeController.queryOverview);
+router.get('/home', isPrivate, homeController.viewDashboard);
 
 //Sales
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);

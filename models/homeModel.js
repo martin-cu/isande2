@@ -8,8 +8,7 @@ exports.getNetIncomeData = function(next) {
 }
 
 exports.getTaskProgress = function(next) {
-	var sql = "select concat(round((max(t.t2)/max(t.t1)*100), 2), '%') as order_completion, max(t.t3) as pending_tasks from (select count(*) as t1, null as t2, null as t3 from sales_history as sh union select null, count(*), null from sales_history as sh where sh.order_status = 'Completed' union select null,null, count(*) from sales_history where order_status = 'Pending') as t";
-	
+	var sql = "select case when concat(round((max(t.t2)/max(t.t1)*100), 2), '%') is null then 'No orders yet' else concat(round((max(t.t2)/max(t.t1)*100), 2), '%') end as order_completion, max(t.t3) as pending_tasks from (select count(*) as t1, null as t2, null as t3 from sales_history as sh where datediff(now(), sh.scheduled_date) = 0 union select null, count(*), null from sales_history as sh where sh.order_status = 'Completed' and datediff(now(), sh.scheduled_date) = 0 union select null,null, count(*) from sales_history where order_status = 'Pending' and datediff(now(), scheduled_date) > 0) as t";	
 	mysql.query(sql, next);
 }
 
@@ -21,6 +20,12 @@ exports.getOverdueUnpaid = function(next) {
 
 exports.getRecentSales = function(next) {
 	var sql = "select ct.customer_name, sh.delivery_receipt, pt.product_name, sh.qty, sh.order_status from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) order by sh.time_recorded desc limit 5";
+
+	mysql.query(sql, next);
+}
+
+exports.getMonthlySales = function(next) {
+	var sql = "select date_format(sh.scheduled_date, '%b') as month, round(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 0) as net_income, 'yearly' as type from sales_history as sh join product_catalogue_table as pct using(product_id) where year(sh.scheduled_date) = year('2020-01-01') and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end group by month(sh.scheduled_date)";
 
 	mysql.query(sql, next);
 }

@@ -377,3 +377,32 @@ exports.groupByDayofWeek = function(dates, orders) {
 	}
 	return arr;
 }
+
+exports.groupedMonthlySales = function(data) {
+	var arr = [];
+	var found;
+	var monthObj = {};
+	var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun',
+	'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+	for (var i = 0; i < months.length; i++) {
+		for (var x = 0; x < data.length; x++) {
+			if (months[i] === data[x].month) {
+				found = 1;
+				monthObj = {};
+				monthObj['month'] = months[i];
+				monthObj['earnings'] = data[x].net_income;
+				arr.push(monthObj);
+			}
+		}
+		if (found)
+			found = 0;
+		else {
+			monthObj = {};
+			monthObj['month'] = months[i];
+			monthObj['earnings'] = 0;
+			arr.push(monthObj);
+		}
+	}
+	return arr;
+}

@@ -26,7 +26,18 @@ exports.getTrackOrders = function(next) {
 	mysql.query(sql, next);
 }
 
-/*
+
+
+
+
+
+
+
+
+
+
+//OLD FUNCTIONS
+
 exports.updateSaleRecord = function(update, query, next) {
 	var sql = "update sales_history set ? where ?";
 	sql = mysql.format(sql, update);
@@ -157,7 +168,7 @@ exports.getSaleRecords = function(sh, offset, limit, next) {
 	}
 	sql = mysql.format(sql, offset);
 	sql = mysql.format(sql, limit);
-
+	console.log(sql);
 	mysql.query(sql, next);
 }
 
@@ -194,4 +205,3 @@ exports.getSaleStatus = function(dr, next){
 
 	mysql.query(sql, next);
 }
-*/

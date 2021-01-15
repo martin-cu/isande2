@@ -12,7 +12,7 @@ exports.getTaskProgress = function(next) {
 }
 
 exports.getOverdueUnpaid = function(next) {
-	var sql = "select ct.customer_name, format((sh.amount*sh.qty), 2) as amt_due, date_format(sh.due_date, '%m/%d/%Y') as due_date from sales_history as sh join customer_table as ct using(customer_id) where datediff(now(), sh.due_date) > 0 order by sh.due_date limit 5";
+	var sql = "select ct.customer_name, format((sh.amount*sh.qty), 2) as amt_due, date_format(sh.due_date, '%m/%d/%Y') as due_date from sales_history as sh join customer_table as ct using(customer_id) where datediff(now(), sh.due_date) > 0 and payment_status = 'Unpaid' order by sh.due_date limit 5";
 
 	mysql.query(sql, next);
 }

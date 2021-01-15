@@ -316,7 +316,6 @@ exports.groupUnpaidCustomerOrders = function(arr) {
 	var groupedArr = [];
 	var customerObj = {};
 	var orderObj = {};
-	console.log(arr);
 	for (var i = 0; i < arr.length; i++) {
 		orderObj = {
 			deliveryReceipt: arr[i].delivery_receipt,

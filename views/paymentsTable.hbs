@@ -9,13 +9,13 @@
                     <h6 class="text-primary font-weight-bold m-0">Payment Confirmation</h6>
                 </div>
                 <div class="card-body">
-                    <form class="register-form">
+                    <form class="register-form" id="paymentForm" action="/submit_payment" method="post">
                         <fieldset>
                             <div class="form-row">
                                 <div class="col-4 col-sm-2 col-md-5">
                                     <div id="lp-select1-wrapper" class="input-group">
                                         <div class="input-group-addon"></div>
-                                    </div><label>Date</label><input class="form-control" type="date" required="">
+                                    </div><label>Date</label><input class="form-control" type="date" name="paymentDate" required="">
                                 </div>
                                 <div class="col-8 col-sm-4 col-md-7">
                                     <div id="lp-telnumber-wrapper"></div>
@@ -43,7 +43,7 @@
                                                 <tbody>
                                                     {{#each unpaidCustomerArr.[0].orderDetails}}
                                                         <tr>
-                                                            <td style="font-weight: bold;">{{this.deliveryReceipt}}</td>
+                                                            <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name=""></td>
                                                             <td>{{this.productName}}</td>
                                                             <td>{{this.qty}}</td>
                                                             <td class="text-right">Php {{this.totalAmt}}</td>
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-12">
-                                    <div id="lp-title-wrapper"></div><button class="btn btn-primary float-right" type="button">Submit</button>
+                                    <div id="lp-title-wrapper"></div><button form="paymentForm" disabled id="paymentSubmit" class="btn btn-primary float-right" type="submit">Submit</button>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-12">
                                     <div id="lp-check1-wrapper"></div>

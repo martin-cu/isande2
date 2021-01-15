@@ -1,3 +1,17 @@
+.regular-input {
+	border: none;
+	display: inline;
+	font-family: inherit;
+	font-size: inherit;
+	padding: none;
+	width: auto;
+	background: none;
+	max-width: 125px;
+}
+.regular-input:focus {
+	outline: none;
+}
+
 *[href] {
 	cursor: pointer;
 }

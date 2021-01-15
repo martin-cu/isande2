@@ -133,7 +133,7 @@ function changeCustomerUnpaid() {
     if (groupedUnpaid[i].customerID == $('#unpaidCustomer').val()) {
       var row;
       for (var x = 0; x < groupedUnpaid[i].orderDetails.length; x++) {
-        row = '<tr><td style="font-weight: bold;">'+groupedUnpaid[i].orderDetails[x].deliveryReceipt+'</td><td>'+groupedUnpaid[i].orderDetails[x].productName+'</td><td class="">'+groupedUnpaid[i].orderDetails[x].qty+' bags</td><td class="text-right">Php '+groupedUnpaid[i].orderDetails[x].totalAmt+'</td><td class="text-center"><input type="checkbox"></td></tr>';
+        row = '<tr><td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="'+groupedUnpaid[i].orderDetails[x].deliveryReceipt+'" name="paymentDR">'+'</td><td>'+groupedUnpaid[i].orderDetails[x].productName+'</td><td class="">'+groupedUnpaid[i].orderDetails[x].qty+' bags</td><td class="text-right">Php '+groupedUnpaid[i].orderDetails[x].totalAmt+'</td><td class="text-center"><input type="checkbox"></td></tr>';
         $('#unpaidOrderTable').append(row);
       }
     }
@@ -149,6 +149,16 @@ function togglePaymentTtype() {
   $('#checkNo').prop('disabled', function() {
     return ! $(this).prop('disabled');
   });
+}
+function togglePaymentDisable(i) {
+  if (i) {
+    $('#paymentSubmit').prop('disabled', true);
+    $('#paymentSubmit').addClass('btn-disabled');
+  }
+  else {
+    $('#paymentSubmit').prop('disabled', false);
+    $('#paymentSubmit').removeClass('btn-disabled');
+  }
 }
 
 $(document).ready(function() {
@@ -186,9 +196,21 @@ $(document).ready(function() {
   else if (tab === 'paymentsTable') {
     $('#unpaidCustomer').on('change', function() {
       changeCustomerUnpaid();
+      togglePaymentDisable(1);
     });
     $('#paymentType').on('change', function() {
       togglePaymentTtype();
     });
   }
+
+  $(document).on('change', 'input[type=checkbox]', function() {
+    if ($('input:checkbox:checked').length >= 1) {
+      $(this).parent().siblings().first().children().attr('name', 'paymentDR')
+      togglePaymentDisable(0);
+    }
+    else {
+      $(this).parent().siblings().first().children().attr('name', '')
+      togglePaymentDisable(1);
+    }
+  })
 });

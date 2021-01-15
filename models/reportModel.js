@@ -24,7 +24,7 @@ exports.filteredEarningsPeriod = function(filters, next) {
 	while (sql.includes('?')) {
 		sql = mysql.format(sql, filters);
 	}
-	var i = 0, temp;
+	var temp;
 	temp = sql.split("'"+filters+"'");
 	sql = temp[0]+"'"+filters+"'"+temp.slice(1).join(filters);
 	mysql.query(sql, next);
@@ -47,7 +47,7 @@ exports.getTaskProgress = function(next) {
 };
 
 exports.taskProgressRecords = function(next) {
-	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, pt.product_name, sh.* from sales_history as sh join product_table as pt using(product_id) join customer_table as ct using(customer_id) where (month(sh.scheduled_date) = month(now())) or (sh.order_status = 'Pending') order by sh.order_status, sh.scheduled_date, sh.customer_id desc";
+	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, pt.product_name, sh.* from sales_history as sh join product_table as pt using(product_id) join customer_table as ct using(customer_id) where (month(sh.scheduled_date) = month(now())) or (sh.order_status = 'Pending' and datediff(now(), sh.scheduled_date) >= 0) order by sh.order_status, sh.scheduled_date, sh.customer_id desc";
 	mysql.query(sql, next);
 };
 
@@ -57,6 +57,6 @@ exports.getPendingRequests = function(next) {
 };
 
 exports.pendingRequestsRecord = function(next) {
-	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, pt.product_name, sh.* from sales_history as sh join product_table as pt using(product_id) join customer_table as ct using(customer_id) where order_status = 'Pending' order by sh.scheduled_date, sh.customer_id desc, sh.time_recorded";
+	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, pt.product_name, sh.* from sales_history as sh join product_table as pt using(product_id) join customer_table as ct using(customer_id) where order_status = 'Pending' and datediff(now(), scheduled_date) >= 0 order by sh.scheduled_date, sh.customer_id desc, sh.time_recorded";
 	mysql.query(sql, next);
 };

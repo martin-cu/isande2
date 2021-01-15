@@ -1,4 +1,5 @@
 const customerModel = require('../models/customerModel');
+const paymentDetailModel = require('../models/paymentDetailModel');
 const productModel = require('../models/productModel');
 const salesModel = require('../models/salesModel');
 const deliveryDetailModel = require('../models/deliveryDetailModel');
@@ -115,7 +116,6 @@ exports.createSaleRecord = function(req, res) {
 								order_type: orderType,
 								payment_terms: paymentTerms
 							}
-							console.log(sale_obj);
 
 							/********** PICK UP **********/
 							if (orderType === 'Pick-up') {
@@ -204,6 +204,34 @@ exports.getPaymentsPage = function(req, res) {
 
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'payments_tab');
 					res.render('paymentsTable', html_data);
+				}
+			});
+		}
+	});
+}
+
+exports.postPaymentForm = function(req, res) {
+	var { paymentDR, paymentType, amountPaid, bankID, checkNo, paymentDate } = req.body;
+
+	salesModel.getSaleRecordDetail({ delivery_receipt: paymentDR }, function(err, saleRecord) {
+		if (err)
+			throw err;
+		else {
+			var paymentObj = { amount: amountPaid, date_paid: paymentDate };
+			if(paymentType === 'Check')
+				paymentObj['check_num'] = bankID+checkNum;
+
+			paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
+				if (err)
+					throw err;
+				else {
+					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.payment_id }, { delivery_receipt: paymentDR }, function(err, newRecord) {
+						if(err)
+							throw err;
+						else {
+							res.redirect('/view_payments');
+						}
+					});
 				}
 			});
 		}

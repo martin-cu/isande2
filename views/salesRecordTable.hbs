@@ -42,16 +42,16 @@
             {{#each sales}}
                             <tr onclick='location.href="/view_sales_details/{{delivery_receipt}}"'>
                                 <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
-                                <td>{{this.scheduled_date}}<br></td>
+                                <td>{{this.formattedDate}}<br></td>
                                 <td>{{this.delivery_receipt}}<br></td>
                                 <td>{{this.customer_name}}</td>
                                 <td>{{this.product_name}}</td>
                                 <td>{{this.qty}} bags<br></td>
-                                <td>Php {{this.price}}</td>
-                                <td>{{this.total_amt}}<br></td>
+                                <td>Php {{this.formattedAmount}}</td>
+                                <td>{{this.formattedTotal}}<br></td>
                                 <td>{{this.payment_status}}</td>
                                 <td>{{this.order_type}}</td>
-                                <td>{{this.damaged_bags}}<br></td>
+                                <td>{{this.formattedDamage}}<br></td>
                             </tr>
             {{/each}}
             {{#each blanks}}

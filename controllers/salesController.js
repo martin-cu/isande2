@@ -275,7 +275,27 @@ exports.getTrackOrdersPage = function(req, res) {
 	});
 }
 
+exports.getSalesRecords = function(req, res) {
+	salesModel.getAllSaleRecords(function(err, records) {
+		if (err)
+			throw err;
+		else {
+			var blanks = [], x = 0;
+			while(records.length+x <= 9) {
+				blanks.push('temp');
+				x++;
+			}
+			var html_data = {
+				sales: records,
+				blanks: blanks
+			};
+			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
+			res.render('salesRecordTable', html_data);
+		}
+	});
+}
 
+/*
 exports.getSalesRecords = function(req,res){
 	console.log("pumasok");
 	var status = [
@@ -417,7 +437,7 @@ exports.getSalesRecords = function(req,res){
 		}
 	});
 };
-
+*/
 exports.viewSalesDetails = function(req,res){
 	var { dr } = req.params;
 	var query = { delivery_receipt: dr };

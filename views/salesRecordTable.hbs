@@ -39,22 +39,9 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td>DEF Warehouse</td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Unpaid</td>
-                                <td>Delivery</td>
-                                <td>0<br></td>
-                            </tr>
             {{#each sales}}
                             <tr onclick='location.href="/view_sales_details/{{delivery_receipt}}"'>
-                                <td><a class="btn btn-primary text-center btn-sm reset {{this.status}}" role="button" style="padding: 5px;margin: 2px;">{{this.status}}</a></td>
+                                <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
                                 <td>{{this.scheduled_date}}<br></td>
                                 <td>{{this.delivery_receipt}}<br></td>
                                 <td>{{this.customer_name}}</td>
@@ -82,136 +69,6 @@
                                 <td><br></td>
                             </tr>
             {{/each}}
-                            <!-- <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td>ABC Hardware<br></td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Unpaid<br></td>
-                                <td>Delivery<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td>DEF Warehouse</td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Unpaid</td>
-                                <td>Delivery</td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>FCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Unpaid<br></td>
-                                <td>Delivery<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(255,141,0);" href="sales-records-detailed.html">Pending</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>FCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Unpaid<br></td>
-                                <td>Delivery<br></td>
-                                <td>5<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(0,56,255);" href="sales-records-detailed.html">Processing</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid<br></td>
-                                <td>Delivery<br></td>
-                                <td>1<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(0,56,255);" href="sales-records-detailed.html">Processing</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid</td>
-                                <td>Pick-up<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(15,108,0);" href="sales-records-detailed.html">Complete</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>FCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid<br></td>
-                                <td>Pick-up<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(15,108,0);" href="sales-records-detailed.html">Complete</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid<br></td>
-                                <td>Pick-up<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(15,108,0);" href="sales-records-detailed.html">Complete</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>FCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid<br></td>
-                                <td>Pick-up<br></td>
-                                <td>0<br></td>
-                            </tr>
-                            <tr>
-                                <td><a class="btn btn-primary text-center btn-sm reset" role="button" style="padding: 5px;margin: 2px;background: rgb(15,108,0);" href="sales-records-detailed.html">Complete</a></td>
-                                <td>01/10/2021<br></td>
-                                <td>20200106<br></td>
-                                <td><br></td>
-                                <td>RCC</td>
-                                <td>648 bags<br></td>
-                                <td>Php 210.00</td>
-                                <td>Php 29,343.00<br></td>
-                                <td>Paid<br></td>
-                                <td>Pick-up<br></td>
-                                <td>0<br></td>
-                            </tr> -->
                         </tbody>
                     </table>
                 </div>

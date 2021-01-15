@@ -90,7 +90,7 @@ exports.createSaleRecord = function(req, res) {
 							month = new Date().getMonth()+1;
 							if (month < 10)
 								month = '0'+month;
-							count = ("000" + parseInt(monthlycount.length+1) ).slice(-3)
+							count = ("000" + parseInt(monthlyCount.length+1) ).slice(-3)
 							dr = year+month+count;
 							due_date = dataformatter.formatDueDate(dateScheduled, paymentTerms);
 
@@ -352,7 +352,6 @@ exports.getSalesRecords = function(req,res){
 																					x--;
 																				}
 																			}
-																			//console.log(sale_record);
 																			html_data['sales'] = sale_record;
 																			html_data["blanks"] = blank;
 																			html_data['sale_record_data'] = data;

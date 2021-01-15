@@ -50,6 +50,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/Multi-step-form.js"></script>
     <script src="../assets/js/theme.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('*[href]').click(function () {
+                window.location = $(this).attr('href');
+            });
+        }); 
+    </script>
 </body>
 
 </html>

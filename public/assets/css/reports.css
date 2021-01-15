@@ -1,3 +1,6 @@
+*[href] {
+	cursor: pointer;
+}
 .report-value {
   font-weight: 800;
   color: rgb(99,99,99);

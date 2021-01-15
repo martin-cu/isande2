@@ -46,3 +46,24 @@
 	transform: scale(1.05);
 }
 
+.bg-completed {
+	background: #40c88a;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+
+.bg-pending {
+	background: #e07027;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+
+.bg-processing {
+	background: #36b9cc;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+

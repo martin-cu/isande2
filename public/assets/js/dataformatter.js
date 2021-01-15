@@ -413,7 +413,7 @@ exports.formatReportMetrics = function(data) {
 
 	for (var i = 0; i < Object.keys(data).length; i++) {
 		if (Object.keys(data)[i] == 'total_qty') {
-			obj = { metricName: 'Total Quantity', metricData: data[Object.keys(data)[i]] };
+			obj = { metricName: 'Total Bags Sold', metricData: data[Object.keys(data)[i]] };
 			arr.push(obj);
 			obj = {};
 		}
@@ -428,12 +428,77 @@ exports.formatReportMetrics = function(data) {
 			obj = {};
 		}
 		else if (Object.keys(data)[i] == 'min_qty') {
-			obj = { metricName: 'Minimum Quantity', metricData: data[Object.keys(data)[i]] };
+			obj = { metricName: 'Min Quantity', metricData: data[Object.keys(data)[i]] };
 			arr.push(obj);
 			obj = {};
 		}
 		else if (Object.keys(data)[i] == 'avg_qty') {
-			obj = { metricName: 'Average Quantity/Order', metricData: data[Object.keys(data)[i]] };
+			obj = { metricName: 'Avg Quantity/Order', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'total') {
+			obj = { metricName: 'Total Bags Sold', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'order_count') {
+			obj = { metricName: 'Order Count', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'avg_profit') {
+			obj = { metricName: 'Avg Profit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'max_profit') {
+			obj = { metricName: 'Max Profit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'min_profit') {
+			obj = { metricName: 'MinProfit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'markup') {
+			obj = { metricName: 'Avg Markup', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'total_orders') {
+			obj = { metricName: 'Total Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'completed') {
+			obj = { metricName: 'Completed Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'processing') {
+			obj = { metricName: 'Processing Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'pending') {
+			obj = { metricName: 'Pending Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'overdue') {
+			obj = { metricName: 'Overdue Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'deliveries') {
+			obj = { metricName: 'Delivery Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'pickup') {
+			obj = { metricName: 'Pick-up Orders', metricData: data[Object.keys(data)[i]] };
 			arr.push(obj);
 			obj = {};
 		}

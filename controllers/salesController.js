@@ -70,7 +70,7 @@ exports.getSaleOrderForm = function(req, res) {
 exports.createSaleRecord = function(req, res) {
 	var { dateScheduled, customerName, qty,
 		orderType, saleAddress, product, paymentTerms } = req.body;
-	salesModel.getMonthlyCount(function(err, monthlycount) {
+	salesModel.getMonthlyCount(function(err, monthlyCount) {
 		if (err) {
 			req.flash('dialog_error_msg', 'Oops something went wrong!');
 			res.redirect('/create_sales');

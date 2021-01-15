@@ -70,7 +70,7 @@ exports.viewSalesDetailedReport = function(req, res) {
 					if (err)
 						throw err;
 					else {
-						var html_data = { records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
+						var html_data = { reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
 						reportTitle: result[0].product_name+' Monthly Sales', 
 						cardObj: { title: result[0].product_name+' Total Sales', data: 'Php '+result[0].total_sales } };
 						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'reports_tab');
@@ -81,10 +81,62 @@ exports.viewSalesDetailedReport = function(req, res) {
 		});
 	}
 	else if (type == 'Monthly_Earnings') {
-
+		reportModel.filteredEarningsPeriod(param, function(err, result) {
+			if (err)
+				throw err;
+			else {
+				reportModel.filteredEarningsPeriodRecord(param, function(err, records) {
+					if (err)
+						throw err;
+					else {
+						result[0]['product_name'] = 'All';
+						var html_data = { reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
+						reportTitle: result[0].period+'ly Earnings', cardObj: { title: 'Total '+result[0].period+'ly Earnings', data: 'Php '+result[0].total_sales } };
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'reports_tab');
+						res.render('salesDetailedReport', html_data);
+					}
+				})
+			}
+		});
 	}
-	else if (type == 'Order_Progress') {
-
+	else if (type == 'Order_Progress' && param == 'All') {
+		reportModel.getTaskProgress(function(err, result) {
+			if (err)
+				throw err;
+			else {
+				reportModel.taskProgressRecords(function(err, records) {
+					if (err)
+						throw err;
+					else {
+						result[0]['product_name'] = 'All';
+						var html_data = { reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
+						reportTitle: 'Monthly Task Progress', cardObj: { title: 'Monthly Task Progress', data: result[0].task_progress } };
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'reports_tab');
+						console.log(records);
+						res.render('salesDetailedReport', html_data);
+					}
+				})
+			}
+		});
+	}
+	else if (type == 'Order_Progress' && param == 'Pending') {
+		reportModel.getPendingRequests(function(err, result) {
+			if (err)
+				throw err;
+			else {
+				reportModel.pendingRequestsRecord(function(err, records) {
+					if (err)
+						throw err;
+					else {
+						result[0]['product_name'] = 'All';
+						var html_data = { reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
+						reportTitle: 'Pending Orders Report', cardObj: { title: 'Accumulative Pending Orders', data: result[0].total_orders } };
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'reports_tab');
+						res.render('salesDetailedReport', html_data);
+					}
+				})
+			}
+		});
 	}
 	/*
 	var html_data = { };

@@ -43,7 +43,6 @@ exports.viewDashboard = function(req, res){
 													overDueOrders: overDueOrders,
 													monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlySales(monthlySale))
 												};
-												
 												html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'dashboard_tab');
 												res.render('home', html_data);
 											}

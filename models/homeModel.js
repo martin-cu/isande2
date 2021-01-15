@@ -18,7 +18,7 @@ exports.getOverdueUnpaid = function(next) {
 }
 
 exports.getRecentSales = function(next) {
-	var sql = "select ct.customer_name, sh.delivery_receipt, pt.product_name, sh.qty, sh.order_status from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) order by sh.time_recorded desc limit 5";
+	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, sh.delivery_receipt, pt.product_name, sh.qty, sh.order_status from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) order by sh.time_recorded desc limit 5";
 
 	mysql.query(sql, next);
 }

@@ -101,7 +101,7 @@
                                     <tr>
                                         <td style="padding: 5px;">
                                             <div class="text-center {{#compareTwoValues this.order_status 'Pending' operator='==='}}pending{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Completed' operator='==='}}completed{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Processing' operator='==='}}processing{{/compareTwoValues}} ">
-                                                <p class="text-center status-data">{{this.customer_name}}</p>
+                                                <p class="text-center status-data">{{this.customer_name}} ({{this.formattedDate}})</p>
                                                 <p class="text-center status-data">{{this.product_name}} - {{this.qty}} bags</p>
                                             </div>
                                         </td>

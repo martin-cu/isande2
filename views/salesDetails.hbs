@@ -1,0 +1,125 @@
+<div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Sales Records&nbsp;</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
+                            <form>
+                                <section></section>
+                            </form>
+                            <div class="card">
+                                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);"></i>
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item"><a class="nav-link active" href="#" style="font-weight: bold;">DR Number: 20200110001</a></li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 1px;">Date Scheduled</th>
+                                                    <th style="width: 50px;"><input type="date" required="" readonly value="{{sale_record.scheduled_date}}"></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr></tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Customer Information</td>
+                                                    <td style="width: 50px;"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Customer</td>
+                                                    <td><input type="text" value="{{sale_record.customer_name}}" readonly></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Customer Address</td>
+                                                    <td><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 200px;" required="" readonly="">
+                                                        <option value="{{customer_location}}">{{customer_location}}</option>
+                                                    </select></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: bold;">Order Details</td>
+                                                    <td style="width: 0px;"></td>
+                                                    <td style="width: 0px;font-weight: bold;">Payment</td>
+                                                    <td style="width: 0px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Order Type</td>
+                                                    <td style="width: 100px;">
+                                                        <div class="custom-control custom-radio"><input type="radio" id="customRadio1" class="custom-control-input" name="customRadio" checked=""><label class="custom-control-label" for="customRadio1">Delivery</label></div>
+                                                    </td>
+                                                    <td style="width: 100px;">Payment Terms</td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                            <option value="Cash">{{sale_record.payment_terms}}</option>
+                                                        </select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Pick-up Plate No.</td>
+                                                    <td style="width: 100px;"><input type="text" required="" readonly="" value="{{sale_record.plate_no}}"></td>
+                                                    <td style="width: 100px;">Payment Status</td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                            <option value="Paid" selected="">{{sale_record.payment_status}}</option>
+                                                        </select></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Product</td>
+                                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                            <option value="{{sale_record.product_name}}" selected="" readonly>{{sale_record.product_name}}</option>
+                                                        </select></td>
+                                                    <td style="width: 100px;">Check No.</td>
+                                                    <td style="width: 100px;"><input type="text" required="" readonly="" value="{{sale_record.check_num}}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Product Price</td>
+                                                    <td style="width: 100px;"><input type="text" readonly value="{{sale_record.price}}"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                                    <td style="width: 100px;"></td>
+                                                    <td style="width: 100px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Quantity</td>
+                                                    <td><input type="text" required="" value="{{sale_record.qty}}" readonly=""><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <div>
+                                                            <fieldset></fieldset>
+                                                            <fieldset></fieldset>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: normal;">Total Amount</td>
+                                                    <td style="font-weight: normal;"><input type="text" readonly="" value="{{sale_record.total_amt}}"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                                    <td style="font-weight: normal;"></td>
+                                                    <td class="d-xl-flex align-items-xl-center">
+                                                        <div class="d-xl-flex align-items-xl-start"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div><a class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" role="button" href="sales-records.html">Back</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

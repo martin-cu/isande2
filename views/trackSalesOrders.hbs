@@ -54,7 +54,7 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px">
                                     {{#each this.orders}}
-                                        <div class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}processing{{/compareTwoValues}} ">
+                                        <div class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
                                             <p class="text-center status-data">{{this.customer}}</p>
                                             <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>
                                         </div><br>

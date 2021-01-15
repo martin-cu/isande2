@@ -10,7 +10,7 @@ exports.getMonthlyCount = function(next) {
 exports.createSales = function(query, next) {
 	var sql = "insert into sales_history set ?";
 	sql = mysql.format(sql, query);
-
+	console.log(sql);
 	mysql.query(sql, next);
 };
 
@@ -123,7 +123,7 @@ exports.getSaleRecordCount = function(sh, next) {
 };
 
 exports.getSaleRecords = function(sh, offset, limit, next) {
-	var sql = 'select * from (select sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ", ", et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver ?) as t where delivery_receipt IS NOT NULL group by delivery_receipt order by order_status, scheduled_date, payment_status limit ?, ?';
+	var sql = 'select * from (select sh.pickup_plate, sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ", ", et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver ?) as t where delivery_receipt IS NOT NULL group by delivery_receipt order by order_status, scheduled_date, payment_status limit ?, ?';
 
 	var arr;
 	var str;
@@ -183,9 +183,8 @@ exports.getSaleRecords = function(sh, offset, limit, next) {
 	}
 	sql = mysql.format(sql, offset);
 	sql = mysql.format(sql, limit);
-
-	mysql.query(sql, next);
 }
+
 
 exports.getDeliveryCarriers = function(query, next) {
 	var sql = "select de.*, et.first_name, et.last_name from delivery_employees as de left outer join delivery_detail_table as ddt using (delivery_detail_id) join employee_table as et on de.carrier_id = et.employee_id where ? and delivery_emp_id is not null";

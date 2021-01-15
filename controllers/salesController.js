@@ -70,8 +70,8 @@ exports.getSaleOrderForm = function(req, res) {
 
 exports.createSaleRecord = function(req, res) {
 	var { dateScheduled, customerName, qty,
-		orderType, saleAddress, product, paymentTerms } = req.body;
-	salesModel.getMonthlyCount(function(err, monthlyCount) {
+		orderType, saleAddress, product, paymentTerms, pickup_plate } = req.body;
+	salesModel.getMonthlyCount(function(err, monthlycount) {
 		if (err) {
 			req.flash('dialog_error_msg', 'Oops something went wrong!');
 			res.redirect('/create_sales');
@@ -114,18 +114,31 @@ exports.createSaleRecord = function(req, res) {
 								due_date: due_date,
 								time_recorded: date,
 								order_type: orderType,
-								payment_terms: paymentTerms
+								payment_terms: paymentTerms,
+								pickup_plate : pickup_plate
 							}
 
 							/********** PICK UP **********/
 							if (orderType === 'Pick-up') {
+								sale_obj["order_status"] = "Completed";
 								salesModel.createSales(sale_obj, function(err, result) {
 									if (err) {
+										console.log();
 										req.flash('dialog_error_msg', 'Oops something went wrong!');
 										res.redirect('/create_sales');
 									}
 									else {
-										res.redirect('/create_sales');
+										// salesModel.createSales(sale_obj, function(err, result){
+										// 	if(err){
+										// 		req.flash('dialog_error_msg', 'Oops something went wrong!');
+										// 		res.redirect('/create_sales');
+										// 	}
+										// 	else{
+										// 		req.flash('dialog_success_msg', 'Successfully created sale record!')
+										// 		res.redirect("view_sales_details/" + sale_obj.delivery_receipt);
+										// 	}
+										// });
+										res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
 									}
 								});
 							}
@@ -368,9 +381,6 @@ exports.getSalesRecords = function(req,res){
 																				filter_data: filter_data[0]
 																			};
 																			var temp_data = { delivery_receipt: '' };
-																			// while (sale_record.length < 9) {
-																			// 	sale_record.push(temp_data);
-																			// }
 																			var blank = [];
 																			console.log(sale_record.length);
 																			if(sale_record.length < 9){
@@ -439,40 +449,59 @@ exports.viewSalesDetails = function(req,res){
 									var location_obj = { location_id: '', location_name: '' };
 									var customer_arr = [];
 									var json_customer_arr;
+									console.log(record[0]);
+									if(record[0].delivery_address != null){
+										salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
+											if(err){
+												throw err;
+											}
+											else{
+												console.log(location[0]);
+												customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+												json_customer_arr = JSON.stringify(customer_arr);
 
-									salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
-										if(err){
-											throw err;
-										}
-										else{
-											console.log(location[0]);
-											customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
-											json_customer_arr = JSON.stringify(customer_arr);
+												record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'YYYY-MM-DD')
+												record[0].due_date = dataformatter.formatDate(record[0].due_date, 'YYYY-MM-DD')
+												record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+												record[0].qty = JSON.stringify(record[0].qty);
+												console.log(record[0]);
 
-											record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'YYYY-MM-DD')
-											record[0].due_date = dataformatter.formatDate(record[0].due_date, 'YYYY-MM-DD')
-											record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
-											record[0].qty = JSON.stringify(record[0].qty);
-											console.log(record[0]);
+												
+												var html_data = { 
+													sale_record: record[0],
+													carriers: carriers,
+													customers: json_customer_arr,
+													customer_list: customer_arr,
+													products: products,
+													product_json: JSON.stringify(products),
+													status: order_status,
+													terms: payment_terms,
+													customer_location : location[0].location_name
+												};
+												html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
+																						
+												res.render('salesDetails', html_data);
+											}
 
-											
-											var html_data = { 
-												sale_record: record[0],
-												carriers: carriers,
-												customers: json_customer_arr,
-												customer_list: customer_arr,
-												products: products,
-												product_json: JSON.stringify(products),
-												status: order_status,
-												terms: payment_terms,
-												customer_location : location[0].location_name
-											};
-											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
-																					
-											res.render('salesDetails', html_data);
-										}
-
-									});
+										});
+									}
+									else{
+										var html_data = { 
+											sale_record: record[0],
+											carriers: carriers,
+											customers: json_customer_arr,
+											customer_list: customer_arr,
+											products: products,
+											product_json: JSON.stringify(products),
+											status: order_status,
+											terms: payment_terms,
+											customer_location : "N/A"
+										};
+										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
+																				
+										res.render('salesDetails', html_data);
+									}
+									
 
 									
 								}

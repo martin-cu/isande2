@@ -3,6 +3,7 @@ mysql = mysql.connection;
 
 exports.getNetIncomeData = function(next) {
 	var sql = "select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'yearly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' union select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'monthly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where month(sh.scheduled_date) = month(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' ";
+	console.log(sql);
 	mysql.query(sql, next);
 }
 

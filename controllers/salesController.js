@@ -80,7 +80,7 @@ exports.getSaleOrderForm = function(req, res) {
 exports.createSaleRecord = function(req, res) {
 	var { dateScheduled, customerName, qty,
 		orderType, saleAddress, product, paymentTerms, pickup_plate } = req.body;
-	salesModel.getMonthlyCount(function(err, monthlycount) {
+	salesModel.getMonthlyCount(function(err, monthlyCount) {
 		if (err) {
 			req.flash('dialog_error_msg', 'Oops something went wrong!');
 			res.redirect('/create_sales');
@@ -130,23 +130,24 @@ exports.createSaleRecord = function(req, res) {
 							/********** PICK UP **********/
 							if (orderType === 'Pick-up') {
 								sale_obj["order_status"] = "Completed";
+								sale_obj["payment_status"] = "Paid";
 								salesModel.createSales(sale_obj, function(err, result) {
 									if (err) {
 										req.flash('dialog_error_msg', 'Oops something went wrong!');
 										res.redirect('/create_sales');
 									}
 									else {
-										// salesModel.createSales(sale_obj, function(err, result){
-										// 	if(err){
-										// 		req.flash('dialog_error_msg', 'Oops something went wrong!');
-										// 		res.redirect('/create_sales');
-										// 	}
-										// 	else{
-										// 		req.flash('dialog_success_msg', 'Successfully created sale record!')
-										// 		res.redirect("view_sales_details/" + sale_obj.delivery_receipt);
-										// 	}
-										// });
-										res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+										salesModel.createSales(sale_obj, function(err, result){
+											if(err){
+												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												res.redirect('/create_sales');
+											}
+											else{
+												req.flash('dialog_success_msg', 'Successfully created sale record!')
+												res.redirect("view_sales_details/" + sale_obj.delivery_receipt);
+											}
+										});
+										//res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
 									}
 								});
 							}
@@ -312,16 +313,20 @@ exports.getTrackOrdersPage = function(req, res) {
 }
 
 exports.getSalesRecords = function(req, res) {
-	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+	console.log("Hello");
+	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount){
 		if (err)
 			throw err;
 		else {
 			salesModel.getAllSaleRecords(function(err, records) {
-				if (err)
+				if (err){
 					throw err;
+				}
 				else {
-					var blanks = [], x = 0;
+					var blanks = [];
+					var x = 0;
 					while(records.length+x <= 9) {
+						console.log(x);
 						blanks.push('temp');
 						x++;
 					}
@@ -331,6 +336,7 @@ exports.getSalesRecords = function(req, res) {
 						blanks: blanks
 					};
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
+					res.render('salesRecordTable', html_data);
 				}
 			});
 		}

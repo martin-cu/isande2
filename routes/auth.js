@@ -4,6 +4,7 @@ const homeController = require('../controllers/homeController');
 const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
 const reportController = require('../controllers/reportController');
+const inventoryController = require('../controllers/inventoryController');
 
 const { isPrivate, isAdmin, isSales, isPurchasing } = require('../middlewares/checkAuth');
 //Consistent Pages
@@ -22,6 +23,12 @@ router.get('/home', isPrivate, homeController.viewDashboard);
 router.get('/reports', isPrivate, reportController.viewReports);
 router.get('/reports/:type', isPrivate, reportController.viewSalesDetailedReport);
 router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetailedReport);
+
+router.get('/inventory', isPrivate, inventoryController.getProductInventory);
+router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);
+router.get('/change_price', isAdmin, inventoryController.getProductName);
+router.post('/change_price', isAdmin, inventoryController.changeProductPrice);
+router.get('/manual_count', isAdmin, inventoryController.getProductNameForManualCount);
 
 //Sales
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);

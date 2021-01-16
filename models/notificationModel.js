@@ -26,11 +26,13 @@ exports.getNotifs = function(query, next) {
 exports.getUnseenNotifCount = function(query, next) {
 	var sql = "select count(*) as count from notification where seen = 0 and user = ?;";
 	sql = mysql.format(sql, query);
+	console.log(sql);
 	mysql.query(sql, next);
 }
 
 exports.setAsSeen = function(query, next) {
 	var sql = "update notification set seen = 1 where seen = 0 and timediff(now(), time_created) >= 0 and user = ?";
 	sql = mysql.format(sql, query);
+
 	mysql.query(sql, next);
 }

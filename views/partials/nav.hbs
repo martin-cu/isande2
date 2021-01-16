@@ -7,23 +7,24 @@
             <li class="nav-item"><a class="nav-link nav-item-name {{#if dashboard_tab}}active{{/if}}" href="/home" style=""><img src="../../assets/img/icons/1.png" class="nav-item-icon"><span class="nav-item-span">Dashboard</span></a></li>
             <li class="nav-item" style="font-size: 16px;">
                 <div class="nav-item dropdown show" style="font-size: 16px;color: rgb(205,214,224);">
-                    <div data-toggle="dropdown" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor: pointer;">
+                    <div data-toggle="collapse" data-target="#saleCollapse" role="button" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor: pointer;">
                         <img src="../../assets/img/icons/2.png" class="nav-item-icon">&nbsp; Orders
                     </div>
-                    <div class="dropdown-menu show drop-cont">
+                    <div class="dropdown-menu show drop-cont" id="saleCollapse">
                         <a class="dropdown-item a {{#if create_sales_tab}}active{{/if}}" href="/create_sales">Create Sales Order</a>
                         <a class="dropdown-item a {{#if payments_tab}}active{{/if}}" href="/view_payments">Payments</a>
                         <a class="dropdown-item a {{#if track_orders_tab}}active{{/if}}" href="/track_sale_orders">Track Orders</a>
-                        <a class="dropdown-item a {{#if sales_record_tab}}active{{/if}}" href="/view_sales_records">Sales Records</a></div>
+                        <a class="dropdown-item a {{#if sales_record_tab}}active{{/if}}" href="/view_sales_records">Sales Records</a>
+                    </div>
                 </div>
             </li>
 
             <li class="nav-item" style="font-size: 16px;">
                 <div class="nav-item dropdown" style="font-size: 16px;color: rgb(205,214,224);">
-                    <div data-toggle="dropdown" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor:pointer;">
+                    <div data-toggle="collapse" data-target="#inventoryCollapse" role="button" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor:pointer;">
                         <img src="../../assets/img/icons/6.png" class="nav-item-icon">&nbsp; Inventory
                     </div>
-                    <div class="dropdown-menu drop-cont">
+                    <div class="dropdown-menu drop-cont" id="inventoryCollapse">
                         <a class="dropdown-item a {{#if overview_tab}}active{{/if}}" href="inventory_overview.hbs">Overview</a>
                         <a class="dropdown-item a {{#if product_catalogue_tab}}active{{/if}}" href="inventory-catalogue.html">Product Catalogue</a>
                     </div>

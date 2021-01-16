@@ -18,13 +18,19 @@ exports.createNotif = function(query, next) {
 };
 
 exports.getNotifs = function(query, next) {
-	var sql = "select date_format(nt.time_created, '%M %e, %Y %h:%i') as formattedDate, ut.role_id,nt.* from notification as nt join user_table as ut on creator = ut.employee_id where nt.user = ?";
+	var sql = "select date_format(nt.time_created, '%M %e, %Y %h:%i %p') as formattedDate, ut.role_id,nt.* from notification as nt join user_table as ut on creator = ut.employee_id where nt.user = ? order by time_created desc limit 10";
 	sql = mysql.format(sql, query);
 	mysql.query(sql, next);
 };
 
 exports.getUnseenNotifCount = function(query, next) {
 	var sql = "select count(*) as count from notification where seen = 0 and user = ?;";
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+}
+
+exports.setAsSeen = function(query, next) {
+	var sql = "update notification set seen = 1 where seen = 0 and timediff(now(), time_created) >= 0 and user = ?";
 	sql = mysql.format(sql, query);
 	mysql.query(sql, next);
 }

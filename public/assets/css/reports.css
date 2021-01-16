@@ -87,3 +87,18 @@
 	width: 80px;
 }
 
+.border-top {
+	border-top: solid 0.5px #989898;
+}
+
+.unseen {
+	background-color: #edf2f7;
+}
+
+.unseen:hover {
+	background-color: #dbe4f0;
+}
+
+.seen:hover {
+	background-color: #E8E8E8;
+}

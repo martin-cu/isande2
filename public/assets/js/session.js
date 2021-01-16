@@ -1,7 +1,8 @@
-exports.init_session = function(obj, role, name, username, tab) {
+exports.init_session = function(obj, role, name, username, employee, tab) {
 	obj['name'] = name;
 	obj['role'] = role;
 	obj['username'] = username;
+	obj['employee'] = employee;
 	obj['session'] = true;
 
 	if (role === 'System Admin') 

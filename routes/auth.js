@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const userController = require('../controllers/userController');
 const homeController = require('../controllers/homeController');
+const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
 const reportController = require('../controllers/reportController');
 
@@ -11,6 +12,9 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', userController.loginUser);
 router.get('/logout', userController.logout);
+
+router.get('/getNotifs', isPrivate, notificationController.getNotifs);
+router.post('/seenNotifs', isPrivate, notificationController.seenNotifs);
 
 router.get('/', isPrivate, isPrivate, homeController.viewDashboard);
 router.get('/home', isPrivate, homeController.viewDashboard);

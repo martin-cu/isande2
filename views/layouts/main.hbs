@@ -35,8 +35,7 @@
         {{> login}}
     {{/if}}
 
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="../assets/js/notification.js"></script>
     <script src="../assets/js/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
     <script src="../assets/js/bs-init.js"></script>
@@ -51,6 +50,7 @@
     <script src="../assets/js/Multi-step-form.js"></script>
     <script src="../assets/js/theme.js"></script>
     <script type="text/javascript">
+        var employee = {{{employee}}};
         $(document).ready(function() {
             $('*[href]').click(function () {
                 window.location = $(this).attr('href');

@@ -6,8 +6,6 @@ const js = require('../public/assets/js/session.js');
 
 exports.registerUser = function(req, res) {
 	const errors = validationResult(req);
-
-	console.log(req.body);
 	
 	if (errors.isEmpty()) {
 		const saltRounds = 10;
@@ -84,7 +82,7 @@ exports.queryAll = function(req, res) {
 						result.push(temp_data);
 					}
 					
-					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'resources');
+					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'resources');
 					
 					res.render('user_table', html_data);
 			}

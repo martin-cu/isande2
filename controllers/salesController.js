@@ -1,4 +1,5 @@
 const customerModel = require('../models/customerModel');
+const notificationModel = require('../models/notificationModel');
 const paymentDetailModel = require('../models/paymentDetailModel');
 const productModel = require('../models/productModel');
 const salesModel = require('../models/salesModel');
@@ -21,43 +22,57 @@ exports.getSaleOrderForm = function(req, res) {
 	var order_type = [
 		{ name: 'Delivery' }, { name: 'Pick-up' }
 	];
-	customerModel.queryLocationbyCustomer(function(err, customers) {
+	notificationModel.getNotifs(req.session.employee_id, function(err, notifs) {
 		if (err)
 			throw err;
 		else {
-			customerModel.queryCustomers(function(err, customerArr) {
+			notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 				if (err)
 					throw err;
 				else {
-					productModel.queryProductbyPrice(function(err, products) {
+					customerModel.queryLocationbyCustomer(function(err, customers) {
 						if (err)
 							throw err;
 						else {
-							salesModel.getMonthlyCount(function(err, monthlyCount) {
+							customerModel.queryCustomers(function(err, customerArr) {
 								if (err)
 									throw err;
 								else {
-									var date, month, year, count, due_date, dr, add_days;
-									date = new Date();
-									year = date.getFullYear();
-									month = new Date().getMonth()+1;
-									if (month < 10)
-										month = '0'+month;
-									count = ("000" + parseInt(monthlyCount.length+1)).slice(-3)
-									dr = year+month+count;
+									productModel.queryProductbyPrice(function(err, products) {
+										if (err)
+											throw err;
+										else {
+											salesModel.getMonthlyCount(function(err, monthlyCount) {
+												if (err)
+													throw err;
+												else {
+													var date, month, year, count, due_date, dr, add_days;
+													date = new Date();
+													year = date.getFullYear();
+													month = new Date().getMonth()+1;
+													if (month < 10)
+														month = '0'+month;
+													count = ("000" + parseInt(monthlyCount.length+1)).slice(-3)
+													dr = year+month+count;
 
-									var customer_arr = [];
-									customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+													var customer_arr = [];
+													customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
 
-									html_data = { 
-										drCount: dr,
-										products: products,
-										customers: customer_arr,
-										try: customerArr
-									};
+													html_data = {
+														notifCount: notifCount[0],
+														notifs: notifs,
+														drCount: dr,
+														products: products,
+														customers: customer_arr,
+														try: customerArr
+													};
 
-									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'create_sales_tab');
-									res.render('createOrder', html_data);
+													html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'create_sales_tab');
+													res.render('createOrder', html_data);
+												}
+											});
+										}
+									});
 								}
 							});
 						}
@@ -68,6 +83,7 @@ exports.getSaleOrderForm = function(req, res) {
 	});
 }
 
+/* TODO	 ADJUST NOTIFICATION CONTENTS AFTER LOGISTICS MODULE */
 exports.createSaleRecord = function(req, res) {
 	var { dateScheduled, customerName, qty,
 		orderType, saleAddress, product, paymentTerms, pickup_plate } = req.body;
@@ -123,7 +139,6 @@ exports.createSaleRecord = function(req, res) {
 								sale_obj["order_status"] = "Completed";
 								salesModel.createSales(sale_obj, function(err, result) {
 									if (err) {
-										console.log();
 										req.flash('dialog_error_msg', 'Oops something went wrong!');
 										res.redirect('/create_sales');
 									}
@@ -142,7 +157,7 @@ exports.createSaleRecord = function(req, res) {
 									}
 								});
 							}
-							/********** DELIVERY TODO**********/
+							/********** DELIVERY**********/
 							else {
 								salesModel.createSales(sale_obj, function(err, result) {
 									if (err) {
@@ -177,8 +192,22 @@ exports.createSaleRecord = function(req, res) {
 																res.redirect('/create_sales');
 															}
 															else {
-																req.flash('dialog_success_msg', 'Successfully created sale record!')
-																res.redirect('/create_sales');
+																var query = {
+																	url: 'url',
+																	desc: 'desc',
+																	id: req.session.employee_id,
+																	roles: dataformatter.getNotifRoles('L'),
+																	contents: 'Insert message here'
+																}
+																/* Creating a Sale Record for Delivery sends a notification to Logistics */
+																notificationModel.createNotif(query, function(err, notif) {
+																	if (err)
+																		throw err;
+																	else {
+																		req.flash('dialog_success_msg', 'Successfully created sale record!');
+																		res.redirect('/create_sales');
+																	}
+																});
 															}
 														});
 													}
@@ -198,25 +227,39 @@ exports.createSaleRecord = function(req, res) {
 };
 
 exports.getPaymentsPage = function(req, res) {
-	salesModel.getUnpaidOrders(function(err, unpaidOrders) {
+	notificationModel.getNotifs(req.session.employee_id, function(err, notifs) {
 		if (err)
 			throw err;
 		else {
-			customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
+			notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 				if (err)
 					throw err;
 				else {
-					var groupedCustomer;
-					groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
+					salesModel.getUnpaidOrders(function(err, unpaidOrders) {
+						if (err)
+							throw err;
+						else {
+							customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
+								if (err)
+									throw err;
+								else {
+									var groupedCustomer;
+									groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
 
-					var html_data = {
-						unpaidOrderArr: unpaidOrders,
-						unpaidCustomerArr: groupedCustomer,
-						groupedUnpaidOrder: JSON.stringify(groupedCustomer)
-					};
+									var html_data = {
+										notifCount: notifCount[0],
+										notifs: notifs,
+										unpaidOrderArr: unpaidOrders,
+										unpaidCustomerArr: groupedCustomer,
+										groupedUnpaidOrder: JSON.stringify(groupedCustomer)
+									};
 
-					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'payments_tab');
-					res.render('paymentsTable', html_data);
+									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'payments_tab');
+									res.render('paymentsTable', html_data);
+								}
+							});
+						}
+					});			
 				}
 			});
 		}
@@ -252,47 +295,74 @@ exports.postPaymentForm = function(req, res) {
 }
 
 exports.getTrackOrdersPage = function(req, res) {
-	salesModel.getTrackOrders(function(err, orders) {
+	notificationModel.getNotifs(req.session.employee_id, function(err, notifs) {
 		if (err)
 			throw err;
 		else {
-			var dates = [], curdate = dataformatter.startOfWeek(new Date());
+			notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+				if (err)
+					throw err;
+				else {
+					salesModel.getTrackOrders(function(err, orders) {
+						if (err)
+							throw err;
+						else {
+							var dates = [], curdate = dataformatter.startOfWeek(new Date());
 
-			dates.push(curdate);
-			curdate = new Date(curdate.toString());
-			for (var i = 1; i < 7; i++) {
-				dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
-			}
+							dates.push(curdate);
+							curdate = new Date(curdate.toString());
+							for (var i = 1; i < 7; i++) {
+								dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+							}
 
-			var html_data = {
-				weeklyDate: dates,
-				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
-			}
-			
-			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'track_orders_tab');
-			res.render('trackSalesOrders', html_data);
+							var html_data = {
+								notifCount: notifCount[0],
+								notifs: notifs,
+								weeklyDate: dates,
+								weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+							}
+							
+							html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'track_orders_tab');
+							res.render('trackSalesOrders', html_data);
+						}
+					});
+				}
+			});
 		}
-	});
+	});			
 }
 
 exports.getSalesRecords = function(req, res) {
-	salesModel.getAllSaleRecords(function(err, records) {
+	notificationModel.getNotifs(req.session.employee_id, function(err, notifs) {
 		if (err)
 			throw err;
 		else {
-			var blanks = [], x = 0;
-			while(records.length+x <= 9) {
-				blanks.push('temp');
-				x++;
-			}
-			var html_data = {
-				sales: records,
-				blanks: blanks
-			};
-			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
-			res.render('salesRecordTable', html_data);
+			notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+				if (err)
+					throw err;
+				else {
+					salesModel.getAllSaleRecords(function(err, records) {
+						if (err)
+							throw err;
+						else {
+							var blanks = [], x = 0;
+							while(records.length+x <= 9) {
+								blanks.push('temp');
+								x++;
+							}
+							var html_data = {
+								notifCount: notifCount[0],
+								notifs: notifs,
+								sales: records,
+								blanks: blanks
+							};
+							html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'sales_record_tab');
+						}
+					});
+				}
+			});
 		}
-	});
+	});				
 }
 
 /*

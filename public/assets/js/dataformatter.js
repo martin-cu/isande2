@@ -504,3 +504,20 @@ exports.formatReportMetrics = function(data) {
 	}
 	return arr;
 }
+
+exports.getNotifRoles = function(data) {
+	var temp, arr = ['System Admin'];
+	for (var i = 0; i < data.length; i++) {
+		temp = data.charAt(i);
+		if (temp == 'S') {
+			arr.push('Sales Employee');
+		}
+		else if (temp == 'P') {
+			arr.push('Purchasing Employee');
+		}
+		else if (temp == 'L') {
+			arr.push('Logistics Employee');
+		}
+	}
+	return arr;
+}

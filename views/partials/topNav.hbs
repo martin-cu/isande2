@@ -40,39 +40,21 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <div class="nav-item dropdown no-arrow"><div class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" style="cursor: pointer;"><i class="fas fa-bell fa-fw" style="color: rgb(0,0,0);"></i><span class="badge badge-danger badge-counter">7</span></div>
+                        <div class="nav-item dropdown no-arrow"><div class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" style="cursor: pointer;"><i class="fas fa-bell fa-fw" style="color: rgb(0,0,0);"></i><span class="badge badge-danger badge-counter">{{notifCount.count}}</span></div>
                             <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
-                                <h6 class="dropdown-header" style="background: rgb(3,52,97);">NOTIFICATIONS</h6><a class="d-flex align-items-center dropdown-item" href="#">
-                                    <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate"><span>DR 47329 has been scheduled for delivery</span></div>
-                                        <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                <h6 class="dropdown-header" style="background: rgb(3,52,97);">NOTIFICATIONS</h6>
+                                {{#each notifs}}
+                                <a class="d-flex align-items-center dropdown-item" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i>
                                     </div>
-                                </a><a class="d-flex align-items-center dropdown-item" href="#">
-                                    <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
                                     <div class="font-weight-bold">
-                                        <div class="text-truncate"><span>DR 47329 has been scheduled for delivery</span></div>
-                                        <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
+                                        <div class="text-truncate"><span>{{this.contents}}</span></div>
+                                        <p class="small text-gray-500 mb-0">{{this.role_id}} - {{this.formattedDate}}</p>
                                     </div>
-                                </a><a class="d-flex align-items-center dropdown-item" href="#">
-                                    <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate"><span>DR 47329 has been scheduled for delivery</span></div>
-                                        <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
-                                    </div>
-                                </a><a class="d-flex align-items-center dropdown-item" href="#">
-                                    <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate"><span>DR 47329 has been scheduled for delivery</span></div>
-                                        <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
-                                    </div>
-                                </a><a class="d-flex align-items-center dropdown-item" href="#">
-                                    <div class="dropdown-list-image mr-3"><i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i></div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate"><span>DR 47329 has been scheduled for delivery</span></div>
-                                        <p class="small text-gray-500 mb-0">Logistics Department - 58m</p>
-                                    </div>
-                                </a><a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a>
+                                </a>
+                                {{/each}}
+                                <a class="text-center dropdown-item small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </div>
                         <div class="shadow dropdown-list dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown"></div>

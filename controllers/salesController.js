@@ -331,6 +331,7 @@ exports.getSalesRecords = function(req, res) {
 						blanks: blanks
 					};
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
+					res.render('salesRecordTable', html_data);
 				}
 			});
 		}

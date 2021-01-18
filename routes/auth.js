@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const userController = require('../controllers/userController');
 const homeController = require('../controllers/homeController');
+const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
+const reportController = require('../controllers/reportController');
+const inventoryController = require('../controllers/inventoryController');
 
 const { isPrivate, isAdmin, isSales, isPurchasing } = require('../middlewares/checkAuth');
 //Consistent Pages
@@ -10,21 +13,30 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', userController.loginUser);
 router.get('/logout', userController.logout);
-router.get('/', isPrivate, (req, res) => {
-  res.render('home', {session: true});
-});
-router.get('/home', isPrivate, homeController.queryOverview);
+
+router.get('/getNotifs', isPrivate, notificationController.getNotifs);
+router.post('/seenNotifs', isPrivate, notificationController.seenNotifs);
+
+router.get('/', isPrivate, isPrivate, homeController.viewDashboard);
+router.get('/home', isPrivate, homeController.viewDashboard);
+
+router.get('/reports', isPrivate, reportController.viewReports);
+router.get('/reports/:type', isPrivate, reportController.viewSalesDetailedReport);
+router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetailedReport);
+
+router.get('/inventory', isPrivate, inventoryController.getProductInventory);
+router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);
+router.get('/change_price', isAdmin, inventoryController.getProductName);
+router.post('/change_price', isAdmin, inventoryController.changeProductPrice);
+router.get('/manual_count', isAdmin, inventoryController.getProductNameForManualCount);
 
 //Sales
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);
-router.get('/view_payments', isPrivate, (req, res) => {
-  res.render('paymentsTable', {session: true, payments_tab: true});
-});
-router.get('/track_sale_orders', isPrivate, (req, res) => {
-  res.render('trackSalesOrders', {session: true});
-});
-router.get('/view_sales_records', isPrivate, (req, res) => {
-  res.render('salesRecordTable', {session: true});
-});
+router.post('/create_sales', isPrivate, salesController.createSaleRecord);
+router.get('/view_payments', isPrivate, salesController.getPaymentsPage);
+router.post('/submit_payment', isPrivate, salesController.postPaymentForm);
+router.get('/track_sale_orders', isPrivate, salesController.getTrackOrdersPage);
+router.get('/view_sales_records', isPrivate, salesController.getSalesRecords);
+router.get('/view_sales_details/:dr', isPrivate, salesController.viewSalesDetails);
 
 module.exports = router;

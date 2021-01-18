@@ -1,7 +1,8 @@
-exports.init_session = function(obj, role, name, username, tab) {
+exports.init_session = function(obj, role, name, username, employee, tab) {
 	obj['name'] = name;
 	obj['role'] = role;
 	obj['username'] = username;
+	obj['employee'] = employee;
 	obj['session'] = true;
 
 	if (role === 'System Admin') 
@@ -13,17 +14,32 @@ exports.init_session = function(obj, role, name, username, tab) {
 	else if (role === 'Logistics Employee')
 		obj['logistics_role'] = true;
 
-	if (tab === 'home')
-		obj['home_tab'] = true;
-	else if (tab === 'sales') 
-		obj['sales_tab'] = true;
+	if (tab === 'dashboard_tab')
+		obj['dashboard_tab'] = true;
+	/******* Sale Tabs ********/
+	else if (tab === 'create_sales_tab') 
+		obj['create_sales_tab'] = true;
+	else if (tab === 'payments_tab') 
+		obj['payments_tab'] = true;
+	else if (tab === 'track_orders_tab') 
+		obj['track_orders_tab'] = true;
+	else if (tab === 'sales_record_tab') 
+		obj['sales_record_tab'] = true;
+
+	else if (tab === 'overview_tab') 
+		obj['overview_tab'] = true;
+	else if (tab === 'product_catalogue_tab') 
+		obj['product_catalogue_tab'] = true;
+	else if (tab === 'reports_tab') 
+		obj['reports_tab'] = true;
+
 	else if (tab === 'purchase') 
 		obj['purchase_tab'] = true;
 	else if (tab === 'delivery') 
 		obj['delivery_tab'] = true;
 	else if (tab === 'inventory') 
 		obj['inventory_tab'] = true;
-	else if (tab === 'reports') 
+	else if (tab === 'reports_tab') 
 		obj['reports_tab'] = true;
 	else if (tab === 'resources') 
 		obj['resources_tab'] = true;

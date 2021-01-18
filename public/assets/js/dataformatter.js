@@ -117,8 +117,8 @@ exports.createRecommendation = function(obj, algo) {
 
 exports.formatDate = function(date, format) {
 	var year,month,day;
-	const monthNames = ["", "January", "February", "March", "April", "May", "June",
-	  "July", "August", "September", "October", "November", "December"
+	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	];
 	year = date.getFullYear();
 	month = date.getMonth()+1;
@@ -147,8 +147,8 @@ exports.formatDate = function(date, format) {
 
 function formatDate(date, format) {
 	var year,month,day;
-	const monthNames = ["", "January", "February", "March", "April", "May", "June",
-	  "July", "August", "September", "October", "November", "December"
+	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	];
 	year = date.getFullYear();
 	month = date.getMonth()+1;
@@ -290,11 +290,11 @@ exports.formatDueDate = function(date, terms) {
 	var add_days;
 	if (terms == 'Cash')
 		add_days = 0;
-	else if (terms == 'NET 7')
+	else if (terms == 'NET7')
 		add_days = 7;
-	else if (terms == 'NET 15')
+	else if (terms == 'NET15')
 		add_days = 15;
-	else if (terms == 'NET 30')
+	else if (terms == 'NET30')
 		add_days = 30;
 	
 	return new Date( Date.parse(date) + add_days * 24 * 60 * 60 * 1000);
@@ -310,4 +310,214 @@ exports.formatPage = function(limit, offset, count) {
 		offset = 0;
 
 	return { limit: limit, offset: offset };
+}
+
+exports.groupUnpaidCustomerOrders = function(arr) {
+	var groupedArr = [];
+	var customerObj = {};
+	var orderObj = {};
+	for (var i = 0; i < arr.length; i++) {
+		orderObj = {
+			deliveryReceipt: arr[i].delivery_receipt,
+			productName: arr[i].product_name,
+			qty: arr[i].qty,
+			totalAmt: arr[i].total
+		};
+		customerObj = {
+			customerID: arr[i].customer_id,
+			customerName: arr[i].customer_name,
+			orderDetails: []
+		};
+		customerObj['orderDetails'].push(orderObj);
+		if (i < arr.length - 1) {
+			while (arr[i].customer_id === arr[i+1].customer_id) {
+				orderObj = {
+					deliveryReceipt: arr[i+1].delivery_receipt,
+					productName: arr[i+1].product_name,
+					qty: arr[i+1].qty,
+					totalAmt: arr[i+1].total
+				};
+				customerObj['orderDetails'].push(orderObj);
+				i++;
+			}
+		}
+		groupedArr.push(customerObj);
+	}
+	return groupedArr;
+}
+
+exports.startOfWeek = function(date) {
+	var diff = date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
+
+	return formatDate(new Date(date.setDate(diff)), "mm DD, YYYY");
+}
+
+exports.groupByDayofWeek = function(dates, orders) {
+	var arr = [];
+	var dayObj = {};
+	var orderObj;
+
+	for (var i = 0; i < dates.length; i++) {
+		dayObj = {};
+		dayObj['date'] = dates[i];
+		dayObj['orders'] = [];
+		for (var x = 0; x < orders.length; x++) {
+			if (orders[x].formattedSchedule === dates[i]) {
+				orderObj = {};
+				orderObj['deliveryReceipt'] = orders[x].delivery_receipt;
+				orderObj['customer'] = orders[x].customer_name;
+				orderObj['product'] = orders[x].product_name;
+				orderObj['qty'] = orders[x].qty;
+				orderObj['status'] = orders[x].order_status;
+				dayObj['orders'].push(orderObj);
+			}
+		}
+		arr.push(dayObj);
+	}
+	return arr;
+}
+
+exports.groupedMonthlySales = function(data) {
+	var arr = [];
+	var found;
+	var monthObj = {};
+	var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun',
+	'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+	for (var i = 0; i < months.length; i++) {
+		for (var x = 0; x < data.length; x++) {
+			if (months[i] === data[x].month) {
+				found = 1;
+				monthObj = {};
+				monthObj['month'] = months[i];
+				monthObj['earnings'] = data[x].net_income;
+				arr.push(monthObj);
+			}
+		}
+		if (found)
+			found = 0;
+		else {
+			monthObj = {};
+			monthObj['month'] = months[i];
+			monthObj['earnings'] = 0;
+			arr.push(monthObj);
+		}
+	}
+	return arr;
+}
+
+exports.formatReportMetrics = function(data) {
+	var obj;
+	var arr = [];
+
+	for (var i = 0; i < Object.keys(data).length; i++) {
+		if (Object.keys(data)[i] == 'total_qty') {
+			obj = { metricName: 'Total Bags Sold', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'count_orders') {
+			obj = { metricName: 'Order Count', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'max_qty') {
+			obj = { metricName: 'Max Quantity', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'min_qty') {
+			obj = { metricName: 'Min Quantity', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'avg_qty') {
+			obj = { metricName: 'Avg Quantity/Order', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'total') {
+			obj = { metricName: 'Total Bags Sold', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'order_count') {
+			obj = { metricName: 'Order Count', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'avg_profit') {
+			obj = { metricName: 'Avg Profit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'max_profit') {
+			obj = { metricName: 'Max Profit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'min_profit') {
+			obj = { metricName: 'MinProfit', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'markup') {
+			obj = { metricName: 'Avg Markup', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'total_orders') {
+			obj = { metricName: 'Total Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'completed') {
+			obj = { metricName: 'Completed Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'processing') {
+			obj = { metricName: 'Processing Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'pending') {
+			obj = { metricName: 'Pending Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'overdue') {
+			obj = { metricName: 'Overdue Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'deliveries') {
+			obj = { metricName: 'Delivery Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+		else if (Object.keys(data)[i] == 'pickup') {
+			obj = { metricName: 'Pick-up Orders', metricData: data[Object.keys(data)[i]] };
+			arr.push(obj);
+			obj = {};
+		}
+	}
+	return arr;
+}
+
+exports.getNotifRoles = function(data) {
+	var temp, arr = ['System Admin'];
+	for (var i = 0; i < data.length; i++) {
+		temp = data.charAt(i);
+		if (temp == 'S') {
+			arr.push('Sales Employee');
+		}
+		else if (temp == 'P') {
+			arr.push('Purchasing Employee');
+		}
+		else if (temp == 'L') {
+			arr.push('Logistics Employee');
+		}
+	}
+	return arr;
 }

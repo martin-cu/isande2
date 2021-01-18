@@ -1,3 +1,20 @@
+.regular-input {
+	border: none;
+	display: inline;
+	font-family: inherit;
+	font-size: inherit;
+	padding: none;
+	width: auto;
+	background: none;
+	max-width: 125px;
+}
+.regular-input:focus {
+	outline: none;
+}
+
+*[href] {
+	cursor: pointer;
+}
 .report-value {
   font-weight: 800;
   color: rgb(99,99,99);
@@ -8,3 +25,80 @@
   border-left: 1px solid rgb(205,205,205);
 }
 
+.status-data {
+	margin-bottom: 0px;
+	color: rgb(255,255,255);
+	text-align: center;
+}
+
+.Processing {
+	background: #36b9cc;
+	border-radius: 5px;
+	padding: 2px;
+	/*min-height: 45px;*/
+	min-width: 100%;
+	box-shadow: 0px 0px 1px;
+}
+
+.Pending {
+	background: #e07027;
+	border-radius: 5px;
+	padding: 2px;
+	/*min-height: 45px;*/
+	min-width: 100%;
+	box-shadow: 0px 0px 1px;
+}
+
+.Completed {
+	background: #40c88a;
+	border-radius: 5px;
+	padding: 2px;
+	/*min-height: 45px;*/
+	min-width: 100%;
+	box-shadow: 0px 0px 1px;
+}
+
+.stretched-link:hover {
+	text-decoration: none;
+}
+
+.stretched-link:hover {
+	transform: scale(1.05);
+}
+
+.bg-completed {
+	background: #40c88a;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+
+.bg-pending {
+	background: #e07027;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+
+.bg-processing {
+	background: #36b9cc;
+	padding: 5px;
+	margin: 2px;
+	width: 80px;
+}
+
+.border-top {
+	border-top: solid 0.5px #989898;
+}
+
+.unseen {
+	background-color: #edf2f7;
+}
+
+.unseen:hover {
+	background-color: #dbe4f0;
+}
+
+.seen:hover {
+	background-color: #E8E8E8;
+}

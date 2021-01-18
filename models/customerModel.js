@@ -32,3 +32,9 @@ exports.queryCustomers = function(next) {
 
 	mysql.query(sql, next);
 }
+
+exports.queryUnpaidCustomers = function(next) {
+	var sql = "select ct.*, sh.payment_status, sh.qty, sh.delivery_receipt, format((sh.qty*sh.amount), 2) as total, pt.product_name from customer_table as ct join sales_history as sh using(customer_id) join product_table as pt using (product_id) where sh.payment_status = 'Unpaid' order by customer_name, delivery_receipt";
+
+	mysql.query(sql, next);
+}

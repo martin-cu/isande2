@@ -30,6 +30,7 @@ function autocomplete(inp, arr) {
               b.addEventListener("click", function(e) {
               /*insert the value for the autocomplete text field:*/
               inp.value = this.getElementsByTagName("input")[0].value;
+              setCustomerLocations();
               /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
               closeAllLists();
@@ -59,7 +60,9 @@ function autocomplete(inp, arr) {
         e.preventDefault();
         if (currentFocus > -1) {
           /*and simulate a click on the "active" item:*/
-          if (x) x[currentFocus].click();
+          if (x) {
+            x[currentFocus].click();
+          }
         }
       }
   });
@@ -108,24 +111,106 @@ function changeSelectedProduct(val) {
 	changePrice();
 }
 
+function setCustomerLocations() {
+  $('#saleAddress').find('option').remove();
+  $('#saleAddress').attr('disabled', true);
+  for (var i = 0; i < customers.length; i++) {
+    if ($('#customerName').val() == customers[i].customer_name) {
+      $('#saleAddress').attr('disabled', false);
+      for (var x = 0; x < customers[i].locations.length; x++) {
+        $('#saleAddress').append($('<option>', {
+          value: customers[i].locations[x].location_id,
+          text: customers[i].locations[x].location_name
+        }));
+      }
+    }
+  }
+}
+
+function changeCustomerUnpaid() {
+  $('#unpaidOrderTable > tbody').html("");
+  for (var i = 0; i < groupedUnpaid.length; i++) {
+    if (groupedUnpaid[i].customerID == $('#unpaidCustomer').val()) {
+      var row;
+      for (var x = 0; x < groupedUnpaid[i].orderDetails.length; x++) {
+        row = '<tr><td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="'+groupedUnpaid[i].orderDetails[x].deliveryReceipt+'" name="paymentDR">'+'</td><td>'+groupedUnpaid[i].orderDetails[x].productName+'</td><td class="">'+groupedUnpaid[i].orderDetails[x].qty+' bags</td><td class="text-right">Php '+groupedUnpaid[i].orderDetails[x].totalAmt+'</td><td class="text-center"><input type="checkbox"></td></tr>';
+        $('#unpaidOrderTable').append(row);
+      }
+    }
+  }
+}
+
+function togglePaymentTtype() {
+  $('#checkNo').val('');
+  $("#bankID").val($("#bankID option:first").val());
+  $('#bankID').prop('disabled', function() {
+    return ! $(this).prop('disabled');
+  });
+  $('#checkNo').prop('disabled', function() {
+    return ! $(this).prop('disabled');
+  });
+}
+function togglePaymentDisable(i) {
+  if (i) {
+    $('#paymentSubmit').prop('disabled', true);
+    $('#paymentSubmit').addClass('btn-disabled');
+  }
+  else {
+    $('#paymentSubmit').prop('disabled', false);
+    $('#paymentSubmit').removeClass('btn-disabled');
+  }
+}
+
 $(document).ready(function() {
-	autocomplete(document.getElementById('customerName'), customers_arr);
-	
-	window.curPrice = selectedProduct;
-	$('#product').on('change', function() {
-		changeSelectedProduct($(this).val());
-	});
-	$("#qty").keypress(function(e) {
-		var key = e.keyCode;
-		if (!(48 <= key && key <= 57)) {
-            e.preventDefault();
-            return;
-   		}
-	});
-	$("#qty").keyup(function() {
-		changePrice();
-	});
-	$("#qty").change(function() {
-		changePrice();
-	});
+  /************* Create Sale Order *************/
+  if (tab === 'createSaleOrder') {
+    autocomplete(document.getElementById('customerName'), customers_arr);
+    window.curPrice = selectedProduct;
+
+    $('#product').on('change', function() {
+      changeSelectedProduct($(this).val());
+    });
+    $("#qty").keypress(function(e) {
+      var key = e.keyCode;
+      if (!(48 <= key && key <= 57)) {
+              e.preventDefault();
+              return;
+        }
+    });
+    $("#qty").keyup(function() {
+      changePrice();
+    });
+    $("#qty").change(function() {
+      changePrice();
+    });
+
+    $("#customerName").keyup(function() {
+      setCustomerLocations();
+    });
+    $("#customerName").change(function() {
+      setCustomerLocations();
+    });
+  }
+
+  /************* Payments Tab *************/
+  else if (tab === 'paymentsTable') {
+    $('#unpaidCustomer').on('change', function() {
+      changeCustomerUnpaid();
+      togglePaymentDisable(1);
+    });
+    $('#paymentType').on('change', function() {
+      togglePaymentTtype();
+    });
+  }
+
+  $(document).on('change', 'input[type=checkbox]', function() {
+    if ($('input:checkbox:checked').length >= 1) {
+      $(this).parent().siblings().first().children().attr('name', 'paymentDR')
+      togglePaymentDisable(0);
+    }
+    else {
+      $(this).parent().siblings().first().children().attr('name', '')
+      togglePaymentDisable(1);
+    }
+  })
 });

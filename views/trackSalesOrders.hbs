@@ -46,61 +46,21 @@
                     </thead>
                     <tbody class="text-center">
                         <tr class="text-center">
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 6, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 7, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 8, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 9, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 10, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 11, 2021</td>
-                            <td class="text-center" style="text-align: center;font-weight: bold;">Jan 12, 2021</td>
+                            {{#each weeklyDate}}
+                                <td class="text-center" style="text-align: center;font-weight: bold;">{{this}}</td>
+                            {{/each}}
                         </tr>
                         <tr class="text-center">
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #40c88a;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                                <div class="text-center" style="background: #40c88a;border-radius: 5px;padding: 2px;min-height: 45px;margin-top: 10px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div><br>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #36b9cc;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #36b9cc;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
-                            <td class="text-center" style="width: 170px;">
-                                <div class="text-center" style="background: #e07027;border-radius: 5px;padding: 2px;min-height: 45px;box-shadow: 0px 0px 1px;">
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;">ABC Hardware</p>
-                                    <p class="text-center" style="margin-bottom: 0px;color: rgb(255,255,255);text-align: center;font-size: 12px;">RCC - 648 bags</p>
-                                </div>
-                            </td>
+                            {{#each weeklyOrders}}
+                                <td class="text-center" style="width: 170px">
+                                    {{#each this.orders}}
+                                        <div href="/view_sales_details/{{this.deliveryReceipt}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
+                                            <p class="text-center status-data">{{this.customer}}</p>
+                                            <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>
+                                        </div><br>
+                                    {{/each}}
+                                </td>
+                            {{/each}}
                         </tr>
                     </tbody>
                 </table>

@@ -10,16 +10,60 @@ exports.getMonthlyCount = function(next) {
 exports.createSales = function(query, next) {
 	var sql = "insert into sales_history set ?";
 	sql = mysql.format(sql, query);
+	console.log(sql);
+	mysql.query(sql, next);
+};
+
+exports.getUnpaidOrders = function(next) {
+	var sql = "SELECT c.customer_name , format((sh.qty*sh.amount), 2) as total , date_format(sh.due_date, '%m/%d/%Y') as formattedDue, case when datediff(now(), sh.due_date) > 0 then 1 else null end as overdue FROM sales_history as sh JOIN customer_table as c using(customer_id) where sh.payment_status = 'Unpaid' order by due_date asc, customer_name";
 
 	mysql.query(sql, next);
 };
+
+exports.getTrackOrders = function(next) {
+	var sql = "select sh.*, ct.*, pt.product_name, date_format(sh.scheduled_date, '%b %e, %Y') as formattedSchedule from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.scheduled_date between date(now() + INTERVAL ( - WEEKDAY(now())) DAY) and DATE(now() + INTERVAL (6 - WEEKDAY(now())) DAY) order by scheduled_date";
+
+	mysql.query(sql, next);
+}
+
+exports.getSaleRecordDetail = function(query, next) {
+	var sql = "select * from (select sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ', ', et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status, ddt.delivery_address as delivery_address, pdt.check_num as check_num, sh.time_recorded as time_recorded, sh.purchase_lo from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver left outer join payment_details_table as pdt using (payment_id) union select null, null, null, null, null, null, null, null, null, null, null, et.first_name as driver, temp.plate_no as plate_no, temp.damaged_bags as damaged_bags, temp.status, null, null, temp.delivery_address as delivery_address, null, null, null from delivery_detail_table as temp join employee_table as et on et.employee_id = temp.driver right outer join sales_history using (delivery_receipt) ) as t where ? group by delivery_receipt order by order_status, scheduled_date, payment_status";
+	sql = mysql.format(sql, query);
+	var temp = sql.split('where');
+	temp[1] = ' where '+temp[1];
+	if (query.delivery_receipt.length >= 2) {
+		temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+	}
+	sql = temp[0]+temp[1];
+	mysql.query(sql, next);
+}
 
 exports.updateSaleRecord = function(update, query, next) {
 	var sql = "update sales_history set ? where ?";
 	sql = mysql.format(sql, update);
 	sql = mysql.format(sql, query);
+	var temp = sql.split('where');
+	temp[1] = ' where '+temp[1];
+	if (query.delivery_receipt.length >= 2) {
+		temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+	}
+	sql = temp[0]+temp[1];
 	mysql.query(sql, next);
 }
+
+exports.getAllSaleRecords = function(next) {
+	var sql = "select date_format(t.scheduled_date, '%m/%d/%Y') as formattedDate, ct.customer_name, pt.product_name, case when t.damaged_bags is null then 'N/A' else t.damaged_bags end as formattedDamage, format(t.amount*t.qty,2) as formattedTotal, format(t.amount, 2) as formattedAmount, t.* from ( SELECT sh.*, ddt.damaged_bags FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id union select sh.*, null from sales_history as sh ) as t join customer_table as ct using(customer_id) join product_table as pt using(product_id) group by delivery_receipt order by t.order_status desc, t.scheduled_date, t.customer_id, t.time_recorded";
+	mysql.query(sql, next);
+}
+
+
+
+
+
+
+
+
+//OLD FUNCTIONS
 
 exports.getSaleRecordCount = function(sh, next) {
 	var sql = 'select count(*) as count from (select sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ", ", et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver ?) as t where delivery_receipt IS NOT NULL group by delivery_receipt';
@@ -84,7 +128,7 @@ exports.getSaleRecordCount = function(sh, next) {
 };
 
 exports.getSaleRecords = function(sh, offset, limit, next) {
-	var sql = 'select * from (select sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ", ", et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver ?) as t where delivery_receipt IS NOT NULL group by delivery_receipt order by order_status, scheduled_date, payment_status limit ?, ?';
+	var sql = 'select * from (select sh.pickup_plate, sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ", ", et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver ?) as t where delivery_receipt IS NOT NULL group by delivery_receipt order by order_status, scheduled_date, payment_status limit ?, ?';
 
 	var arr;
 	var str;
@@ -144,16 +188,8 @@ exports.getSaleRecords = function(sh, offset, limit, next) {
 	}
 	sql = mysql.format(sql, offset);
 	sql = mysql.format(sql, limit);
-
-	mysql.query(sql, next);
 }
 
-exports.getSaleRecordDetail = function(query, next) {
-	var sql = "select * from (select sh.delivery_receipt as delivery_receipt, sh.scheduled_date as scheduled_date, ct.customer_name as customer_name, pt.product_name as product_name, sh.qty as qty, sh.amount as price, (sh.qty * sh.amount) as total_amt, sh.payment_terms as payment_terms, sh.due_date as due_date, sh.payment_status as payment_status, sh.order_type as order_type , concat(et.last_name, ', ', et.first_name) as driver, ddt.plate_no as plate_no, ddt.damaged_bags as damaged_bags, ddt.status, sh.pickup_plate as pickup_plate, sh.order_status as order_status, ddt.delivery_address as delivery_address, pdt.check_num as check_num, sh.time_recorded as time_recorded, sh.purchase_lo from sales_history as sh join customer_table as ct using (customer_id) join product_table as pt using (product_id) left outer join delivery_detail_table as ddt using (delivery_receipt) left outer join employee_table as et on et.employee_id = ddt.driver left outer join payment_details_table as pdt using (payment_id) union select null, null, null, null, null, null, null, null, null, null, null, et.first_name as driver, temp.plate_no as plate_no, temp.damaged_bags as damaged_bags, temp.status, null, null, temp.delivery_address as delivery_address, null, null, null from delivery_detail_table as temp join employee_table as et on et.employee_id = temp.driver right outer join sales_history using (delivery_receipt) ) as t where ? group by delivery_receipt order by order_status, scheduled_date, payment_status";
-	sql = mysql.format(sql, query);
-
-	mysql.query(sql, next);
-}
 
 exports.getDeliveryCarriers = function(query, next) {
 	var sql = "select de.*, et.first_name, et.last_name from delivery_employees as de left outer join delivery_detail_table as ddt using (delivery_detail_id) join employee_table as et on de.carrier_id = et.employee_id where ? and delivery_emp_id is not null";
@@ -181,3 +217,10 @@ exports.getSaleStatus = function(dr, next){
 
 	mysql.query(sql, next);
 }
+
+exports.getCustomerLocation = function(loc_id, next){
+	var sql = "select * from customer_location_table where location_id = ?;";
+	sql = mysql.format(sql, loc_id);
+
+	mysql.query(sql, next);
+};

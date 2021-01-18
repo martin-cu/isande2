@@ -41,6 +41,10 @@
   margin-top: 10px;
 }
 
+.dropdown-item.a:hover {
+  color: #fff;
+}
+
 .dropdown-item.a.active {
   background: rgb(248, 249, 252);
   font-weight: bold;
@@ -101,4 +105,3 @@ p {
   /*background-color: #2e59d9;*/
   /*border-color: #2653d4;*/
 }
-

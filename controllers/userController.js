@@ -6,8 +6,6 @@ const js = require('../public/assets/js/session.js');
 
 exports.registerUser = function(req, res) {
 	const errors = validationResult(req);
-
-	console.log(req.body);
 	
 	if (errors.isEmpty()) {
 		const saltRounds = 10;
@@ -84,7 +82,7 @@ exports.queryAll = function(req, res) {
 						result.push(temp_data);
 					}
 					
-					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'resources');
+					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'resources');
 					
 					res.render('user_table', html_data);
 			}
@@ -271,14 +269,14 @@ exports.loginUser = function(req, res) {
 					else
 						console.log('2');*/
 					if (userQuery.length >= 1 && userQuery[0].password == password){
-						console.log('nakaset na ' + userQuery);
 						//for default set password and non encrypted in the db at the moment
-							
+								
 								console.log(userQuery[0]);
 								var name = userQuery[0].first_name[0] + '.' + userQuery[0].last_name[0];
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
+								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');		
 						
@@ -306,6 +304,7 @@ exports.loginUser = function(req, res) {
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
+								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');								
 							} 

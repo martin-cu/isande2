@@ -26,7 +26,6 @@ function appendCalendarCards(arr) {
 		td.setAttribute('style', 'width: 170px;');
 
 		for (var x = 0; x < arr[i].orders.length; x++) {
-			console.log(arr[i].orders[x]);
 			if (view === 'Sales Employee') {
 				href = '/view_sale_details/'+arr[i].orders[x].deliveryReceipt;
 				pContent = arr[i].orders[x].customer;
@@ -44,8 +43,8 @@ function appendCalendarCards(arr) {
 			}
 
 			div = document.createElement('div');
-			div.setAttribute('class', 'text-center '+arr[i].orders[x].status);
-			div.setAttribute('href', href);
+			div.setAttribute('onclick', 'location.href="'+href+'"');
+			div.setAttribute('class', 'text-center cursor '+arr[i].orders[x].status);
 
 			p1 = document.createElement('p');
 			p1.setAttribute('class', 'text-center status-data');

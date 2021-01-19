@@ -52,7 +52,7 @@
     <script type="text/javascript">
         var employee = {{{employee}}};
         $(document).ready(function() {
-            $('*[href]').click(function () {
+            $('*[href]').on('click',function () {
                 window.location = $(this).attr('href');
             });
         }); 

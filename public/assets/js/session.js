@@ -55,6 +55,9 @@ exports.init_session = function(obj, role, name, username, employee, tab) {
 	else if (tab === 'resources') 
 		obj['resources_tab'] = true;
 
+	//purchase Tabs
+	else if (tab === 'purchase_record_tab') 
+		obj['purchase_record_tab'] = true;
 	return obj;
 }
 

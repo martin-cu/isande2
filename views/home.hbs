@@ -3,6 +3,7 @@
         <h3 class="text-dark mb-0">{{view}} Dashboard</h3>
     </div>
     <div class="row">
+        {{#compareTwoValues this.view 'Sales' operator='==='}}
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-left-primary py-2">
                 <div class="card-body">
@@ -29,6 +30,36 @@
                 </div>
             </div>
         </div>
+        {{/compareTwoValues}}
+        {{#compareTwoValues this.view 'Purchasing' operator='==='}}
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-left-primary py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>MONTHLY ORDERED BAGS ({{orderedBags.[0].name}})</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span>{{orderedBags.[0].total_orders}} bags</span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-left-success py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>???</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/compareTwoValues}}
+
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-left-info py-2">
                 <div class="card-body">
@@ -66,17 +97,42 @@
         </div>
     </div>
 
+    {{#compareTwoValues this.view 'Purchasing' operator='==='}}
+    <div class="row">
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-left-primary py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>MONTHLY ORDERED BAGS ({{orderedBags.[1].name}})</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span> {{orderedBags.[1].total_orders}} bags</span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-left-success py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>???</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/compareTwoValues}}
+
     <div class="row">
         <div class="col-lg-7 col-xl-8">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Overview {{recent_data}}</h6>
-                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                        <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
-                        </div>
-                    </div>
                 </div>
                 <div class="card-body">
                     <div class="chart-area"><canvas id="overviewSales" style="max-height: 100%; max-width: 100%;"></canvas></div>
@@ -218,25 +274,33 @@
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="text-primary font-weight-bold m-0">Low-Stock Items</h6>
+                    <h6 class="text-primary font-weight-bold m-0">Current Inventory</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr></tr>
+                                <tr class="text-center">
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th class="text-left">Current Stock</th>
+                                    <th class="text-left">Recommended</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody>
+                                {{#each recommendInventory}}
                                 <tr>
-                                    <td class="text-center justify-content-center" style="border-style: none;border-right-style: none;"><img class="justify-content-center" src="assets/img/546dh-2ry2j-1568109877.jpg" style="width: 80px;height: 100px;border-style: none;border-right-style: none;"></td>
-                                    <td class="table-danger text-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;">FCC</td>
-                                    <td class="table-danger text-center justify-content-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;">-1000 bags</td>
+                                    <td class="justify-content-center"><img style="width:50px;height:60px;" src="{{#compareTwoValues this.product_name 'FCC' operator='==='}}assets/img/546dh-2ry2j-1568109877.jpg{{/compareTwoValues}}{{#compareTwoValues this.product_name 'RCC' operator='==='}}assets/img/lafarge-republic-portland-plus-40kg.jpg{{/compareTwoValues}}">
+                                    </td>
+                                    <td class="text-center align-middle">{{this.product_name}}</td>
+                                    <td class="text-left align-middle">{{this.current_stock}} bags</td>
+                                    <td class="text-left align-middle">{{this.recommended}} bags</td>
+                                    <td class="text-center align-middle">
+                                        <button class="btn btn-primary">Replenish</button>
+                                    </td>
                                 </tr>
-                                <tr class="justify-content-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;">
-                                    <td class="text-center justify-content-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;"><img class="justify-content-center" src="assets/img/lafarge-republic-portland-plus-40kg.jpg" style="width: 90px;height: 100px;border-style: none;border-right-style: none;font-weight: bold;text-align: center;"></td>
-                                    <td class="table-danger text-center justify-content-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;">RCC</td>
-                                    <td class="table-danger text-center justify-content-center" style="border-style: none;border-right-style: none;font-weight: bold;text-align: center;">-2000 bags</td>
-                                </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>

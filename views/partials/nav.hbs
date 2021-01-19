@@ -19,17 +19,6 @@
                         <a class="dropdown-item a {{#if sales_record_tab}}active{{/if}}" href="/view_sales_records">Sales Records</a>
                     </div>
                     {{/if}}
-                    {{#if purchasing_role}}
-                    <div data-toggle="collapse" data-target="#saleCollapse" role="button" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor: pointer;">
-                        <img src="../../assets/img/icons/2.png" class="nav-item-icon">&nbsp; Purchasing
-                    </div>
-                    <div class="dropdown-menu show drop-cont" id="saleCollapse">
-                        <a class="dropdown-item a {{#if recommendation_tab}}active{{/if}}" href="/create_sales">Recommendation</a>
-                        <a class="dropdown-item a {{#if create_purchase_tab}}active{{/if}}" href="/view_payments">Create Purchase Order</a>
-                        <a class="dropdown-item a {{#if track_orders_tab}}active{{/if}}" href="/track_sale_orders">Track Orders</a>
-                        <a class="dropdown-item a {{#if purchase_record_tab}}active{{/if}}" href="/view_sales_records">Purchase Records</a>
-                    </div>
-                    {{/if}}
                 </div>
             </li>
             {{/compareTwoValues}}
@@ -41,7 +30,6 @@
                         <img src="../../assets/img/icons/3.png" class="nav-item-icon">&nbsp; Purchases
                     </div>
                     <div class="dropdown-menu show drop-cont" id="saleCollapse">
-                        <a class="dropdown-item a {{#if create_sales_tab}}active{{/if}}" href="/create_sales">Recommendation</a>
                         <a class="dropdown-item a {{#if payments_tab}}active{{/if}}" style="font-size: 14px;" href="/view_payments">Create Purchase Order</a>
                         <a class="dropdown-item a {{#if track_orders_tab}}active{{/if}}" href="/track_sale_orders">Track Orders</a>
                         <a class="dropdown-item a {{#if sales_record_tab}}active{{/if}}" href="/view_sales_records">Purchase Records</a>

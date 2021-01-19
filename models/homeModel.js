@@ -31,10 +31,20 @@ exports.getMonthlySales = function(next) {
 }
 
 //Purchasing
+exports.getOrderedBags = function(next) {
+	var sql = "select t.name, case when max(t.total_orders) is null then 0 else max(t.total_orders) end as total_orders from ( select product_id as id, product_name as name, null as total_orders from product_table union select product_id, null, sum(qty) from purchase_history where year(now()) = year(date) and month(now()) = month(date) group by product_id ) as t group by t.id";
+	mysql.query(sql, next);
+}
+
+exports.getPurchaseProgress = function(next) {
+	var sql = "select max(t.pending) as pending, max(t.processing) as processing, max(t.completed) as completed, concat(round((max(t.completed)/(max(t.pending)+max(t.completed)+max(t.processing))*100),2),'%') as task_progress from ( select count(*) as pending, null as processing, null as completed from purchase_history as ph where ph.status = 'Pending' and datediff(now(), ph.date) >= 0 union select null, count(*), null from purchase_history as ph where ph.status = 'Processing' and year(now()) = year(date) and month(now()) = month(ph.date) union select null, null, count(*) from purchase_history as ph where ph.status = 'Completed' and year(now()) = year(date) and month(now()) = month(ph.date) ) as t";
+	mysql.query(sql, next);
+} 
+
 exports.getRecentOrders = function(next) {
 	var sql = "select date_format(ph.date, '%m/%d/%Y') as formattedDate, ph.supplier_lo, pt.product_name, ph.qty, ph.status from purchase_history as ph join product_table as pt using(product_id) order by ph.date desc limit 5";
 	mysql.query(sql, next);
-};
+}
 
 exports.getMonthlyPurchases = function(next) {
 	var sql = "select pt.product_name, sum(ph.qty) as qty, date_format(ph.date, '%b') as month from purchase_history as ph join product_table as pt using(product_id) where datediff(now(), ph.date) >= 0 and year(now()) = year(ph.date) group by pt.product_id, month(ph.date) order by month(ph.date)";

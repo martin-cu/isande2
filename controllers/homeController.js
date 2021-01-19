@@ -1,5 +1,6 @@
 const homeModel = require('../models/homeModel');
 const notificationModel = require('../models/notificationModel');
+const recommendationModel = require('../models/recommendationModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
@@ -69,26 +70,27 @@ exports.viewDashboard = function(req, res){
 			if (err)
 				throw err;
 			else {
-				homeModel.getNetIncomeData(function(err, netIncome) {
+				homeModel.getOrderedBags(function(err, orderedBags) {
 					if (err)
 						throw err;
 					else {
-						homeModel.getTaskProgress(function(err, taskProgress) {
+						homeModel.getPurchaseProgress(function(err, taskProgress) {
 							if (err)
 								throw err;
 							else {
-								homeModel.getOverdueUnpaid(function(err, overDueOrders) {
+								homeModel.getRecentOrders(function(err, recentOrders) {
 									if (err)
 										throw err;
 									else {
-										homeModel.getRecentOrders(function(err, recentOrders) {
+										homeModel.getMonthlyPurchases(function(err, monthlyPurchases) {
 											if (err)
 												throw err;
 											else {
-												homeModel.getMonthlyPurchases(function(err, monthlyPurchases) {
+												recommendationModel.getRecommendation2(function(err, recommendation) {
 													if (err)
 														throw err;
 													else {
+														/*
 														var netMonth, netYear;
 														for (var i = 0; i < netIncome.length; i++) {
 															if (netIncome[i].type === 'yearly')
@@ -96,18 +98,20 @@ exports.viewDashboard = function(req, res){
 															else if (netIncome[i].type === 'monthly')
 																netMonth = netIncome[i].net_income;
 														}
+														*/
 														var html_data = {
+															recommendInventory: recommendation,
 															notifCount: notifCount[0],
-															netMonth: netMonth,
-															netYear: netYear,
-															taskProgress: taskProgress[0].order_completion,
-															pendingTasks: taskProgress[0].pending_tasks,
+															//netMonth: netMonth,
+															//netYear: netYear,
+															orderedBags: orderedBags,
+															taskProgress: taskProgress[0].task_progress,
+															pendingTasks: taskProgress[0].pending,
 															recentOrders: recentOrders,
-															overDueOrders: overDueOrders,
 															monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlyPurchases(monthlyPurchases))
 														};
 														html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
-														res.render('home', html_data);
+														res.render('home', html_data);	
 													}
 												});
 											}

@@ -5,7 +5,6 @@ const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
 const reportController = require('../controllers/reportController');
 const inventoryController = require('../controllers/inventoryController');
-const purchaseController = require('../controllers/purchaseController');
 
 const { isPrivate, isAdmin, isSales, isPurchasing } = require('../middlewares/checkAuth');
 //Consistent Pages
@@ -40,8 +39,6 @@ router.get('/track_sale_orders', isPrivate, salesController.getTrackOrdersPage);
 router.get('/view_sales_records', isPrivate, salesController.getSalesRecords);
 router.get('/view_sales_details/:dr', isPrivate, salesController.viewSalesDetails);
 
-
 //Purchasing
-router.get('/view_purchase_records', isPrivate, purchaseController.getAllPurchases);
 
 module.exports = router;

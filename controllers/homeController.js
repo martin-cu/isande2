@@ -65,7 +65,8 @@ exports.viewDashboard = function(req, res){
 		});
 	}
 	else if (req.session.authority === 'Purchasing Employee') {
-		console.log('!');
+		//console.log('!');
+		res.redirect("view_purchase_records");
 	}
 	else if (req.session.authority === 'Logistics Employee') {
 		console.log('!');

@@ -3,7 +3,7 @@ mysql = mysql.connection;
 
 exports.getNetIncomeData = function(next) {
 	var sql = "select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'yearly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' union select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'monthly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where month(sh.scheduled_date) = month(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' ";
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 
@@ -27,6 +27,17 @@ exports.getRecentSales = function(next) {
 exports.getMonthlySales = function(next) {
 	var sql = "select date_format(sh.scheduled_date, '%b') as month, round(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 0) as net_income, 'yearly' as type from sales_history as sh join product_catalogue_table as pct using(product_id) where year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end group by month(sh.scheduled_date)";
 
+	mysql.query(sql, next);
+}
+
+//Purchasing
+exports.getRecentOrders = function(next) {
+	var sql = "select date_format(ph.date, '%m/%d/%Y') as formattedDate, ph.supplier_lo, pt.product_name, ph.qty, ph.status from purchase_history as ph join product_table as pt using(product_id) order by ph.date desc limit 5";
+	mysql.query(sql, next);
+};
+
+exports.getMonthlyPurchases = function(next) {
+	var sql = "select pt.product_name, sum(ph.qty) as qty, date_format(ph.date, '%b') as month from purchase_history as ph join product_table as pt using(product_id) where datediff(now(), ph.date) >= 0 and year(now()) = year(ph.date) group by pt.product_id, month(ph.date) order by month(ph.date)";
 	mysql.query(sql, next);
 }
 

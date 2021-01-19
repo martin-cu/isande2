@@ -40,10 +40,13 @@ router.post('/create_sales', isPrivate, salesController.createSaleRecord);
 router.get('/view_payments', isPrivate, salesController.getPaymentsPage);
 router.post('/submit_payment', isPrivate, salesController.postPaymentForm);
 router.get('/track_sale_orders', isPrivate, salesController.getTrackOrdersPage);
+router.get('/changeSaleCalendar', isPrivate, salesController.changeCalendar);
 router.get('/view_sales_records', isPrivate, salesController.getSalesRecords);
 router.get('/view_sales_details/:dr', isPrivate, salesController.viewSalesDetails);
 
 //Purchasing
+router.get('/track_purchase_orders', isPrivate, purchaseController.getTrackOrdersPage);
+router.get('/changePurchaseCalendar', isPrivate, purchaseController.changeCalendar);
 router.get('/view_purchase_records', isPrivate, purchaseController.getPurchaseRecords);
 router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurchaseDetails);
 

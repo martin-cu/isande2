@@ -365,10 +365,11 @@ exports.groupByDayofWeek = function(dates, orders) {
 			if (orders[x].formattedSchedule === dates[i]) {
 				orderObj = {};
 				orderObj['deliveryReceipt'] = orders[x].delivery_receipt;
+				orderObj['supplier_lo'] = orders[x].supplier_lo;
 				orderObj['customer'] = orders[x].customer_name;
 				orderObj['product'] = orders[x].product_name;
 				orderObj['qty'] = orders[x].qty;
-				orderObj['status'] = orders[x].order_status;
+				orderObj['status'] = orders[x].order_status || orders[x].status;
 				dayObj['orders'].push(orderObj);
 			}
 		}

@@ -7,6 +7,61 @@ const deliveryDetailModel = require('../models/deliveryDetailModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
+exports.changeCalendar = function(req, res) {
+	purchaseModel.getTrackOrders(req.query.offset, function(err, orders) {
+		if (err)
+			throw err;
+		else {
+			var newDate = new Date();
+			newDate.setDate(newDate.getDate()-req.query.offset);
+			var dates = [], curdate = dataformatter.startOfWeek(newDate);
+
+			dates.push(curdate);
+			curdate = new Date(curdate.toString());
+			for (var i = 1; i < 7; i++) {
+				dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+			}
+
+			var html_data = {
+				weeklyDate: dates,
+				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+			}
+			res.send(html_data);
+		}
+	});
+}
+
+exports.getTrackOrdersPage = function(req, res) {
+	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+		if (err)
+			throw err;
+		else {
+			purchaseModel.getTrackOrders(0, function(err, orders) {
+				if (err)
+					throw err;
+				else {
+					var dates = [], curdate = dataformatter.startOfWeek(new Date());
+
+					dates.push(curdate);
+					curdate = new Date(curdate.toString());
+					for (var i = 1; i < 7; i++) {
+						dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+					}
+
+					var html_data = {
+						notifCount: notifCount[0],
+						weeklyDate: dates,
+						weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+					}
+					
+					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'track_orders_tab');
+					res.render('trackPurchaseOrders', html_data);
+				}
+			});
+		}
+	});	
+}
+
 exports.getPurchaseRecords = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)

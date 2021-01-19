@@ -51,10 +51,18 @@ exports.viewReports = function(req, res){
 				});
 			}
 			else if (req.session.authority === 'Purchasing Employee') {
-				console.log('!');
+				html_data = {
+					notifCount: notifCount[0]
+				}
+				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+				res.render('reports', html_data);
 			}
 			else if (req.session.authority === 'Logistics Employee') {
-				console.log('!');
+				html_data = {
+					notifCount: notifCount[0]
+				}
+				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+				res.render('reports', html_data);
 			}
 		}
 	});

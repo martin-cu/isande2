@@ -3,6 +3,7 @@ const userController = require('../controllers/userController');
 const homeController = require('../controllers/homeController');
 const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
+const purchaseController = require('../controllers/purchaseController');
 const reportController = require('../controllers/reportController');
 const inventoryController = require('../controllers/inventoryController');
 
@@ -17,18 +18,21 @@ router.get('/logout', userController.logout);
 router.get('/getNotifs', isPrivate, notificationController.getNotifs);
 router.post('/seenNotifs', isPrivate, notificationController.seenNotifs);
 
-router.get('/', isPrivate, isPrivate, homeController.viewDashboard);
+router.get('/', isPrivate, (req, res) => {
+	res.redirect('home');
+});
 router.get('/home', isPrivate, homeController.viewDashboard);
-
+//Reports
 router.get('/reports', isPrivate, reportController.viewReports);
 router.get('/reports/:type', isPrivate, reportController.viewSalesDetailedReport);
 router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetailedReport);
-
+//Inventory
 router.get('/inventory', isPrivate, inventoryController.getProductInventory);
 router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);
 router.get('/change_price', isAdmin, inventoryController.getProductName);
 router.post('/change_price', isAdmin, inventoryController.changeProductPrice);
 router.get('/manual_count', isAdmin, inventoryController.getProductNameForManualCount);
+
 
 //Sales
 router.get('/create_sales', isPrivate, salesController.getSaleOrderForm);
@@ -40,5 +44,7 @@ router.get('/view_sales_records', isPrivate, salesController.getSalesRecords);
 router.get('/view_sales_details/:dr', isPrivate, salesController.viewSalesDetails);
 
 //Purchasing
+router.get('/view_purchase_records', isPrivate, purchaseController.getPurchaseRecords);
+router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurchaseDetails);
 
 module.exports = router;

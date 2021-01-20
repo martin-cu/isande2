@@ -50,4 +50,7 @@ router.get('/changePurchaseCalendar', isPrivate, purchaseController.changeCalend
 router.get('/view_purchase_records', isPrivate, purchaseController.getPurchaseRecords);
 router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurchaseDetails);
 
+//router.get('/view_purchase_records', isPrivate, purchaseController.getAllPurchases);
+router.get('/create_purchase', isPrivate, purchaseController.getCreatePurchase);
+
 module.exports = router;

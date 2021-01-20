@@ -52,5 +52,7 @@ router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurch
 
 //router.get('/view_purchase_records', isPrivate, purchaseController.getAllPurchases);
 router.get('/create_purchase', isPrivate, purchaseController.getCreatePurchase);
+router.post('/create_purchase', isPrivate, purchaseController.postCreatePurchase);
+router.get('/get_price', isPrivate, purchaseController.getPrice);
 
 module.exports = router;

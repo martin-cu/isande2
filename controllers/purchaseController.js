@@ -279,11 +279,131 @@ exports.getAllPurchases = function(req,res){
 	});
 };
 
+
+//add updating of price for product when changed
 exports.getCreatePurchase = function(req,res){
 	var html_data = {};
 	html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'purchasing_role','create_purchase_tab');
 	res.render("purchase_create", html_data);
 };
+
+exports.postCreatePurchase = function(req,res){
+	var amount = 0;
+	console.log(req.query);
+	purchaseModel.getDatePrice( parseInt(req.body.purchase_product), req.body.date, function(err, price){
+		if(err){
+			req.flash("dialog_error_msg", "Error getting price.");
+			res.redirect("/home");
+		}
+		else{
+			if(price.length == 0){//current price
+				purchaseModel.getCurrentPrice(req.body.purchase_product, function(err, price2){
+					amount = parseInt(req.body.qty) * price2[0].purchase_price;
+					var record = {
+						supplier_lo : req.body.purchase_lo,
+						date : req.body.date,
+						supplier_so : req.body.purchase_so,
+						product_id : parseInt(req.body.purchase_product),
+						qty : parseInt(req.body.qty),
+						amount : amount,
+						status : "Pending"
+					};
+					purchaseModel.addPurchase(record ,function(err){
+						if(err){
+							req.flash("dialog_error_msg", "There is an error adding a purchase.");
+							res.redirect("/view_purchase_records");
+						}
+						else{
+							req.flash("dialog_success_msg", "Record successfully added!");
+							res.redirect("/view_purchase_records");
+						}
+					});
+				});
+			}
+			else{
+				amount = parseInt(req.body.qty) * price[0].purchase_price;
+				console.log("2-" + amount);
+				var record = {
+						supplier_lo : req.body.purchase_lo,
+						date : req.body.date,
+						supplier_so : req.body.purchase_so,
+						product_id : parseInt(req.body.purchase_product),
+						qty : parseInt(req.body.qty),
+						amount : amount,
+						status : "Pending"
+					};
+
+					purchaseModel.addPurchase(record ,function(err){
+						if(err){
+							console.log(err);
+							console.log("DUPLICATE");
+							req.flash("dialog_success_msg", "LO Number already exists.");
+							res.redirect("/view_purchase_records");
+
+						}
+						else{
+							req.flash("dialog_success_msg", "Record successfully added!");
+							res.redirect("/view_purchase_records");
+						}
+					});
+					req.flash("dialog_success_msg", "Record successfully added!");
+					res.redirect("/view_purchase_records");
+			}
+		}
+	});
+};
+
+
+exports.getPrice = function(req,res){
+	var product = req.query.product;
+	var date = req.query.date;
+	console.log(req.query);
+	purchaseModel.getDatePrice(product, date, function(err, price){
+		if(err){
+			throw(err);
+			console.log("ERROR IN GETTING PRICE: 1");
+		}
+		else{
+			if(price.length == 0){
+				purchaseModel.getCurrentPrice(product, function(err,price2){
+					if(err){
+						throw(err);
+					}
+					else{
+						console.log(price2[0]);
+						price2[0].purchase_price = dataformatter.formatMoney(price2[0].purchase_price.toFixed(2), '');
+						res.send({
+							price : price2[0].purchase_price
+						});
+					}
+				});
+			}
+			else{
+				console.log(price[0]);
+				price[0].purchase_price = dataformatter.formatMoney(price[0].purchase_price.toFixed(2), '');
+				res.send({
+					price : price[0].purchase_price
+				});
+			}
+		}
+	});
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 exports.postAddPurchase = function(req,res){
@@ -301,7 +421,7 @@ exports.postAddPurchase = function(req,res){
 						var record = {
 						supplier_lo : req.body.purchase_lo,
 						date : req.body.purchase_schedule,
-						supplier_so : req.body.purchase_so,
+						supplier_so :  req.body.purchase_so,
 						product_id : parseInt(req.body.purchase_product),
 						qty : parseInt(req.body.purchase_qty),
 						amount : amount,

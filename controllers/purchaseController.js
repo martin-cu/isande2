@@ -315,7 +315,7 @@ exports.postCreatePurchase = function(req,res){
 						}
 						else{
 							req.flash("dialog_success_msg", "Record successfully added!");
-							res.redirect("/view_purchase_records");
+							res.redirect("/view_purchase_details/" + record.supplier_lo);
 						}
 					});
 				});
@@ -343,11 +343,11 @@ exports.postCreatePurchase = function(req,res){
 						}
 						else{
 							req.flash("dialog_success_msg", "Record successfully added!");
-							res.redirect("/view_purchase_records");
+							res.redirect("/view_purchase_details/" + record.supplier_lo);
 						}
 					});
 					req.flash("dialog_success_msg", "Record successfully added!");
-					res.redirect("/view_purchase_records");
+					res.redirect("/view_purchase_details/" + record.supplier_lo);
 			}
 		}
 	});

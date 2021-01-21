@@ -13,7 +13,7 @@ $(document).ready(function() {
 	$("#qty").keyup(function(){
 		//update total
 		$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
-			var total = result.price * $("#qty").val();
+			var total = result.price * $("#p_qty").val();
 			$("#total_amt").val(total);
 		});
 	});
@@ -22,7 +22,7 @@ $(document).ready(function() {
 		//update total
 		$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
 			$("#product_price").html(result.price);
-			var total = result.price * $("#qty").val();
+			var total = result.price * $("#p_qty").val();
 			$("#total_amt").val(total);
 		});
 	});

@@ -78,82 +78,18 @@
                                     <table class="table table-striped table tablesorter" id="ipi-table">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">Date</th>
+                                                <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px; width:150px;">Date</th>
                                                 <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">PRODUCT</th>
-                                                <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">current price</th>
+                                                <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">current purchase price</th>
+                                                <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">current selling price</th>
                                                 <th class="text-center filter-false sorter-false" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                            <tr>
-                                                <td>January 2, 2020</td>
-                                                <td>FCC<br></td>
-                                                <td>Php 250.00/bag</td>
-                                                <td class="text-center">
-                                                    <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModalFCC" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="padding: 0px;margin: 8px;"></i></a>
-                                                        <div class="modal fade" role="dialog" tabindex="-1" id="myModalFCC">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header" style="height: 50px;">
-                                                                        <h4>Edit Product Price</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p class="text-left text-muted">Select a product to change its price</p>
-                                                                        <form>
-                                                                            <div class="form-row">
-                                                                                <div class="col">
-                                                                                    <fieldset>
-                                                                                        <div class="form-row">
-                                                                                            <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-formID" value="vr-campus-tours"><input class="form-control d-none" type="text" id="lp-pathID" value="<?php echo $_GET['path'];?>"></div>
-                                                                                            <div class="col-6 col-sm-6 col-md-6">
-                                                                                                <div id="lp-name-wrapper">
-                                                                                                    <h5 style="text-align: left;font-weight: bold;">Product</h5><select class="form-control" id="lp-select1" style="font-size: 14px;">
-                                                                                                        <option value="FCC" selected="">FCC</option>
-                                                                                                    </select>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-6 col-sm-6 col-md-6">
-                                                                                                <div id="lp-lastname-wrapper"></div>
-                                                                                            </div>
-                                                                                            <div class="col-12 col-sm-6 col-md-12">
-                                                                                                <div id="lp-mail-wrapper"></div>
-                                                                                            </div>
-                                                                                            <div class="col-4 col-sm-2 col-md-5">
-                                                                                                <div id="lp-select1-wrapper" class="input-group">
-                                                                                                    <div class="input-group-addon"></div>
-                                                                                                </div>
-                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Price</h5><input class="form-control" type="text" id="lp-telnumber" placeholder="Price">
-                                                                                            </div>
-                                                                                            <div class="col-8 col-sm-4 col-md-7">
-                                                                                                <div id="lp-telnumber-wrapper"></div>
-                                                                                                <h6 class="text-left" style="margin-top: 50px;">pesos</h6>
-                                                                                            </div>
-                                                                                            <div class="col-12 col-sm-6 col-md-12">
-                                                                                                <div id="customfield1-wrapper"></div>
-                                                                                            </div>
-                                                                                            <div class="col-12 col-sm-6 col-md-12">
-                                                                                                <div id="lp-title-wrapper"></div>
-                                                                                            </div>
-                                                                                            <div class="col-12 col-sm-6 col-md-12">
-                                                                                                <div id="lp-check1-wrapper"></div>
-                                                                                            </div>
-                                                                                            <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-country"><input class="form-control d-none" type="text" id="lp-website"><input class="form-control d-none" type="text" id="lp-city"><input class="form-control d-none" type="text" id="customfield10"><input class="form-control d-none" type="text" id="customfield9"><input class="form-control d-none" type="text" id="customfield8"><input class="form-control d-none" type="text" id="customfield7"><input class="form-control d-none" type="text" id="customfield6"><input class="form-control d-none" type="text" id="customfield5"><input class="form-control d-none" type="text" id="customfield4"><input class="form-control d-none" type="text" id="customfield3"><input class="form-control d-none" type="text" id="customfield2"><input class="form-control d-none" type="text" id="lp-select3"><input class="form-control d-none" type="text" id="lp-select2"><input class="form-control d-none" type="text" id="lp-check5"><input class="form-control d-none" type="text" id="lp-check4"><input class="form-control d-none" type="text" id="lp-check3"><input class="form-control d-none" type="text" id="lp-check2"><input class="form-control d-none" type="text" id="lp-telareacode"><input class="form-control d-none" type="text" id="lp-telcountrycode"></div>
-                                                                                        </div>
-                                                                                    </fieldset>
-                                                                                </div>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer"><a class="btn btn-light" role="button" data-dismiss="modal" href="inventory-catalogue.html">Close</a><a class="btn btn-primary" role="button" href="inventory-catalogue.html">Save</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td>January 2, 2020<br></td>
                                                 <td>RCC<br></td>
+                                                <td>Php 150.00/bag<br></td>
                                                 <td>Php 150.00/bag<br></td>
                                                 <td class="text-center">
                                                     <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModalRCC" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="margin: 8px;"></i></a>
@@ -165,7 +101,7 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <p class="text-left text-muted" style="text-align: left;">Select a product to change its price<br></p>
-                                                                        <form>
+                                                                        <form name="rcc_new_price">
                                                                             <div class="form-row">
                                                                                 <div class="col">
                                                                                     <fieldset>
@@ -184,16 +120,124 @@
                                                                                             <div class="col-12 col-sm-6 col-md-12">
                                                                                                 <div id="lp-mail-wrapper"></div>
                                                                                             </div>
+                                                                                            
+
+
                                                                                             <div class="col-4 col-sm-2 col-md-5">
                                                                                                 <div id="lp-select1-wrapper" class="input-group">
                                                                                                     <div class="input-group-addon"></div>
                                                                                                 </div>
-                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Price</h5><input class="form-control" type="text" id="lp-telnumber" placeholder="Price">
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Purchase Price</h5><input class="form-control" type="text" id="rcc_purchase_price" name="rcc_purchase_price" placeholder="Price">
                                                                                             </div>
                                                                                             <div class="col-8 col-sm-4 col-md-7">
                                                                                                 <div id="lp-telnumber-wrapper"></div>
-                                                                                                <h5 class="text-left" style="margin-top: 50px;">pesos</h5>
+                                                                                                <h6 class="text-left" style="margin-top: 50px;">Php</h6>
                                                                                             </div>
+
+
+                                                                                            <div class="col-4 col-sm-2 col-md-5">
+                                                                                                <div id="lp-select1-wrapper" class="input-group">
+                                                                                                    <div class="input-group-addon"></div>
+                                                                                                </div>
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Selling Price</h5><input class="form-control" type="text" id="rcc_selling_price" name="rcc_selling_price" placeholder="Price">
+                                                                                            </div>
+                                                                                            <div class="col-8 col-sm-4 col-md-7">
+                                                                                                <div id="lp-telnumber-wrapper"></div>
+                                                                                                <h6 class="text-left" style="margin-top: 50px;">Php</h6>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div class="col-12 col-sm-6 col-md-12">
+                                                                                                <div id="customfield1-wrapper"></div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-12">
+                                                                                                <div id="lp-title-wrapper"></div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-12">
+                                                                                                <div id="lp-check1-wrapper"></div>
+                                                                                            </div>
+                                                                                            <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-country"><input class="form-control d-none" type="text" id="lp-website"><input class="form-control d-none" type="text" id="lp-city"><input class="form-control d-none" type="text" id="customfield10"><input class="form-control d-none" type="text" id="customfield9"><input class="form-control d-none" type="text" id="customfield8"><input class="form-control d-none" type="text" id="customfield7"><input class="form-control d-none" type="text" id="customfield6"><input class="form-control d-none" type="text" id="customfield5"><input class="form-control d-none" type="text" id="customfield4"><input class="form-control d-none" type="text" id="customfield3"><input class="form-control d-none" type="text" id="customfield2"><input class="form-control d-none" type="text" id="lp-select3"><input class="form-control d-none" type="text" id="lp-select2"><input class="form-control d-none" type="text" id="lp-check5"><input class="form-control d-none" type="text" id="lp-check4"><input class="form-control d-none" type="text" id="lp-check3"><input class="form-control d-none" type="text" id="lp-check2"><input class="form-control d-none" type="text" id="lp-telareacode"><input class="form-control d-none" type="text" id="lp-telcountrycode"></div>
+                                                                                        </div>
+                                                                                    </fieldset>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer"><a class="btn btn-light" role="button" data-dismiss="modal" href="inventory-catalogue.html">Close</a><a class="btn btn-primary" role="button" href="inventory-catalogue.html">Save</a></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr> -->
+                                            {{#each prices}}
+                                                <tr>
+                                                <td>{{this.start_date}}<br></td>
+                                                <td>{{this.product_name}}<br></td>
+                                                <td>Php {{this.purchase_price}}/bag<br></td>
+                                                <td>Php {{this.selling_price}}/bag<br></td>
+                                                <td class="text-center">
+                                                    <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModalRCC" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="margin: 8px;"></i></a>
+                                                        <div class="modal fade" role="dialog" tabindex="-1" id="myModalRCC">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header" style="height: 50px;">
+                                                                        <h4>Edit Product Price</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p class="text-left text-muted" style="text-align: left;">Select a product to change its price<br></p>
+                                                                        <form name="rcc_new_price">
+                                                                            <div class="form-row">
+                                                                                <div class="col">
+                                                                                    <fieldset>
+                                                                                        <div class="form-row">
+                                                                                            <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-formID" value="vr-campus-tours"><input class="form-control d-none" type="text" id="lp-pathID" value="<?php echo $_GET['path'];?>"></div>
+                                                                                            <div class="col-6 col-sm-6 col-md-6">
+                                                                                                <div id="lp-name-wrapper">
+                                                                                                    <h5 class="text-left" style="font-weight: bold;">Product</h5><select class="form-control" id="lp-select1">
+                                                                                                        <option value="RCC">RCC</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-6 col-sm-6 col-md-6">
+                                                                                                <div id="lp-lastname-wrapper"></div>
+                                                                                            </div>
+                                                                                            <div class="col-12 col-sm-6 col-md-12">
+                                                                                                <div id="lp-mail-wrapper"></div>
+                                                                                            </div>
+                                                                                            
+
+
+                                                                                            <div class="col-4 col-sm-2 col-md-5">
+                                                                                                <div id="lp-select1-wrapper" class="input-group">
+                                                                                                    <div class="input-group-addon"></div>
+                                                                                                </div>
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Purchase Price</h5><input class="form-control" type="text" id="{{this.product_name}}_purchase_price" name="{{this.product_name}}_purchase_price" placeholder="Price">
+                                                                                            </div>
+                                                                                            <div class="col-8 col-sm-4 col-md-7">
+                                                                                                <div id="lp-telnumber-wrapper"></div>
+                                                                                                <h6 class="text-left" style="margin-top: 50px;">Php</h6>
+                                                                                            </div>
+
+
+                                                                                            <div class="col-4 col-sm-2 col-md-5">
+                                                                                                <div id="lp-select1-wrapper" class="input-group">
+                                                                                                    <div class="input-group-addon"></div>
+                                                                                                </div>
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Selling Price</h5><input class="form-control" type="text" id="{{this.product_name}}_selling_price" name="{{this.product_name}}_selling_price" placeholder="Price">
+                                                                                            </div>
+                                                                                            <div class="col-8 col-sm-4 col-md-7">
+                                                                                                <div id="lp-telnumber-wrapper"></div>
+                                                                                                <h6 class="text-left" style="margin-top: 50px;">Php</h6>
+                                                                                            </div>
+
+
+
+
+
                                                                                             <div class="col-12 col-sm-6 col-md-12">
                                                                                                 <div id="customfield1-wrapper"></div>
                                                                                             </div>
@@ -217,6 +261,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            {{/each}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -273,30 +318,43 @@
                                             <tr>
                                                 <th class="text-center" style="background: rgb(248,249,252);color: rgb(78,115,223);border-color: rgb(215,218,228);">DATE</th>
                                                 <th class="text-center" style="background: rgb(248,249,252);color: rgb(78,115,223);border-color: rgb(215,218,228);">PRODUCT</th>
-                                                <th class="text-center" style="background: rgb(248,249,252);color: rgb(78,115,223);border-color: rgb(215,218,228);">PRICE</th>
+                                                <th class="text-center" style="background: rgb(248,249,252);color: rgb(78,115,223);border-color: rgb(215,218,228);">PURCHASE PRICE</th>
+                                                <th class="text-center" style="background: rgb(248,249,252);color: rgb(78,115,223);border-color: rgb(215,218,228);">SELLING PRICE</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                            <tr>
+                                            {{#each past_product_price}}
+                                                <tr>
+                                                    <td>{{this.start_date}}</td>
+                                                    <td>{{this.product_name}}</td>
+                                                    <td>Php {{this.purchase_price}}/bag<br></td>
+                                                    <td>Php {{this.selling_price}}/bag</td>
+                                                </tr>
+                                            {{/each}}
+                                           <!--  <tr>
                                                 <td>December 20, 2020</td>
                                                 <td>RCC</td>
+                                                <td>Php 210.00/bag<br></td>
                                                 <td>Php 210.00/bag</td>
                                             </tr>
                                             <tr>
                                                 <td>&nbsp;December 20, 2020</td>
                                                 <td>FCC</td>
                                                 <td>Php 210.00/bag<br></td>
+                                                <td>Php 210.00/bag<br></td>
                                             </tr>
                                             <tr>
                                                 <td>September 20, 2020</td>
                                                 <td>RCC</td>
+                                                <td>Php 210.00/bag<br></td>
                                                 <td>Php 210.00/bag<br></td>
                                             </tr>
                                             <tr>
                                                 <td>September 20, 2020</td>
                                                 <td>FCC</td>
                                                 <td>Php 210.00/bag<br></td>
-                                            </tr>
+                                                <td>Php 210.00/bag<br></td>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>

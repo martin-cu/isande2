@@ -68,3 +68,10 @@ exports.getProductQuantity = function(product_id, next){
 	mysql.query(sql,next);
 
 }
+
+
+exports.getCurrentPrice = function(next){
+	var sql = "SELECT * FROM product_catalogue_table JOIN product_table using (product_id) WHERE product_catalogue_table.status = 'active' ;";
+
+	mysql.query(sql,next);
+}

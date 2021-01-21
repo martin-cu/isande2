@@ -39,7 +39,7 @@ exports.getProductsQuantity = function(next) {
 }
 
 exports.getProductCatalogue = function(next) {
-    var sql = "SELECT DATE_FORMAT(start_date, '%m/%d/%Y') as start_date, product_name, purchase_price, selling_price, status from product_catalogue_table join product_table on product_catalogue_table.product_id = product_table.product_id WHERE status = 'Active' UNION SELECT DATE_FORMAT(start_date, '%m/%d/%Y') as start_date, product_name, purchase_price, selling_price, status from product_catalogue_table join product_table on product_catalogue_table.product_id = product_table.product_id WHERE status = 'Inactive' ORDER BY status, start_date DESC limit 0,5;";
+    var sql = "SELECT start_date, product_name, purchase_price, selling_price, status from product_catalogue_table join product_table on product_catalogue_table.product_id = product_table.product_id WHERE status = 'Active' UNION SELECT start_date, product_name, purchase_price, selling_price, status from product_catalogue_table join product_table on product_catalogue_table.product_id = product_table.product_id WHERE status = 'Inactive' ORDER BY status, start_date DESC limit 0,5;";
     mysql.query(sql, next);
 }
 

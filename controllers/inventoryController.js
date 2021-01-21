@@ -2,6 +2,7 @@ const inventoryModel = require('../models/inventoryModel');
 const productModel = require('../models/productModel');
 const { validationResult } = require('express-validator');
 const js = require('../public/assets/js/session.js');
+const dataformatter = require('../public/assets/js/dataformatter.js');
 const e = require('express');
 
 
@@ -173,11 +174,24 @@ exports.getProductCatalogue = function(req, res){
 			num_records: count.length,
 			origin: offset+1,
 		}
-		
-		var html_data = {product: monresult};
-		html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'product_catalogue')
+		console.log(monresult);
+		for(var i =0 ; i < monresult.length ; i++){
+			monresult[i].start_date =  dataformatter.formatDate(monresult[i].start_date, 'mm DD, YYYY');
+		}
+		html_data["past_product_price"] = monresult;
+		productModel.getCurrentPrice(function(err, prices){
+			
+			for(var i = 0; i < prices.length; i++){
+				prices[i].start_date = dataformatter.formatDate(prices[i].start_date, 'mm DD, YYYY');
+			}
 
-		res.render('product_catalogue', html_data);
+			html_data["prices"] = prices;
+
+
+			html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'product_catalogue');
+
+			res.render('product_catalogue', html_data);
+		});
     }
 )};
 

@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 const js = require('../public/assets/js/session.js');
 const e = require('express');
 
+
 exports.reportDamagedInventory = function(req, res) {
 	console.log(req.body);
 	var { damaged_amt, comments, product_id } = req.body;
@@ -117,40 +118,43 @@ exports.reportManualCount = function(req, res) {
 
 
 exports.getProductInventory = function(req, res){
-	inventoryModel.getProductMovement(function(err, monresult) {
+	inventoryModel.getCurrentInventory(function(err, currinv) {
 		if(err){
 			throw err;
 		}
 		else
-		productModel.getCurrInventory(function(err, curQty) {
+			inventoryModel.getOutgoingProducts(function(err, outgoing)  {
 			if (err) {
 
 			}
 			else {
-				var count = 0;
-				var offset = parseInt(req.query.offset);
+				inventoryModel.getIncomingProducts(function(err, incoming)  {
+					if (err) {
 
-				var html_data = { curQty: curQty };
+					}
+					else {
+						inventoryModel.DailyInventorySales(function(err, dailysales) {
+							if (err){
+
+							}
+							else {
+								inventoryModel.DailyInventoryPurchases(function(err, dailypur) {
+								var count = 0;
+								var offset = parseInt(req.query.offset);
+console.log(dailysales);
+								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailysales" : dailysales, "dailypur" : dailypur};
+								
+								html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
+
+								res.render('inventory_overview', html_data);
+								})
+								
+							}
+						})
 				
-				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
-
-				if (html_data.role === 'System Admin' || html_data.role === 'Logistics Employee') {
-					html_data['editAccess'] = true;
-					productModel.getProducts(function(err, products) {
-						if (err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
-							res.render('inventory_overview', html_data);
-						}
-						else {
-							html_data['product_catalogue'] = products;
-							res.render('inventory_overview', html_data);
-						}
-					})
 				}
-				else {
-					res.render('inventory_overview', html_data);
-				}
-			}
+			});
+		}
 		});
     }
 )};

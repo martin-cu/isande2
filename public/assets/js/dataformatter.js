@@ -365,10 +365,11 @@ exports.groupByDayofWeek = function(dates, orders) {
 			if (orders[x].formattedSchedule === dates[i]) {
 				orderObj = {};
 				orderObj['deliveryReceipt'] = orders[x].delivery_receipt;
+				orderObj['supplier_lo'] = orders[x].supplier_lo;
 				orderObj['customer'] = orders[x].customer_name;
 				orderObj['product'] = orders[x].product_name;
 				orderObj['qty'] = orders[x].qty;
-				orderObj['status'] = orders[x].order_status;
+				orderObj['status'] = orders[x].order_status || orders[x].status;
 				dayObj['orders'].push(orderObj);
 			}
 		}
@@ -403,6 +404,32 @@ exports.groupedMonthlySales = function(data) {
 			arr.push(monthObj);
 		}
 	}
+	return arr;
+}
+exports.groupedMonthlyPurchases = function(data) {
+	var arr = { rcc_series: [], fcc_series: [] };
+	var found;
+	var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun',
+	'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+	for (var i = 0; i < months.length; i++) {
+		for (var x = 0; x < data.length; x++) {
+			if (months[i] === data[x].month) {
+				found = 1;
+				
+				if (data[x].product_name === 'FCC')
+					arr.fcc_series.push(data[x].qty);
+				else
+					arr.rcc_series.push(data[x].qty);
+			}
+		}
+		if (found)
+			found = 0;
+		else {
+			arr.fcc_series.push(0);
+			arr.rcc_series.push(0);
+		}
+	};
 	return arr;
 }
 

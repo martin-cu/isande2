@@ -9,6 +9,30 @@ const truckModel = require('../models/truckModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
+exports.changeCalendar = function(req, res) {
+	salesModel.getTrackOrders(req.query.offset, function(err, orders) {
+		if (err)
+			throw err;
+		else {
+			var newDate = new Date();
+			newDate.setDate(newDate.getDate()-req.query.offset);
+			var dates = [], curdate = dataformatter.startOfWeek(newDate);
+
+			dates.push(curdate);
+			curdate = new Date(curdate.toString());
+			for (var i = 1; i < 7; i++) {
+				dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+			}
+
+			var html_data = {
+				weeklyDate: dates,
+				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+			}
+			res.send(html_data);
+		}
+	});
+}
+
 exports.getSaleOrderForm = function(req, res) {
 	var status = [
 		{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }
@@ -286,7 +310,7 @@ exports.getTrackOrdersPage = function(req, res) {
 		if (err)
 			throw err;
 		else {
-			salesModel.getTrackOrders(function(err, orders) {
+			salesModel.getTrackOrders(0, function(err, orders) {
 				if (err)
 					throw err;
 				else {

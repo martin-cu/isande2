@@ -17,7 +17,7 @@ function createAreaChart(arr) {
 
 	}
 	var ctx = document.getElementById(chartId);
-	console.log(data);
+
 	var chart = new Chart(ctx, {
 	    type: 'line',
 	    data: {
@@ -77,4 +77,57 @@ function createAreaChart(arr) {
 	    }
 	});
 	return chart;
+}
+
+function createBarChart(arr) {
+	var chartId, labels = [], data = [], seriesLabel;
+	chartId = 'overviewSales';
+	var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun',
+	'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	
+	var ctx = document.getElementById(chartId);
+	var myChart = new Chart(ctx, {
+	  type: 'bar',
+	  data: {
+	    labels: months,
+	    datasets: [
+	    {
+	      label: 'RCC',
+	      backgroundColor: "#008d93",
+	      data: arr.rcc_series,
+	    }, 
+	    {
+	      label: 'FCC',
+	      backgroundColor: "#cd5c5c",
+	      data: arr.fcc_series,
+	    }
+	    ]
+	  },
+	options: {
+	    tooltips: {
+	      displayColors: true,
+	      callbacks:{
+	        mode: 'x',
+	      },
+	    },
+	    scales: {
+	      xAxes: [{
+	        stacked: true,
+	        gridLines: {
+	          display: false,
+	        }
+	      }],
+	      yAxes: [{
+	        stacked: true,
+	        ticks: {
+	          beginAtZero: true,
+	        },
+	        type: 'linear',
+	      }]
+	    },
+	    responsive: true,
+	    maintainAspectRatio: false,
+	    legend: { position: 'bottom' },
+	  }
+	});
 }

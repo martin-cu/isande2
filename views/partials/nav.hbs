@@ -5,8 +5,10 @@
         <hr class="sidebar-divider my-0">
         <ul class="nav navbar-nav text-light" id="accordionSidebar" style="margin-top: 50px;">
             <li class="nav-item"><a class="nav-link nav-item-name {{#if dashboard_tab}}active{{/if}}" href="/home" style=""><img src="../../assets/img/icons/1.png" class="nav-item-icon"><span class="nav-item-span">Dashboard</span></a></li>
+            {{#compareTwoValues this.view 'Sales' operator='==='}}
             <li class="nav-item" style="font-size: 16px;">
                 <div class="nav-item dropdown show" style="font-size: 16px;color: rgb(205,214,224);">
+                    {{#if sales_role}}
                     <div data-toggle="collapse" data-target="#saleCollapse" role="button" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor: pointer;">
                         <img src="../../assets/img/icons/2.png" class="nav-item-icon">&nbsp; Orders
                     </div>
@@ -16,8 +18,25 @@
                         <a class="dropdown-item a {{#if track_orders_tab}}active{{/if}}" href="/track_sale_orders">Track Orders</a>
                         <a class="dropdown-item a {{#if sales_record_tab}}active{{/if}}" href="/view_sales_records">Sales Records</a>
                     </div>
+                    {{/if}}
                 </div>
             </li>
+            {{/compareTwoValues}}
+
+            {{#compareTwoValues this.view 'Purchasing' operator='==='}}
+            <li class="nav-item" style="font-size: 16px;">
+                <div class="nav-item dropdown show" style="font-size: 16px;color: rgb(205,214,224);">
+                    <div data-toggle="collapse" data-target="#saleCollapse" role="button" aria-expanded="true" href="#" class="dropdown-menu-a" style="cursor: pointer;">
+                        <img src="../../assets/img/icons/3.png" class="nav-item-icon">&nbsp; Purchases
+                    </div>
+                    <div class="dropdown-menu show drop-cont" id="saleCollapse">
+                        <a class="dropdown-item a {{#if payments_tab}}active{{/if}}" style="font-size: 14px;" href="/view_payments">Create Purchase Order</a>
+                        <a class="dropdown-item a {{#if track_orders_tab}}active{{/if}}" href="/track_purchase_orders">Track Orders</a>
+                        <a class="dropdown-item a {{#if purchase_record_tab}}active{{/if}}" href="/view_purchase_records">Purchase Records</a>
+                    </div>
+                </div>
+            </li>
+            {{/compareTwoValues}}
 
             <li class="nav-item" style="font-size: 16px;">
                 <div class="nav-item dropdown" style="font-size: 16px;color: rgb(205,214,224);">

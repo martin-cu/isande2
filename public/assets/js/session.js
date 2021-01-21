@@ -5,14 +5,25 @@ exports.init_session = function(obj, role, name, username, employee, tab) {
 	obj['employee'] = employee;
 	obj['session'] = true;
 
-	if (role === 'System Admin') 
+	if (role === 'System Admin') {
 		obj['admin_role'] = true;
-	else if (role === 'Sales Employee')
+		obj['view'] = 'Admin';
+	}
+	else if (role === 'Sales Employee') {
 		obj['sales_role'] = true;
-	else if (role === 'Purchasing Employee')
+		obj['view'] = 'Sales';
+		obj['recent_data'] = 'Sales';
+	}
+	else if (role === 'Purchasing Employee') {
 		obj['purchasing_role'] = true;
-	else if (role === 'Logistics Employee')
+		obj['view'] = 'Purchasing';
+		obj['recent_data'] = 'Purchases';
+	}
+	else if (role === 'Logistics Employee') {
 		obj['logistics_role'] = true;
+		obj['view'] = 'Logistics';
+		obj['recent_data'] = 'Deliveries';
+	}
 
 	if (tab === 'dashboard_tab')
 		obj['dashboard_tab'] = true;
@@ -44,6 +55,9 @@ exports.init_session = function(obj, role, name, username, employee, tab) {
 	else if (tab === 'resources') 
 		obj['resources_tab'] = true;
 
+	//purchase Tabs
+	else if (tab === 'purchase_record_tab') 
+		obj['purchase_record_tab'] = true;
 	return obj;
 }
 

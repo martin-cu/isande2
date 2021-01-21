@@ -1,5 +1,6 @@
 const homeModel = require('../models/homeModel');
 const notificationModel = require('../models/notificationModel');
+const recommendationModel = require('../models/recommendationModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
@@ -65,7 +66,64 @@ exports.viewDashboard = function(req, res){
 		});
 	}
 	else if (req.session.authority === 'Purchasing Employee') {
-		console.log('!');
+		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+			if (err)
+				throw err;
+			else {
+				homeModel.getOrderedBags(function(err, orderedBags) {
+					if (err)
+						throw err;
+					else {
+						homeModel.getPurchaseProgress(function(err, taskProgress) {
+							if (err)
+								throw err;
+							else {
+								homeModel.getRecentOrders(function(err, recentOrders) {
+									if (err)
+										throw err;
+									else {
+										homeModel.getMonthlyPurchases(function(err, monthlyPurchases) {
+											if (err)
+												throw err;
+											else {
+												recommendationModel.getRecommendation2(function(err, recommendation) {
+													if (err)
+														throw err;
+													else {
+														/*
+														var netMonth, netYear;
+														for (var i = 0; i < netIncome.length; i++) {
+															if (netIncome[i].type === 'yearly')
+																netYear = netIncome[i].net_income;
+															else if (netIncome[i].type === 'monthly')
+																netMonth = netIncome[i].net_income;
+														}
+														*/
+														var html_data = {
+															recommendInventory: recommendation,
+															notifCount: notifCount[0],
+															//netMonth: netMonth,
+															//netYear: netYear,
+															orderedBags: orderedBags,
+															taskProgress: taskProgress[0].task_progress,
+															pendingTasks: taskProgress[0].pending,
+															recentOrders: recentOrders,
+															monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlyPurchases(monthlyPurchases))
+														};
+														html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
+														res.render('home', html_data);	
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
 	}
 	else if (req.session.authority === 'Logistics Employee') {
 		console.log('!');

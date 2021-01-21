@@ -20,9 +20,11 @@ exports.getUnpaidOrders = function(next) {
 	mysql.query(sql, next);
 };
 
-exports.getTrackOrders = function(next) {
-	var sql = "select sh.*, ct.*, pt.product_name, date_format(sh.scheduled_date, '%b %e, %Y') as formattedSchedule from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.scheduled_date between date(now() + INTERVAL ( - WEEKDAY(now())) DAY) and DATE(now() + INTERVAL (6 - WEEKDAY(now())) DAY) order by scheduled_date";
-
+exports.getTrackOrders = function(query, next) {
+	var sql = "select sh.*, ct.*, pt.product_name, date_format(sh.scheduled_date, '%b %e, %Y') as formattedSchedule from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.scheduled_date between date(date_sub(now(), interval ? day) + INTERVAL ( - WEEKDAY(date_sub(now(), interval ? day))) DAY) and DATE(date_sub(now(), interval ? day) + INTERVAL (6 - WEEKDAY(date_sub(now(), interval ? day))) DAY) order by scheduled_date";
+	while (sql.includes('?')) {
+		sql = mysql.format(sql, query);
+	}
 	mysql.query(sql, next);
 }
 

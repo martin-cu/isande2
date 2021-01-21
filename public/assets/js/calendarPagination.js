@@ -10,15 +10,8 @@ function appendCalendarDates(arr) {
 }
 
 function appendCalendarCards(arr) {
-	var td, div, p1, p2, tr = $('#calendarCards');
+	var br, td, div, p1, p2, tr = $('#calendarCards');
 	var href, pContent, pContent2, elemClass;
-
-	if (view === 'Sales Employee')
-		href = '/view_sale_details/';
-	else if (view === 'Purchasing Employee')
-		href = '/view_purchase_details/';
-	else if (view === 'Logistics Employee')
-		href = '/view_purchase_details/';
 
 	for (var i = 0; i < arr.length; i++) {
 		td = document.createElement('td');
@@ -37,9 +30,16 @@ function appendCalendarCards(arr) {
 				pContent2 = arr[i].orders[x].product+' - '+arr[i].orders[x].qty+' bags';
 			}
 			else if (view === 'Logistics Employee') {
-				href = '/view_purchase_details/'+arr[i].orders[x].supplier_lo;
-				pContent = '';
-				pContent2 = '';
+				href = '#'+arr[i].orders[x].supplier_lo;
+				
+				if (arr[i].orders[x].order_type === 'Restock') {
+					pContent = arr[i].orders[x].order_type+' ('+arr[i].orders[x].supplier_lo+')';
+				}
+				else {
+					pContent = arr[i].orders[x].order_type+' ('+arr[i].orders[x].deliveryReceipt+')';
+				}
+
+				pContent2 = arr[i].orders[x].product+' - '+arr[i].orders[x].qty+' bags';
 			}
 
 			div = document.createElement('div');
@@ -53,9 +53,12 @@ function appendCalendarCards(arr) {
 			p2.setAttribute('class', 'text-center status-data');
 			p2.innerHTML = pContent2;
 
+			br = document.createElement('br');
+
 			div.appendChild(p1);
 			div.appendChild(p2);
 			td.appendChild(div);
+			td.appendChild(br);
 		}
 		tr.append(td);
 	}

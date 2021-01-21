@@ -126,7 +126,39 @@ exports.viewDashboard = function(req, res){
 		});
 	}
 	else if (req.session.authority === 'Logistics Employee') {
-		console.log('!');
+		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
+			if (err)
+				throw err;
+			else {
+				homeModel.getPerfectOrderRate(function(err, perfectOrderRate) {
+					if (err)
+						throw err;
+					else {
+						homeModel.getDeliveryByDestination(function(err, deliveryByDestination) {
+							if (err)
+								throw err;
+							else {
+								homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
+									if (err)
+										throw err;
+									else {
+										var html_data = {
+											notifCount: notifCount[0],
+											pendingDeliveries: pendingDeliveries,
+											perfectOrderRate: JSON.stringify(dataformatter.transformPerfectOrderRate(perfectOrderRate)),
+											monthlyByDestination: JSON.stringify(dataformatter.groupedDeliveryByLoc(deliveryByDestination))
+										};
+
+										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
+										res.render('home', html_data);	
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
 	}
 	/* Copy this
 	var html_data = { };

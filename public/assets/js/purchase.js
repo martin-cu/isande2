@@ -10,7 +10,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#qty").keyup(function(){
+	$("#p_qty").keyup(function(){
 		//update total
 		$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
 			var total = result.price * $("#p_qty").val();

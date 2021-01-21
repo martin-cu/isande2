@@ -161,17 +161,7 @@ exports.createSaleRecord = function(req, res) {
 										res.redirect('/create_sales');
 									}
 									else {
-										salesModel.createSales(sale_obj, function(err, result){
-											if(err){
-												req.flash('dialog_error_msg', 'Oops something went wrong!');
-												res.redirect('/create_sales');
-											}
-											else{
-												req.flash('dialog_success_msg', 'Successfully created sale record!')
-												res.redirect("view_sales_details/" + sale_obj.delivery_receipt);
-											}
-										});
-										//res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+										res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
 									}
 								});
 							}
@@ -223,7 +213,7 @@ exports.createSaleRecord = function(req, res) {
 																		throw err;
 																	else {
 																		req.flash('dialog_success_msg', 'Successfully created sale record!');
-																		res.redirect('/create_sales');
+																		res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
 																	}
 																});
 															}

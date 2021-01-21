@@ -1,6 +1,31 @@
 var mysql = require('./connectionModel');
 mysql = mysql.connection;
 
+exports.getCurrentInventory = function(next){
+    var sql = "select sum(qty) as currinventory from product_table;";
+    mysql.query(sql, next);
+}
+
+exports.getOutgoingProducts = function(next){
+    var sql = "select sum(qty) as outgoing from sales_history WHERE MONTH(scheduled_date) = MONTH(CURRENT_DATE()) AND YEAR(scheduled_date) = YEAR(CURRENT_DATE());";
+    mysql.query(sql, next);
+}
+
+exports.getIncomingProducts = function(next){
+    var sql = "select sum(qty) as incoming from purchase_history WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE());";
+    mysql.query(sql, next);
+}
+
+exports.DailyInventorySales = function(next){
+    var sql = "select DATE_FORMAT(s.scheduled_date, '%m/%d/%Y') as date, pt.product_name as pname, s.qty as qty, ddt.damaged_bags as damage from sales_history s join product_table pt on s.product_id = pt.product_id join delivery_detail_table ddt on s.delivery_receipt = ddt.delivery_receipt where s.scheduled_date = curdate() AND (s.order_status = 'Completed' || s.order_status = 'Processing');";
+    mysql.query(sql, next);
+}
+
+exports.DailyInventoryPurchases = function(next){
+    var sql = "select DATE_FORMAT(p.date, '%m/%d/%Y') as date, pt.product_name as pname, p.qty as qty from purchase_history p join product_table pt on p.product_id = pt.product_id where p.date = curdate() AND (p.status = 'Completed' || p.status = 'Processing');";
+    mysql.query(sql, next);
+}
+
 exports.getProductMovement = function(next) {
     var sql = "select DATE_FORMAT(t.scheduled_date, '%m/%d/%Y') as scheduled_date, pt.product_name, sum(ifnull(sum_orders,0)) as sumOrdersPerDay, sum(ifnull(sum_purchase, 0)) as sumPurchasePerDay, pt.qty from ( select sh.scheduled_date, sh.product_id, sum(sh.qty) as sum_orders, null as sum_purchase from sales_history as sh group by sh.scheduled_date, sh.product_id union select ph.date, ph.product_id, null, sum(ph.qty) from purchase_history as ph group by ph.date, ph.product_id ) as t join product_table as pt using(product_id) group by t.scheduled_date, t.product_id having t.scheduled_date between DATE_SUB(curdate(), interval 8 day) and DATE_SUB(curdate(), interval 1 day) order by t.scheduled_date desc limit 7";
 

@@ -19,19 +19,13 @@
                             <thead>
                                 <tr>
                                     <th style="width: 1px;">Date Scheduled</th>
-                                    <th style="width: 50px;"><input type="date" required="" readonly="" value="{{purchaseRecord.formattedDate}}"></th>
+                                    <th style="width: 50px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.formattedDate}}</span><!-- <input type="date" required="" readonly="" value="{{purchaseRecord.formattedDate}}"> --></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr></tr>
+
                                 <tr>
                                     <td style="font-weight: bold;">Customer Information</td>
                                     <td style="width: 50px;"></td>
@@ -40,13 +34,13 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">SO Number</td>
-                                    <td><input type="text" required="" readonly="" value="{{purchaseRecord.supplier_so}}"></td>
+                                    <td><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.supplier_lo}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_so}}"> --></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">DR Number</td>
-                                    <td><input type="text" required="" readonly="" value="{{purchaseRecord.supplier_dr}}"></td>
+                                    <td><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.supplier_dr}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_dr}}"> --></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -64,31 +58,31 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Product<br></td>
-                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.product_name}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                             <option value="12" selected="">{{purchaseRecord.product_name}}</option>
-                                        </select></td>
+                                        </select> --></td>
                                     <td style="width: 100px;">Truck Plate Number</td>
-                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.newPlate}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                         <option value="" selected>{{purchaseRecord.newPlate}}</option>
-                                    </select></td>
+                                    </select> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Product Price<br></td>
-                                    <td style="width: 100px;"><input type="text" readonly="" value="{{purchaseRecord.pricePiece}}"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.pricePiece}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
                                     <td style="width: 100px;">Driver</td>
-                                    <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.driverName}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                         <option selected="" value="">{{purchaseRecord.driverName}}</option>
-                                    </select></td>
+                                    </select> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Quantity</td>
-                                    <td style="width: 100px;"><input type="text" required="" readonly="" value="{{purchaseRecord.qty}}"><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.qty}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.qty}}"> --><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
                                     <td style="width: 100px;">Time Out</td>
-                                    <td style="width: 100px;"><input type="text" required="" readonly="" value="{{purchaseRecord.newTimeOut}}"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.newTimeOut}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.newTimeOut}}"> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Total Amount</td>
-                                    <td style="width: 100px;"><input type="text" readonly="" value="{{purchaseRecord.formattedAmount}}"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.formattedAmount}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
                                     <td style="width: 100px;"></td>
                                     <td style="width: 100px;"></td>
                                 </tr>

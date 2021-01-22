@@ -19,3 +19,10 @@ exports.getPurchaseRecordDetails = function(query, next) {
 	sql = mysql.format(sql, query);
 	mysql.query(sql, next);
 }
+
+exports.updatePurchaseDetails = function(update, query, next) {
+	var sql = "update purchase_history set ? where?";
+	sql = mysql.format(sql, update);
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+};

@@ -1,0 +1,193 @@
+<div class="container-fluid">
+    <h3 style="color: rgb(90,92,105);">Confirm Delivery</h3>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-7 col-xl-8">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Confirmation Form</h6>
+                </div>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-body" style="border-style: none;">
+                            <form action="/confirm_delivery" method="post">
+                                <input type="hidden" name="orderStatus" value="Completed">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 1px;">Date Completed</th>
+                                                <th style="width: 50px;"><input type="date" required="" id="confirmDateCompleted" name="confirmDateCompleted" value="{{curDate}}"></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr></tr>
+                                            <tr>
+                                                <td class="text-nowrap" style="font-weight: bold;">Delivery Details</td>
+                                                <td style="width: 50px;"></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date Scheduled</td>
+                                                <td><input type="date" required="" id="confirmDate" name="confirmDate" readonly></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Reference Number</td>
+                                                <td style="color: rgb(72,72,72);"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" name="confirmReference" id="confirmReference">
+                                                        <option value="">...</option>
+                                                        {{#each processingDeliveriesAll}}
+                                                        <option value="{{#compareTwoValues this.order_type 'Restock' operator='==='}}LO{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}DR{{/compareTwoValues}}{{this.purchase_lo}}">
+                                                        {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                                        LO 
+                                                        {{/compareTwoValues}}
+
+                                                        {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                                        DR 
+                                                        {{/compareTwoValues}}
+                                                        {{this.purchase_lo}}
+                                                        </option>
+                                                        {{/each}}
+                                                    </select></td>
+                                                <td>Supplier DR</td>
+                                                <td><input type="text" id="confirmSupplierDR" name="confirmSupplierDR"></td>
+                                            </tr>
+                                            <tr></tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Customer</td>
+                                                <td><input type="text" required="" readonly="" style="background: rgb(237,237,237);border-width: 1px;" id="confirmCustomer" name="confirmCustomer"></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Address</td>
+                                                <td><input type="text" readonly="" style="background: rgb(237,237,237);border-width: 1px;" id="confirmAddress" name="confirmAddress"></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: bold;">Order Details</td>
+                                                <td style="width: 0px;"></td>
+                                                <td style="width: 0px;font-weight: bold;">Truck</td>
+                                                <td style="width: 0px;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Product</td>
+                                                <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="" id="confirmProduct" name="confirmProduct">
+                                                        <option value="" selected disabled>...</option>
+                                                        <option value="FCC" disabled>FCC</option>
+                                                        <option value="RCC" disabled>RCC</option>
+                                                    </select></td>
+                                                <td style="width: 100px;">Plate Number</td>
+                                                <td style="width: 100px;"><select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;background: rgb(237,237,237);" readonly required="" id="confirmPlateNo" name="confirmPlateNo">
+                                                        <option value="">...</option>
+                                                        {{#each truckList}}
+                                                        <option value="{{this.plate_no}}">{{this.plate_no}}</option>
+                                                        {{/each}}
+                                                    </select></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Quantity</td>
+                                                <td><input type="text" required="" readonly="" style="border-width: 1px;background: rgb(237,237,237);" id="confirmQty" name="confirmQty"><input class="form-control-plaintext d-inline-flex" type="text" value="bags" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                                <td>Driver</td>
+                                                <td><input style="background-color: none;border: none;" type="text" name="confirmDriver" id="confirmDriver" readonly></td>
+                                                <input type="hidden" name="confirmDriverId" id="confirmDriverId"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: normal;">Damaged Bags</td>
+                                                <td style="font-weight: normal;"><input type="text" required id="confirmDamaged" name="confirmDamaged" placeholder="..."><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="bags" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                                <td style="font-weight: normal;">Time Out</td>
+                                                <td class="d-xl-flex align-items-xl-center">
+                                                    <div class="d-xl-flex align-items-xl-start"></div><input type="time" required id="confirmTimeOut" name="confirmTimeOut" placeholder="HH:mm AM/PM">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary btn-lg float-right" type="submit" style="height: 38px;padding: 6px 12px;padding-top: 6px 12px;background: rgb(38,83,212);font-size: 16px;">Confirm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">In Processing Deliveries</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color: rgb(224,145,52);"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: rgb(54,185,204);margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
+                    <div class="table-responsive" style="margin-top: 10px;">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr></tr>
+                            </thead>
+                            <tbody>
+                                {{#each processingDeliveries}}
+                                <tr>
+                                    <td class="text-center" style="text-align: center;border-width: 0px;">
+                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}Processing{{/compareTwoValues}}" style="cursor: pointer;">
+                                            <input type="hidden" name="" value="{{this.order_type}}">
+                                            
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            <input type="hidden" name="" value="{{this.supplier_lo}}">
+                                            {{/compareTwoValues}}
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            <input type="hidden" name="" value="{{this.delivery_receipt}}">
+                                            {{/compareTwoValues}}
+
+                                            <p class="text-center status-data">
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            Restock
+                                            {{/compareTwoValues}}
+
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            {{{this.customer_name}}}
+                                            {{/compareTwoValues}}
+                                            </p>
+                                            <p class="text-center status-data" style="font-size: 12px;">
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            LO {{this.supplier_lo}}
+                                            {{/compareTwoValues}}
+
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            DR {{this.delivery_receipt}}
+                                            {{/compareTwoValues}}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var ajaxView = 'confirmDelivery';
+</script>
+
+<script src="../assets/js/ajax.js"></script>

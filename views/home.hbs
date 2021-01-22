@@ -197,7 +197,7 @@
                                         <td style="padding: 5px;">
                                             <div href="/view_sales_details/{{this.delivery_receipt}}" class="text-center {{#compareTwoValues this.order_status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.order_status 'Processing' operator='==='}}Processing{{/compareTwoValues}} ">
                                                 <p class="text-center status-data">{{this.customer_name}} ({{this.formattedDate}})</p>
-                                                <p class="text-center status-data">{{this.product_name}} - {{this.qty}} bags</p>
+                                                <p class="text-center status-data" style="font-size: 12px;">{{this.product_name}} - {{this.qty}} bags</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -210,7 +210,7 @@
                                     <td style="padding: 5px;">
                                         <div href="/view_purchase_details/{{this.supplier_lo}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}} ">
                                             <p class="text-center status-data">LO {{this.supplier_lo}} ({{this.formattedDate}})</p>
-                                            <p class="text-center status-data">{{this.product_name}} - {{this.qty}} bags</p>
+                                            <p class="text-center status-data" style="font-size: 12px;">{{this.product_name}} - {{this.qty}} bags</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -236,7 +236,7 @@
                                             {{/compareTwoValues}}
                                             </p>
                                             
-                                            <p class="text-center status-data">
+                                            <p class="text-center status-data" style="font-size: 12px;">
                                             {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
                                             DR {{this.delivery_receipt}}
                                             {{/compareTwoValues}}

@@ -52,17 +52,18 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px">
                                     {{#each this.orders}}
-                                        <div href="#" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
+                                        <div href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}({{this.supplier_lo}})
+                                            {{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
                                             <p class="text-center status-data">
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                            Restock ({{this.supplier_lo}})
+                                            Restock
                                             {{/compareTwoValues}}
 
                                             {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                            {{this.order_type}} ({{this.deliveryReceipt}})
+                                            {{this.customer}}
                                             {{/compareTwoValues}}
                                             </p>
-                                            <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>
+                                            <p class="text-center status-data" style="font-size: 12px;">{{this.product}} - {{this.qty}} bags</p>
                                         </div><br>
                                     {{/each}}
                                 </td>

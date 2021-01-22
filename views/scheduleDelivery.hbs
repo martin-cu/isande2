@@ -9,7 +9,8 @@
                 <div class="card-body">
                     <div class="card">
                         <div class="card-body" style="border-style: none;">
-                            <form>
+                            <form action="/schedule_delivery" method="post">
+                                <input type="hidden" name="orderStatus" value="Processing">
                                 <div class="table-responsive">
                                 <table class="table table-sm">
                                     <thead>
@@ -37,15 +38,31 @@
                                         <tr>
                                             <td style="font-weight: normal;">Reference Number</td>
                                             <td style="color: rgb(72,72,72);">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
-                                                    <option value="">LO 432432</option>
-                                                    <option value="">DR 24332</option>
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryReference" name="deliveryReference">
+                                                    <option value="" selected disabled>...</option>
+                                                    {{#each pendingList}}
+                                                    <option value="{{#compareTwoValues this.order_type 'Restock' operator='==='}}LO{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}DR{{/compareTwoValues}}{{this.purchase_lo}}">
+                                                    {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                                    LO 
+                                                    {{/compareTwoValues}}
+
+                                                    {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                                    DR 
+                                                    {{/compareTwoValues}}
+                                                    {{this.purchase_lo}}
+                                                    </option>
+                                                    {{/each}}
                                                 </select>
                                             </td>
                                             <td></td>
                                             <td></td>
                                         </tr>
-                                        <tr></tr>
+                                        <tr>
+                                            <td>Order Type</td>
+                                            <td><span id="deliveryOrderType">N/A</span></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         <tr>
                                             <td style="font-weight: normal;">Customer</td>
                                             <td><input type="text" required="" readonly="" id="deliveryCustomer" style="background: rgb(237,237,237);border-width: 1px;"></td>
@@ -73,18 +90,21 @@
                                         <tr>
                                             <td style="font-weight: normal;">Product</td>
                                             <td style="width: 100px;">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;background: rgb(237,237,237);" required="">
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;background: rgb(237,237,237);" required="" id="deliveryProduct">
+                                                    <option value="">...</option>
                                                     <option value="FCC">FCC</option>
-                                                    <option value="RCC" disabled>RCC</option>
+                                                    <option value="RCC">RCC</option>
                                                 </select>
                                             </td>
                                             <td style="width: 100px;">Plate Number</td>
                                             <td style="width: 100px;">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
-                                                    <option value="">PTD 342</option>
-                                                    <option value="">DNE 654</option>
-                                                    <option value="">DJO 2410</option>
-                                                    <option value="">POL 3510</option>
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryTruck" name="deliveryTruck">
+                                                    <option value="" selected disabled>...</option>
+                                                    {{#each truckList}}
+                                                    {{#compareTwoValues this.truck_status 'Available' operator='==='}}
+                                                    <option value="{{this.plate_num}}">{{this.plate_num}}</option>
+                                                    {{/compareTwoValues}}
+                                                    {{/each}}
                                                 </select>
                                             </td>
                                         </tr>
@@ -94,7 +114,8 @@
                                                 <input type="text" required="" id="deliveryQty" readonly="" style="background: rgb(237,237,237);border-width: 1px;">
                                                 <input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
                                             <td>Driver</td>
-                                            <td>Allen Dalangin</td>
+                                            <td><input style="background-color: none;border: none;" type="text" name="deliveryDriver" id="deliveryDriver" readonly></td>
+                                            <input type="hidden" name="deliveryDriverId" id="deliveryDriverId">
                                         </tr>
                                         <tr>
                                             <td style="font-weight: normal;">Total Price</td>
@@ -158,7 +179,7 @@
                                             {{/compareTwoValues}}
                                             </p>
                                             
-                                            <p class="text-center status-data">
+                                            <p class="text-center status-data" style="font-size: 12px;">
                                             {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
                                             DR {{this.delivery_receipt}}
                                             {{/compareTwoValues}}
@@ -400,5 +421,9 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var ajaxView = 'scheduleDelivery';
+</script>
 
 <script src="../assets/js/ajax.js"></script>

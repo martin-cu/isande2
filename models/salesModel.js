@@ -53,6 +53,15 @@ exports.updateSaleRecord = function(update, query, next) {
 	mysql.query(sql, next);
 }
 
+exports.updateSaleDeliveryRecord = function(update1, update2, query, next) {
+	var sql = "update sales_history set ? where ?;update delivery_detail_table set ? where delivery_detail_id = ( select sh.delivery_details from sales_history as sh where ?)";
+	sql = mysql.format(sql, update1);
+	sql = mysql.format(sql, query);
+	sql = mysql.format(sql, update2);
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+}
+
 exports.getAllSaleRecords = function(next) {
 	var sql = "select date_format(t.scheduled_date, '%m/%d/%Y') as formattedDate, ct.customer_name, pt.product_name, case when t.damaged_bags is null then 'N/A' else t.damaged_bags end as formattedDamage, format(t.amount*t.qty,2) as formattedTotal, format(t.amount, 2) as formattedAmount, t.* from ( SELECT sh.*, ddt.damaged_bags FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id union select sh.*, null from sales_history as sh ) as t join customer_table as ct using(customer_id) join product_table as pt using(product_id) group by delivery_receipt order by t.order_status desc, t.scheduled_date, t.customer_id, t.time_recorded";
 	mysql.query(sql, next);

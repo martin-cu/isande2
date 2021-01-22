@@ -38,7 +38,7 @@
                         </thead>
                         <tbody class="text-center">
             {{#each deliveries}}
-                            <tr onclick='location.href="#"'>
+                            <tr onclick='location.href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.delivery_receipt}}{{/compareTwoValues}}"'>
                                 <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
                                 <td>{{this.formattedDate}}<br></td>
                                 <td>{{this.plate_num}}<br></td>

@@ -54,8 +54,13 @@ router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurch
 //Logistics
 router.get('/schedule_delivery', isPrivate, deliveryController.scheduleDelivery);
 router.get('/ajaxChangeDeliveryInfo', isPrivate, deliveryController.getSingleDeliveryInfo);
+router.get('/ajaxChangeDriver', isPrivate, deliveryController.ajaxChangeDriver);
+router.post('/schedule_delivery', isPrivate, deliveryController.updateDelivery);
+router.get('/confirm_delivery', isPrivate, deliveryController.getConfirmDelivery);
+router.post('/confirm_delivery', isPrivate, deliveryController.updateDelivery);
 router.get('/track_deliveries', isPrivate, deliveryController.getTrackDelivery);
 router.get('/changeLogisticCalendar', isPrivate, deliveryController.changeCalendar);
 router.get('/view_delivery_records', isPrivate, deliveryController.getDeliveryRecords);
+router.get('/view_delivery_details/:id', isPrivate, deliveryController.viewDeliveryDetails);
 
 module.exports = router;

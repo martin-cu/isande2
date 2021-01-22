@@ -1,6 +1,21 @@
 var mysql = require('./connectionModel');
 mysql = mysql.connection;
 
+exports.updateProductQty = function(query ,next) {
+	var sql = "update product_table set qty = qty + (select ph.qty from purchase_history as ph where ?) where product_id = (select ph.product_id from purchase_history as ph where ?)";
+	sql = mysql.format(sql, query);
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+}
+
+exports.updateProductQtySales = function(query ,next) {
+	var sql = "update product_table set qty = qty - (select sh.qty from sales_history as sh where ?) where product_id = (select sh.product_id from sales_history as sh where ?)";
+	sql = mysql.format(sql, query);
+	sql = mysql.format(sql, query);
+	console.log(sql);
+	mysql.query(sql, next);
+}
+
 exports.getCurrInventory = function(next) {
 	var sql = "select DATE_FORMAT(curdate(), '%m/%d/%Y') as date, pt.* from product_table as pt";
 	

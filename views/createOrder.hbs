@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 1px;">Date Scheduled</th>
-                                        <th style="width: 50px;"><input type="date" id="dateScheduled" name="dateScheduled" required=""></th>
+                                        <th style="width: 50px;"><input type="date" id="dateScheduled" name="dateScheduled" required=""><span style="font-weight: bold; font-size: 1.2rem; display: none" id="dateScheduled_review"></span></th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -40,7 +40,7 @@
                                         <td style="font-weight: normal;">Customer</td>
                                         <td>
                                             <div class="autocomplete">
-                                                <input type="text" name="customerName" id="customerName" required="">
+                                                <input type="text" name="customerName" id="customerName" required=""><span style="font-weight: bold; font-size: 1.2rem; display: none" id="customerName_review"></span>
                                             </div>
                                         </td>
                                         <td></td>
@@ -48,7 +48,7 @@
                                     </tr>
                                     <tr>
                                         <td style="font-weight: normal;">Customer Address</td>
-                                        <td><select id="saleAddress" name="saleAddress" style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 16px;width: 200px;" disabled required=""></select></td>
+                                        <td><select id="saleAddress" name="saleAddress" style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 16px;width: 200px;" disabled required=""></select><span style="font-weight: bold; font-size: 1.2rem; display: none" id="saleAddress_review"></span></td>
                                         <td></td>
                                         <td></td>
                                     </tr>
@@ -70,18 +70,18 @@
                                                 {{#each products}}
                                                     <option value="{{product_id}}">{{product_name}}</option>
                                                 {{/each}}
-                                            </select></td>
+                                            </select><span style="font-weight: bold; font-size: 1.2rem; display: none" id="product_review"></span></td>
                                         <td style="width: 100px;">Payment Terms</td>
                                         <td style="width: 100px;"><select id="paymentTerms" name="paymentTerms" style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="">
                                                 <option value="Cash" selected="">Cash</option>
                                                 <option value="NET7">NET7</option>
                                                 <option value="NET15">NET15</option>
                                                 <option value="NET30">NET30</option>
-                                            </select></td>
+                                            </select><span style="font-weight: bold; font-size: 1.2rem; display: none" id="paymentTerms_review"></span></td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight: normal;">Quantity</td>
-                                        <td><input type="text" required="" id="qty" name="qty"><input class="form-control-plaintext d-inline-flex" type="text" readonly value="bag/s" style="margin-left: 10px;width: 42px;"></td>
+                                        <td><input type="text" required="" id="qty" name="qty"><span style="font-weight: bold; font-size: 1.2rem; display: none" id="qty_review"></span><input class="form-control-plaintext d-inline-flex qty" type="text" readonly value="bag/s" style="margin-left: 10px;width: 42px;"> </td>
                                         <td>Order Type</td>
                                         <td>
                                             <div>
@@ -95,7 +95,7 @@
                                     </tr>
                                     <tr>
                                         <td style="font-weight: normal;">Total Price</td>
-                                        <td style="font-weight: normal;"><input type="text" id="total" readonly="" style="background: rgb(237,237,237);"><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                        <td style="font-weight: normal;"><input type="text" id="total" readonly="" style="background: rgb(237,237,237);"><span style="font-weight: bold; font-size: 1.2rem; display: none" id="total_review"></span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
                                         <td><span class="pickup" hidden>Pick-up Plate No.</span></td>
                                         <td style="font-weight: normal;">
                                             <div class="autocomplete" >
@@ -108,7 +108,8 @@
                             </table>
                         </form>
                     </div>
-                    <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" type="submit" form="salesForm">Next</button>
+                    <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" id="next">Next</button>
+                   
                 </div>
             </div>
         </div>

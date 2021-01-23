@@ -34,9 +34,60 @@ function sales_review(){
 	$("#total_review").show();
 }
 
+
+function review_fields(){
+	var status = true;
+	if(!$("#dateScheduled").val()){
+		$("#dateScheduled").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#dateScheduled").css("border-color", "");
+
+
+	if(!$("#customerName").val()){
+		$("#customerName").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#customerName").css("border-color", "");
+
+	if(!$("#saleAddress").val()){
+		$("#saleAddress").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#saleAddress").css("border-color", "");
+
+	if(!$("#saleAddress").val()){
+		$("#saleAddress").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#saleAddress").css("border-color", "");
+
+	if(!$("#total").val()){
+		$("#total").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#total").css("border-color", "");
+
+	if(!$("#qty").val()){
+		$("#qty").css("border-color", "rgb(235, 64, 54)");
+		status = false;
+	}
+	else
+		$("#qty").css("border-color", "");
+
+
+}
+
+
+
+
 $(document).ready(function() {
 	$(".custom-radio").change(function(){
-		alert("Changed");
 		if($("#customRadio2").is(":checked")){
 			$(".pickup").removeAttr("hidden");
 		}
@@ -55,12 +106,17 @@ $(document).ready(function() {
 		submit.setAttribute('type', "submit");
 		submit.innerHTML = "Create";
 
+		if(review_fields()){
+			sales_review();
+			$(this).remove();
+			$(".card-body").append(submit);
+		}
+		else{
+			//Add error message
+		}
 
-		sales_review();
 
-
-		$(this).remove();
-		$(".card-body").append(submit);
+		
 
 
 	});

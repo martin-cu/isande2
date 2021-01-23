@@ -26,4 +26,7 @@ $(document).ready(function() {
 			$("#total_amt").val(total);
 		});
 	});
+
+
+	
 });

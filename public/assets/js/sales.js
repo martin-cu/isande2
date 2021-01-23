@@ -80,10 +80,36 @@ function review_fields(){
 	else
 		$("#qty").css("border-color", "");
 
-
+	return status;
 }
 
+function s_back(){
+	$("#dateScheduled").show();
+	$("#dateScheduled_review").hide();
 
+	$("#customerName").show();
+	$("#customerName_review").hide();
+
+	$("#saleAddress").show();
+	$("#saleAddress_review").hide();
+
+	$("#paymentTerms").show();
+	$("#paymentTerms_review").hide();
+
+	$("#product").show();
+	$("#product_review").hide();
+
+	$("#qty").show();
+	$("#qty_review").hide();
+
+	$("#total").show();
+	$("#total_review").hide();
+
+	$("#back").remove();
+	$("#submit").remove();
+
+	$("#next").show();
+}
 
 
 $(document).ready(function() {
@@ -102,13 +128,25 @@ $(document).ready(function() {
 		submit = document.createElement('button');
 		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
 		submit.setAttribute('form', "salesForm");
+		submit.setAttribute('id', "submit");
 		submit.setAttribute('type', "submit");
 		submit.innerHTML = "Create";
 
+
+		var back;
+		back = document.createElement("button");
+		back.setAttribute("class", "btn btn-primary active text-center float-left d-xl-flex justify-content-xl-end align-items-xl-start");
+		back.setAttribute("id", "back");
+		back.setAttribute("onclick", "s_back()");
+		back.setAttribute("style", "background-color:grey;");
+		back.innerHTML = "Back";
+
+
 		if(review_fields()){
 			sales_review();
-			$(this).remove();
+			$(this).hide();
 			$(".card-body").append(submit);
+			$(".card-body").append(back);
 		}
 		else{
 			//Add error message

@@ -101,7 +101,6 @@ $(document).ready(function() {
 		var submit;
 		submit = document.createElement('button');
 		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
-		submit.setAttribute('type', "submit");
 		submit.setAttribute('form', "salesForm");
 		submit.setAttribute('type', "submit");
 		submit.innerHTML = "Create";

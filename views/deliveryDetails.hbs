@@ -1,0 +1,140 @@
+<div class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Delivery Records&nbsp;</h3>
+    </div>
+    <div class="row">
+        <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
+            <form>
+                <section></section>
+            </form>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);"></i>
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" style="font-weight: bold;">
+                            {{#compareTwoValues deliveryInfo.order_type 'Restock' operator='==='}}
+                            Load Number: {{deliveryInfo.supplier_lo}}
+                            {{/compareTwoValues}}
+
+                            {{#compareTwoValues deliveryInfo.order_type 'Restock' operator='!='}}
+                            Delivery Receipt: {{deliveryInfo.purchase_lo}}
+                            {{/compareTwoValues}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20% !important;">Date Scheduled</th>
+                                    <th style="width: 30% !important;">
+                                        {{deliveryInfo.formattedDate}}
+                                    </th>
+                                    <th style="width: 20% !important;"></th>
+                                    <th style="width: 30% !important;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 1px !important;"></td>
+                                    <td style="width: 50px !important"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Customer Information</td>
+                                    <td style="width: 50px;"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: normal;">SO Number</td>
+                                    <td>
+                                        <span class="record-detail-info">{{deliveryInfo.supplier_lo}}</span>
+                                    </td>
+                                    <td>Customer Name</td>
+                                    <td>
+                                        <span class="record-detail-info">{{deliveryInfo.customer_name}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: normal;">DR Number</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{deliveryInfo.delivery_receipt}}</span>
+                                    </td>
+                                    <td>Customer Address</td>
+                                    <td>
+                                        <span class="record-detail-info">{{deliveryInfo.destination}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Order Details</td>
+                                    <td style="width: 0px;"></td>
+                                    <td style="width: 0px;font-weight: bold;">Delivery Information</td>
+                                    <td style="width: 0px;"></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>
+                                        <span class="record-detail-info">{{deliveryInfo.order_status}}</span>
+                                    </td>
+                                    <td style="width: 100px;">Truck Plate Number</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{#if deliveryInfo.plate_num}}{{deliveryInfo.plate_num}}{{else}}N/A{{/if}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: normal;">Product<br></td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{deliveryInfo.product_name}}</span>
+                                    <td style="width: 100px;">Driver</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{#if deliveryInfo.driver}}{{deliveryInfo.driver}}{{else}}N/A{{/if}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: normal;">Product Price<br></td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">Php {{deliveryInfo.pricePiece}}</span></td>
+                                    <td style="width: 100px;">Time Out</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{deliveryInfo.time_out}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: normal;">Quantity</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{deliveryInfo.qty}} bag/s</span>
+                                    </td>
+                                    <td style="width: 100px;">Damaged Bags</td>
+                                    <td style="width: 100px;">
+                                        <span class="record-detail-info">{{deliveryInfo.damaged_bags}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Total Amount</td>
+                                    <td class="font-weight-bold" style="width: 100px;">
+                                        <span class="record-detail-info">Php {{deliveryInfo.total_amt}}</span>
+                                    </td>
+
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr></tr>
+                            </tbody>
+                        </table>
+                    </div><button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" type="button" href="javascript:history.back()">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

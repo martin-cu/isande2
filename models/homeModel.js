@@ -51,6 +51,23 @@ exports.getMonthlyPurchases = function(next) {
 	mysql.query(sql, next);
 }
 
+//Logistics
+exports.getPendingDeliveries = function(query, next) {
+	var sql = "select case when max(t.purchase_lo) = max(t.supplier_lo) and max(t.dr) is not null then 'Sell-out' when max(t.supplier_lo) is null then 'Sell-in' else 'Restock' end as order_type, max(t.supplier_lo) as supplier_lo, max(t.dr) as delivery_receipt, max(t.purchase_lo) as purchase_lo, case when max(t.customer_name) is null then 'N/A' else max(t.customer_name) end as customer_name from ( select ph.date, ph.supplier_lo, null as dr, ph.supplier_lo as purchase_lo, null as customer_name from purchase_history as ph where ph.status = 'Pending' and datediff(now(), ph.date) >= 0 union select sh.scheduled_date, null, sh.delivery_receipt, case when sh.purchase_lo is null then sh.delivery_receipt else sh.purchase_lo end, ct.customer_name from sales_history as sh join customer_table as ct using(customer_id) where sh.order_status = 'Pending' and datediff(now(), sh.scheduled_date) >= 0 ) as t group by t.purchase_lo order by t.date, field('Sell-in', 'Sell-out', 'Restock') limit ?";
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+}
+
+exports.getPerfectOrderRate = function(next) {
+	var sql = "select date_format(sh.scheduled_date, '%b') as month, ( sum(case when ddt.damaged_bags = '0' and ddt.status='Completed' then 1 else 0 end) / ((sum(case when ddt.damaged_bags = '0' and ddt.status='Completed' then 1 else 0 end))+sum(case when ddt.damaged_bags != '0' and ddt.status='Completed' then 1 else 0 end)) )*100 as percentDamageFree, ( sum(case when ddt.status = 'Completed' and datediff(sh.scheduled_date, ddt.date_completed) >= 0 then 1 else 0 end)/count(*))*100 as percentOnTime from sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id where year(now()) = year(sh.scheduled_date) group by month(sh.scheduled_date) order by sh.scheduled_date";
+	mysql.query(sql, next);
+}
+
+exports.getDeliveryByDestination = function(next) {
+	var sql = "SELECT clt.location_name, count(*) as count_deliveries, concat(format((count(*)/(select count(*) FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where month(now()) = month(sh.scheduled_date))*100),2),'%') as delivery_percentage FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where month(now()) = month(sh.scheduled_date) group by ddt.delivery_address order by count(ddt.delivery_address) desc, clt.location_name";
+	mysql.query(sql, next);
+}
+
 /*
 exports.getPurchasesOverview = function(next){
 	var sql = "SELECT ph.status, pt.product_name, ph.supplier_lo, ph.plate_num, c.customer_name FROM purchase_history ph LEFT JOIN product_table pt ON pt.product_id = ph.product_id LEFT JOIN sales_history sh ON sh.purchase_lo = ph.supplier_lo LEFT JOIN customer_table c ON c.customer_id = sh.customer_id WHERE date(ph.date) = CURDATE() OR ph.status = 'Pending' order by ph.status limit 10";

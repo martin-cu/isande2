@@ -1,0 +1,108 @@
+<div class="container-fluid">
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Sales Records</h3>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="card" id="TableSorterCard-1">
+        <div class="card-header py-3">
+            <div class="row table-topper align-items-center">
+                <div class="col-12 col-sm-5 col-md-6 text-left" style="margin: 0px;padding: 5px 15px;">
+                    <p class="text-primary m-0 font-weight-bold"></p>
+                    <div class="d-inline-flex dataTables_length" id="dataTable_length" aria-controls="dataTable"><label class="d-flex float-right align-items-xl-center">Show&nbsp;<select class="form-control form-control-sm custom-select custom-select-sm">
+                                <option value="10" selected="">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>&nbsp;</label></div>
+                </div>
+                <div class="col-12 col-sm-7 col-md-6 text-right" style="margin: 0px;padding: 5px 15px;"><button class="btn btn-primary btn-sm reset" type="button" style="margin: 2px;">Reset Filter</button></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm table tablesorter" id="ipi-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Status</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">Date</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">PLATE NO</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">DRIVER</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">TYPE</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">IDENTIFIER</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">PRODUCT</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">QTY</th>
+                                <th class="text-center" style="color: rgb(123,124,222);background: rgb(248,249,252);border-style: none;">DESTINATION</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+            {{#each deliveries}}
+                            <tr onclick='location.href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.delivery_receipt}}{{/compareTwoValues}}"'>
+                                <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
+                                <td>{{this.formattedDate}}<br></td>
+                                <td>{{this.plate_num}}<br></td>
+                                <td>{{this.driver}}</td>
+                                <td>{{this.order_type}}</td>
+                                <td>
+                                {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
+                                DR {{this.delivery_receipt}}
+                                {{/compareTwoValues}}
+
+                                {{#compareTwoValues this.order_type 'Sell-out' operator='==='}}
+                                DR {{this.delivery_receipt}}<br>
+                                LO {{this.supplier_lo}}
+                                {{/compareTwoValues}}
+
+                                {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                LO {{this.supplier_lo}}
+                                {{/compareTwoValues}}
+                                </td>
+                                <td>{{this.product_name}}</td>
+                                <td>{{this.qty}} bags<br></td>
+                                <td>{{this.destination}}<br></td>
+                            </tr>
+            {{/each}}
+            {{#each blanks}}
+                            <tr>
+                                <td></td>
+                                <td><br></td>
+                                <td><br></td>
+                                <td></td>
+                                <td></td>
+                                <td><br></td>
+                                <td></td>
+                                <td><br></td>
+                                <td></td>
+                            </tr>
+            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-header py-3">
+            <div class="row table-topper align-items-center">
+                <div class="col-12 col-sm-5 col-md-6 text-left" style="margin: 0px;padding: 5px 15px;">
+                    <div class="row">
+                        <div class="col-md-6 align-self-center">
+                            <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-7 col-md-6 text-right" style="margin: 0px;padding: 5px 15px;">
+                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

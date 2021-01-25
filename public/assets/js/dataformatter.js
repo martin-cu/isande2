@@ -362,7 +362,7 @@ exports.groupByDayofWeek = function(dates, orders) {
 		dayObj['date'] = dates[i];
 		dayObj['orders'] = [];
 		for (var x = 0; x < orders.length; x++) {
-			if (orders[x].formattedSchedule === dates[i]) {
+			if (orders[x].formattedSchedule === dates[i] || orders[x].formattedDate === dates[i]) {
 				orderObj = {};
 				orderObj['deliveryReceipt'] = orders[x].delivery_receipt;
 				orderObj['supplier_lo'] = orders[x].supplier_lo;
@@ -370,6 +370,7 @@ exports.groupByDayofWeek = function(dates, orders) {
 				orderObj['product'] = orders[x].product_name;
 				orderObj['qty'] = orders[x].qty;
 				orderObj['status'] = orders[x].order_status || orders[x].status;
+				orderObj['order_type'] = orders[x].order_type;
 				dayObj['orders'].push(orderObj);
 			}
 		}
@@ -431,6 +432,46 @@ exports.groupedMonthlyPurchases = function(data) {
 		}
 	};
 	return arr;
+}
+exports.transformPerfectOrderRate = function(data) {
+	var arr = [];
+	var found;
+	var monthObj = {};
+	var months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun',
+	'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+	for (var i = 0; i < months.length; i++) {
+		for (var x = 0; x < data.length; x++) {
+			if (months[i] === data[x].month) {
+				found = 1;
+				monthObj = {};
+				monthObj['month'] = months[i];
+				monthObj['data'] = (data[x].percentDamageFree * data[x].percentOnTime / 100).toFixed(2);
+				arr.push(monthObj);
+			}
+		}
+		if (found)
+			found = 0;
+		else {
+			monthObj = {};
+			monthObj['month'] = months[i];
+			monthObj['data'] = NaN;
+			arr.push(monthObj);
+		}
+	}
+	return arr;
+}
+exports.groupedDeliveryByLoc = function(data) {
+	if (data.length != 0) {
+		var obj = { labels: [], data: [] };
+		for (var i = 0; i < data.length; i++) {
+			obj.labels.push(data[i].location_name);
+			obj.data.push(data[i].count_deliveries);
+		}
+		return obj;
+	}
+	else
+		return ;
 }
 
 exports.formatReportMetrics = function(data) {

@@ -4,6 +4,7 @@ const homeController = require('../controllers/homeController');
 const notificationController = require('../controllers/notificationController');
 const salesController = require('../controllers/salesController');
 const purchaseController = require('../controllers/purchaseController');
+const deliveryController = require('../controllers/deliveryController');
 const reportController = require('../controllers/reportController');
 const inventoryController = require('../controllers/inventoryController');
 
@@ -54,5 +55,16 @@ router.get('/view_purchase_details/:lo', isPrivate, purchaseController.viewPurch
 router.get('/create_purchase', isPrivate, purchaseController.getCreatePurchase);
 router.post('/create_purchase', isPrivate, purchaseController.postCreatePurchase);
 router.get('/get_price', isPrivate, purchaseController.getPrice);
+//Logistics
+router.get('/schedule_delivery', isPrivate, deliveryController.scheduleDelivery);
+router.get('/ajaxChangeDeliveryInfo', isPrivate, deliveryController.getSingleDeliveryInfo);
+router.get('/ajaxChangeDriver', isPrivate, deliveryController.ajaxChangeDriver);
+router.post('/schedule_delivery', isPrivate, deliveryController.updateDelivery);
+router.get('/confirm_delivery', isPrivate, deliveryController.getConfirmDelivery);
+router.post('/confirm_delivery', isPrivate, deliveryController.updateDelivery);
+router.get('/track_deliveries', isPrivate, deliveryController.getTrackDelivery);
+router.get('/changeLogisticCalendar', isPrivate, deliveryController.changeCalendar);
+router.get('/view_delivery_records', isPrivate, deliveryController.getDeliveryRecords);
+router.get('/view_delivery_details/:id', isPrivate, deliveryController.viewDeliveryDetails);
 
 module.exports = router;

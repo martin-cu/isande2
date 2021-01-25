@@ -1,3 +1,16 @@
+select[readonly] {
+	background: #eee;
+	pointer-events: none;
+	touch-action: none;
+}
+
+.chart-no-data {
+	top:40%;
+	position:absolute;
+	font-size: 24px;
+	width: 100%;
+}
+
 .regular-input {
 	border: none;
 	display: inline;

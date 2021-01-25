@@ -25,9 +25,11 @@ exports.init_session = function(obj, role, name, username, employee, tab) {
 		obj['recent_data'] = 'Deliveries';
 	}
 
+	obj[tab] = true;
+	/*
 	if (tab === 'dashboard_tab')
 		obj['dashboard_tab'] = true;
-	/******* Sale Tabs ********/
+	
 	else if (tab === 'create_sales_tab') 
 		obj['create_sales_tab'] = true;
 	else if (tab === 'payments_tab') 
@@ -54,13 +56,11 @@ exports.init_session = function(obj, role, name, username, employee, tab) {
 		obj['reports_tab'] = true;
 	else if (tab === 'resources') 
 		obj['resources_tab'] = true;
-
-	/******* Purchasing Tabs ********/
-	else if (tab === 'create_purchase_tab') 
-		obj['create_purchase_tab'] = true;
+	
 
 	else if (tab === 'purchase_record_tab') 
 		obj['purchase_record_tab'] = true;
+	*/
 	return obj;
 }
 

@@ -1,5 +1,6 @@
 function createAreaChart(arr) {
-	var chartId, labels = [], data = [], seriesLabel;
+	console.log(arr);
+	var chartId, labels = [], data = [], seriesLabel, callback, datasetOpt;
 
 	if (view == 'Sales Employee') {
 		chartId = 'overviewSales';
@@ -9,18 +10,8 @@ function createAreaChart(arr) {
 			labels.push(arr[i].month);
 			data.push(arr[i].earnings);
 		}
-	}
-	else if (view == 'Purchasing Employee') {
 
-	}
-	else if (view == 'Logistics Employee') {
-
-	}
-	var ctx = document.getElementById(chartId);
-
-	var chart = new Chart(ctx, {
-	    type: 'line',
-	    data: {
+		dataOpt = {
 	        labels: labels,
 	        datasets: [{
 	            label: seriesLabel,
@@ -30,8 +21,9 @@ function createAreaChart(arr) {
 	            backgroundColor: 'rgb(231, 234, 247)',
 	            borderWidth: 2
 	        }]
-	    },
-	    options: {
+	    };
+
+	    chartOpt = {
 	      responsive: true,
 	      maintainAspectRatio: false,
 	      legend: {
@@ -42,40 +34,103 @@ function createAreaChart(arr) {
 	      		ticks: {
 	      			beginAtZero: true,
 	      			callback: function(value, index, values) {
-                                  if(parseInt(value) >= 1000){
-                                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                  } else {
-                                    return value;
-                                  }
-                                }
+                      if(parseInt(value) >= 1000){
+                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      } else {
+                        return value;
+                      }
+                    }
 	      		}
 	      	}]
 	      },
 	      tooltips: {
-			callbacks: {
-				// this callback is used to create the tooltip label
-				label: function(tooltipItem, data) {
-						// get the data label and data value to display
-						// convert the data value to local string so it uses a comma seperated number
+	      		callbacks: {
+					label: function(tooltipItem, data) {
 						var dataLabel = data.labels[tooltipItem.index];
-						// add the currency symbol $ to the label
 						var value = ': Php ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString();
-						// make sure this isn't a multi-line label (e.g. [["label 1 - line 1, "line 2, ], [etc...]])
 						if (Chart.helpers.isArray(dataLabel)) {
-						// show value on first line of multiline label
-						// need to clone because we are changing the value
-						dataLabel = dataLabel.slice();
-						dataLabel[0] += value;
-						} else {
-						dataLabel += value;
+							dataLabel = dataLabel.slice();
+							dataLabel[0] += value;
 						}
-						// return the text to display on the tooltip
+						else {
+							dataLabel += value;
+						}
 						return dataLabel;
 					}
 				}
 			},
 	    }
+	}
+	else if (view == 'Purchasing Employee') {
+
+	}
+	else if (view == 'Logistics Employee') {
+		chartId = 'overviewSales';
+		seriesLabel = 'Perfect Order Rate';
+
+		for (var i = 0; i < arr.length; i++) {
+			labels.push(arr[i].month);
+			data.push(arr[i].data);
+		}
+
+		dataOpt = {
+	        labels: labels,
+	        datasets: [{
+	            label: seriesLabel,
+	            data: data,
+	            fill: false,
+	            borderColor: 'rgba(78, 115, 223, 1)',
+	            borderWidth: 2
+	        }]
+	    };
+
+		chartOpt = {
+	      responsive: true,
+	      maintainAspectRatio: false,
+	      legend: {
+	        display: false
+	      },
+	      scales: {
+	      	yAxes: [{
+	      		ticks: {
+	      			beginAtZero: false,
+	      			min: Math.floor(Math.min.apply(this, data.filter(function(n) { return Number(n); }))/10)*10,
+	      			callback: function(value, index, values) {
+                      if(parseInt(value) >= 1000){
+                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      } else {
+                        return value;
+                      }
+                    }
+	      		}
+	      	}]
+	      },
+	      tooltips: {
+	      		callbacks: {
+					label: function(tooltipItem, data) {
+						var dataLabel = data.labels[tooltipItem.index];
+						var value = ': Accuracy ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString()+'%';
+						if (Chart.helpers.isArray(dataLabel)) {
+							dataLabel = dataLabel.slice();
+							dataLabel[0] += value;
+						}
+						else {
+							dataLabel += value;
+						}
+						return dataLabel;
+					}
+				}
+			},
+	    }
+	}
+	var ctx = document.getElementById(chartId);
+
+	var chart = new Chart(ctx, {
+	    type: 'line',
+	    data: dataOpt,
+	    options: chartOpt
 	});
+	console.log(data);
 	return chart;
 }
 
@@ -129,5 +184,26 @@ function createBarChart(arr) {
 	    maintainAspectRatio: false,
 	    legend: { position: 'bottom' },
 	  }
+	});
+}
+
+function createPieChart(arr) {
+	new Chart(document.getElementById("deliveryByDestination"), {
+	    type: 'pie',
+	    data: {
+	      labels: arr.labels,
+	      datasets: [{
+	        label: "Population (millions)",
+	        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+	        data: arr.data
+	      }]
+	    },
+	    options: {
+	    	responsive: true,
+	    	maintainAspectRatio: false,
+	    	legend: {
+	    		position: 'bottom'
+	    	}
+	    }
 	});
 }

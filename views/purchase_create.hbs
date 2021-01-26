@@ -4,20 +4,21 @@
                     </div>
                     <div class="row">
                         <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
-                            <form action="/create_purchase" method="post" autocomplete="off" id="purchaseForm">
+                           
                                 <div class="card">
                                     <div class="card-header">
                                         <ul class="nav nav-tabs card-header-tabs">
-                                            <li class="nav-item"><a class="nav-link active" href="#">Order Number: 00001</a></li>
+                                            <li class="nav-item"><a class="nav-link active" href="#">Create Order</a></li>
                                         </ul>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
+                                             <form action="/create_purchase" method="post" autocomplete="off" id="purchaseForm">
                                             <table class="table table-sm">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 200px;">Date Scheduled</th>
-                                                        <th style="width: 50px;"><input class="form-control" type="date" required="" id="date" name="date"></th>
+                                                        <th style="width: 50px;"><input class="form-control" type="date" required="" id="date" name="date"><span style="font-size: 1.2rem; font-weight: bold"id="date_review"></span></th>
                                                         <th style="width: 0px;font-weight: bold;"></th>
                                                         <th></th>
                                                         <th></th>
@@ -34,10 +35,10 @@
                                                     <tr></tr>
                                                     <tr>
                                                         <td style="font-weight: normal;">Supplier LO</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_lo" name="purchase_lo" class="form-control" type="number" required="" style="width: 200px; height: 2rem; margin-left: 5px;"></td>
+                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_lo" name="purchase_lo" class="form-control" type="number" required=""  min="0" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_lo_review"></span></td>
                                                         <td style="width: 0px;font-weight: bold;"></td>
                                                         <td style="font-weight: normal;">Supplier SO</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_so" name="purchase_so" class="form-control" type="text" style="width: 200px; height: 2rem; margin-left: 5px;"></td>
+                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_so" name="purchase_so" class="form-control" type="text" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_so_review"></span></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td style="font-weight: bold;"></td>
@@ -51,6 +52,7 @@
                                                                 <option value="1">FCC</option>
                                                                 <option value="2">RCC</option>
                                                             </select>
+                                                            <span style="font-size: 1.2rem; font-weight: bold" id="purchase_product_review"></span>
                                                         </td>
                                                         <td style="width:100px;font-weight: bold;"></td>
                                                         <td style="width: 150px; text-align: left;"><span style="width: 100%; float: right;">Product price</span></td>
@@ -58,24 +60,26 @@
                                                     </tr>
                                                     <tr>
                                                         <td style="font-weight: normal;">Quantity</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="p_qty" name="qty" type="number" required="" style="width: 200px; height: 2rem; margin-left: 5px;"><input class="form-control-plaintext" type="text" value="bag/s" readonly="" style="margin-left: 1rem;width: 42px;padding: 0px;"></div></td>
+                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="p_qty" name="qty" type="number" required="" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="p_qty_review"></span><input class="form-control-plaintext" type="text" value="bag/s" readonly="" style="margin-left: 1rem;width: 42px;padding: 0px;"></div></td>
                                                         <td></td>
                                                         <td style="width: 0px;font-weight: bold;"></td>
                                                         <td></td>
                                                     </tr>
                                                     <tr style="">
                                                         <td style="font-weight: normal;">Total Price</td>
-                                                        <td style="font-weight: normal;padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="total_amt" name="total_amt" type="text" readonly="" style="width: 15rem; height: 2rem; "><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="width: 50px;padding: 0px; margin-left: 1rem"></div></td>
+                                                        <td style="font-weight: normal;padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="total_amt" name="total_amt" type="text" readonly="" style="width: 15rem; height: 2rem; "><span style="font-size: 1.2rem; font-weight: bold" id="total_amt_review"></span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="width: 50px;padding: 0px; margin-left: 1rem"></div></td>
                                                         <td style="font-weight: normal;"></td>
                                                         <td style="width: 0px;font-weight: bold;"></td>
                                                         <td></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div><button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" type="submit" form="purchaseForm">Next</button>
+                                            </form>
+                                        </div>
+                                        <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" id="p_next">Next</button>
                                     </div>
                                 </div>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>

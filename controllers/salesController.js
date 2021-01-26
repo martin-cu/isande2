@@ -542,8 +542,8 @@ exports.viewSalesDetails = function(req,res){
 												customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
 												json_customer_arr = JSON.stringify(customer_arr);
 
-												record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'YYYY-MM-DD')
-												record[0].due_date = dataformatter.formatDate(record[0].due_date, 'YYYY-MM-DD')
+												record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
+												record[0].due_date = dataformatter.formatDate(record[0].due_date, 'mm DD, YYYY')
 												record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
 												record[0].qty = JSON.stringify(record[0].qty);
 												console.log(record[0]);
@@ -568,6 +568,10 @@ exports.viewSalesDetails = function(req,res){
 										});
 									}
 									else{
+										record[0].scheduled_date =  dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
+												record[0].due_date = dataformatter.formatDate(record[0].due_date,  'mm DD, YYYY')
+												record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+												record[0].qty = JSON.stringify(record[0].qty);
 										var html_data = { 
 											sale_record: record[0],
 											carriers: carriers,

@@ -145,7 +145,7 @@
                                 {{#each processingDeliveries}}
                                 <tr>
                                     <td class="text-center" style="text-align: center;border-width: 0px;">
-                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}sales_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}" style="cursor: pointer;">
+                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}" style="cursor: pointer;">
                                             <input type="hidden" name="" value="{{this.order_type}}">
                                             
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}

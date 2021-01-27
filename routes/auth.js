@@ -57,9 +57,9 @@ router.post('/create_purchase', isPrivate, purchaseController.postCreatePurchase
 router.get('/get_price', isPrivate, purchaseController.getPrice);
 //Logistics
 router.get('/schedule_delivery', isPrivate, deliveryController.scheduleDelivery);
+router.post('/schedule_delivery', isPrivate, deliveryController.updateDelivery);
 router.get('/ajaxChangeDeliveryInfo', isPrivate, deliveryController.getSingleDeliveryInfo);
 router.get('/ajaxChangeDriver', isPrivate, deliveryController.ajaxChangeDriver);
-router.post('/schedule_delivery', isPrivate, deliveryController.updateDelivery);
 router.get('/confirm_delivery', isPrivate, deliveryController.getConfirmDelivery);
 router.post('/confirm_delivery', isPrivate, deliveryController.updateDelivery);
 router.get('/track_deliveries', isPrivate, deliveryController.getTrackDelivery);

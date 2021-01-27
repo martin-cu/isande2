@@ -135,7 +135,7 @@
                     <h6 class="text-primary font-weight-bold m-0">In Processing Deliveries</h6>
                 </div>
                 <div class="card-body">
-                    <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color: rgb(224,145,52);"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: rgb(54,185,204);margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
+                    <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color:  #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
                     <div class="table-responsive" style="margin-top: 10px;">
                         <table class="table table-sm">
                             <thead>
@@ -145,7 +145,7 @@
                                 {{#each processingDeliveries}}
                                 <tr>
                                     <td class="text-center" style="text-align: center;border-width: 0px;">
-                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}Processing{{/compareTwoValues}}" style="cursor: pointer;">
+                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}sales_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}" style="cursor: pointer;">
                                             <input type="hidden" name="" value="{{this.order_type}}">
                                             
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}

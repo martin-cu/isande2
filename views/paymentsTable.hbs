@@ -47,7 +47,7 @@
                                                             <td>{{this.productName}}</td>
                                                             <td>{{this.qty}}</td>
                                                             <td class="text-right">Php {{this.totalAmt}}</td>
-                                                            <td class="text-center"><input type="checkbox"></td>
+                                                            <td class="text-center"><input type="checkbox" class="checkbox_payment" value="{{this.totalAmt}}" id="{{@index}}" onclick="checkbox_add()"></td>
                                                         </tr>
                                                     {{/each}}
                                                 </tbody>

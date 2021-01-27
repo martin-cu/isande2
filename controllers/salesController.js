@@ -161,7 +161,9 @@ exports.createSaleRecord = function(req, res) {
 										res.redirect('/create_sales');
 									}
 									else {
-										res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+										// res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+										res.redirect('/create_sales');
+
 									}
 								});
 							}

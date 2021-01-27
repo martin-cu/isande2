@@ -2,6 +2,26 @@ function view_sale_details(type){
 
 }
 
+function checkbox_add(){
+	// if($(".checkbox_payment").prop("checked")){
+	// 	alert($(".checkbox_payment").val());
+	// }
+	// else{
+	// 	alert("NO");
+	// }
+
+	var id;
+	var total = 0;
+	for(var i = 0; i < $(".checkbox_payment").length; i++){
+		id = "#" + i.toString();
+		if($(id).prop("checked")){
+			var temp = $(id).val().replace(/,/g , '');
+			total = total + parseFloat(temp);
+		}
+	}
+
+	$("#amountPaid").val(total);
+}
 
 function sales_review(){
 
@@ -76,6 +96,37 @@ function sales_review_fields(){
 	return status;
 }
 
+function next_press(){
+	var submit;
+		submit = document.createElement('button');
+		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
+		submit.setAttribute('form', "salesForm");
+		submit.setAttribute('id', "submit");
+		submit.setAttribute('type', "submit");
+		submit.innerHTML = "Create";
+
+
+		var back;
+		back = document.createElement("button");
+		back.setAttribute("class", "btn btn-primary active text-center float-left d-xl-flex justify-content-xl-end align-items-xl-start");
+		back.setAttribute("id", "back");
+		back.setAttribute("onclick", "s_back()");
+		back.setAttribute("style", "background-color:grey;");
+		back.innerHTML = "Back";
+
+
+		if(sales_review_fields()){
+			sales_review();
+			$("#s_next").remove();
+			$(".card-body").append(submit);
+			$(".card-body").append(back);
+		}
+		else{
+			alert("Please fill up fields");
+		}
+}
+
+
 function s_back(){
 	$("#dateScheduled").show();
 	$("#dateScheduled_review").hide();
@@ -101,7 +152,14 @@ function s_back(){
 	$("#back").remove();
 	$("#submit").remove();
 
-	$("#next").show();
+	var submit;
+	submit = document.createElement('button');
+	submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
+	submit.setAttribute('id', "s_next");
+	submit.setAttribute('onclick', "next_press()");
+	submit.innerHTML = "Next";
+	$(".card-body").append(submit);
+
 }
 
 
@@ -115,39 +173,14 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#next").on("click",function(){
-		alert("HIii");
-		var submit;
-		submit = document.createElement('button');
-		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
-		submit.setAttribute('form', "salesForm");
-		submit.setAttribute('id', "submit");
-		submit.setAttribute('type', "submit");
-		submit.innerHTML = "Create";
-
-
-		var back;
-		back = document.createElement("button");
-		back.setAttribute("class", "btn btn-primary active text-center float-left d-xl-flex justify-content-xl-end align-items-xl-start");
-		back.setAttribute("id", "back");
-		back.setAttribute("onclick", "s_back()");
-		back.setAttribute("style", "background-color:grey;");
-		back.innerHTML = "Back";
-
-
-		if(sales_review_fields()){
-			sales_review();
-			$(this).hide();
-			$(".card-body").append(submit);
-			$(".card-body").append(back);
-		}
-		else{
-			alert("Please fill up fields");
-		}
-
-
+	$(".s_next").on("click",function(){
 		
+	});
 
 
+
+
+	$("#unpaidCustomer").on("change",function(){
+		$("#amountPaid").val(0);
 	});
 });

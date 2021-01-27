@@ -333,8 +333,7 @@ exports.postCreatePurchase = function(req,res){
 										if (err)
 											throw err;
 										else {
-											req.flash('dialog_success_msg', 'Successfully created sale record!');
-											res.redirect("/view_purchase_details/" + record.supplier_lo);
+											
 										}
 									});
 									req.flash("dialog_success_msg", "Record successfully added!");

@@ -82,7 +82,9 @@
                                                 <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">PRODUCT</th>
                                                 <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">current purchase price</th>
                                                 <th class="text-center" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">current selling price</th>
+                                                {{#if purchasing_role}}
                                                 <th class="text-center filter-false sorter-false" style="color: rgb(78,115,223);background: rgb(248,249,252);border-color: rgb(217,220,229);height: 56PX;font-size: 16px;">action</th>
+                                                {{/if}}
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
@@ -179,9 +181,10 @@
                                                 <td>{{this.product_name}}<br></td>
                                                 <td>Php {{this.purchase_price}}/bag<br></td>
                                                 <td>Php {{this.selling_price}}/bag<br></td>
+                                                {{#if ../purchasing_role}}
                                                 <td class="text-center">
-                                                    <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModalRCC" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="margin: 8px;"></i></a>
-                                                        <div class="modal fade" role="dialog" tabindex="-1" id="myModalRCC">
+                                                    <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModal{{this.product_name}}" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="margin: 8px;"></i></a>
+                                                        <div class="modal fade" role="dialog" tabindex="-1" id="myModal{{this.product_name}}">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header" style="height: 50px;">
@@ -189,7 +192,7 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         <p class="text-left text-muted" style="text-align: left;">Select a product to change its price<br></p>
-                                                                        <form name="rcc_new_price">
+                                                                        <form id="rcc_new_price" method="post" action="/change_price">
                                                                             <div class="form-row">
                                                                                 <div class="col">
                                                                                     <fieldset>
@@ -197,8 +200,8 @@
                                                                                             <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-formID" value="vr-campus-tours"><input class="form-control d-none" type="text" id="lp-pathID" value="<?php echo $_GET['path'];?>"></div>
                                                                                             <div class="col-6 col-sm-6 col-md-6">
                                                                                                 <div id="lp-name-wrapper">
-                                                                                                    <h5 class="text-left" style="font-weight: bold;">Product</h5><select class="form-control" id="lp-select1">
-                                                                                                        <option value="RCC">RCC</option>
+                                                                                                    <h5 class="text-left" style="font-weight: bold;">Product</h5><select class="form-control" id="product_id" name="product_id">
+                                                                                                        <option value="{{this.product_id}}">{{this.product_name}}</option>
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </div>
@@ -215,7 +218,7 @@
                                                                                                 <div id="lp-select1-wrapper" class="input-group">
                                                                                                     <div class="input-group-addon"></div>
                                                                                                 </div>
-                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Purchase Price</h5><input class="form-control" type="text" id="{{this.product_name}}_purchase_price" name="{{this.product_name}}_purchase_price" placeholder="Price">
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Purchase Price</h5><input class="form-control" type="text" id="purchase_price" name="purchase_price" placeholder="Price">
                                                                                             </div>
                                                                                             <div class="col-8 col-sm-4 col-md-7">
                                                                                                 <div id="lp-telnumber-wrapper"></div>
@@ -227,7 +230,7 @@
                                                                                                 <div id="lp-select1-wrapper" class="input-group">
                                                                                                     <div class="input-group-addon"></div>
                                                                                                 </div>
-                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Selling Price</h5><input class="form-control" type="text" id="{{this.product_name}}_selling_price" name="{{this.product_name}}_selling_price" placeholder="Price">
+                                                                                                <h5 class="text-left" style="font-weight: bold;margin-top: 10px;">Selling Price</h5><input class="form-control" type="text" id="selling_price" name="selling_price" placeholder="Price">
                                                                                             </div>
                                                                                             <div class="col-8 col-sm-4 col-md-7">
                                                                                                 <div id="lp-telnumber-wrapper"></div>
@@ -254,12 +257,13 @@
                                                                             </div>
                                                                         </form>
                                                                     </div>
-                                                                    <div class="modal-footer"><a class="btn btn-light" role="button" data-dismiss="modal" href="inventory-catalogue.html">Close</a><a class="btn btn-primary" role="button" href="inventory-catalogue.html">Save</a></div>
+                                                                    <div class="modal-footer"><a class="btn btn-light" role="button" data-dismiss="modal" href="inventory-catalogue.html">Close</a><button class="btn btn-primary" type="submit" form="rcc_new_price">Save</button></div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
+                                                {{/if}}
                                             </tr>
                                             {{/each}}
                                         </tbody>

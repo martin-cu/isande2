@@ -44,7 +44,7 @@ exports.getProductCatalogue = function(next) {
 }
 
 exports.setCatalogueInactive = function(product_id, next) {
-	var sql = "UPDATE product_catalogue_table SET status = 'Inactive' WHERE catalogue_id = (SELECT MAX(ct.catalogue_id) FROM (SELECT catalogue_id FROM product_catalogue_table WHERE product_id = '?') as ct) AND status = 'Active';";
+	var sql = "UPDATE product_catalogue_table SET status = 'Inactive', end_date = CURDATE() WHERE catalogue_id = (SELECT MAX(ct.catalogue_id) FROM (SELECT catalogue_id FROM product_catalogue_table WHERE product_id = '?') as ct) AND status = 'Active';";
     sql = mysql.format(sql, product_id);
     // console.log(sql);
     mysql.query(sql,next);

@@ -31,7 +31,7 @@ router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetai
 router.get('/inventory', isPrivate, inventoryController.getProductInventory);
 router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);
 router.get('/change_price', isAdmin, inventoryController.getProductName);
-router.post('/change_price', isAdmin, inventoryController.changeProductPrice);
+router.post('/change_price', isPrivate, inventoryController.changeProductPrice);
 router.get('/manual_count', isAdmin, inventoryController.getProductNameForManualCount);
 
 

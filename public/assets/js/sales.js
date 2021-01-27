@@ -35,7 +35,7 @@ function sales_review(){
 }
 
 
-function review_fields(){
+function sales_review_fields(){
 	var status = true;
 	if(!$("#dateScheduled").val()){
 		$("#dateScheduled").css("border-color", "rgb(235, 64, 54)");
@@ -51,13 +51,6 @@ function review_fields(){
 	}
 	else
 		$("#customerName").css("border-color", "");
-
-	if(!$("#saleAddress").val()){
-		$("#saleAddress").css("border-color", "rgb(235, 64, 54)");
-		status = false;
-	}
-	else
-		$("#saleAddress").css("border-color", "");
 
 	if(!$("#saleAddress").val()){
 		$("#saleAddress").css("border-color", "rgb(235, 64, 54)");
@@ -122,8 +115,8 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#next").on("click",function(e){
-		//alert("HIii");
+	$("#next").on("click",function(){
+		alert("HIii");
 		var submit;
 		submit = document.createElement('button');
 		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
@@ -142,14 +135,14 @@ $(document).ready(function() {
 		back.innerHTML = "Back";
 
 
-		if(review_fields()){
+		if(sales_review_fields()){
 			sales_review();
 			$(this).hide();
 			$(".card-body").append(submit);
 			$(".card-body").append(back);
 		}
 		else{
-			//Add error message
+			alert("Please fill up fields");
 		}
 
 
@@ -157,8 +150,4 @@ $(document).ready(function() {
 
 
 	});
-
-
-
-
 });

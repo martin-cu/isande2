@@ -161,6 +161,7 @@ console.log(dailysales);
 )};
 
 exports.getProductCatalogue = function(req, res){
+	console.log(req.session);
 	inventoryModel.getProductCatalogue(function(err, monresult) {
 		if(err){
 			throw err;
@@ -245,77 +246,110 @@ exports.changeProductPrice = function(req, res){
 	const errors = validationResult(req);
 	var { fcc_name, fcc_purchaseprice, fcc_sellingprice } = req.body;
 	var { rcc_name, rcc_purchaseprice, rcc_sellingprice } = req.body;
-	if ((errors.isEmpty()) && !(isNaN(fcc_name)) && !(isNaN(rcc_name))) {
-		inventoryModel.setCatalogueInactive(parseInt(fcc_name), function(err, result) {
+
+
+	if(errors.isEmpty()){
+		console.log("Change price!");
+		console.log(req.body);
+		inventoryModel.setCatalogueInactive(parseInt(req.body.product_id), function(err, result){
 			if(err){
 				throw err;
+				req.flash('error_msg', 'Product Change Price Not Successful.');
+				res.redirect('/product_catalogue');
 			}
-			else {
-				productModel.changeProductPrice(parseInt(fcc_name), parseFloat(fcc_purchaseprice), parseFloat(fcc_sellingprice), function(err, result) {	
-					if(err){
-						throw err;
-					}
-					else {
-						inventoryModel.setCatalogueInactive(parseInt(rcc_name), function(err, result) {
-							if(err){
-								throw err;
-							}
-							else {
-								productModel.changeProductPrice(parseInt(rcc_name), parseFloat(rcc_purchaseprice), parseFloat(rcc_sellingprice), function(err, result) {	
-									if(err){
-										throw err;
-									}
-									else {
-										req.flash('success_msg', 'Product Change Price Successfully Implemented');
-										res.redirect('/product_catalogue');
-									}
-								});
-							}
-						});
-					}
+			else{
+				productModel.changeProductPrice(parseInt(req.body.product_id), parseFloat(req.body.purchase_price), parseFloat(req.body.selling_price), function(err, result) {
+					res.redirect('/product_catalogue');
 				});
 			}
 		});
 	}
-	else if ((errors.isEmpty()) && !(isNaN(fcc_name)) && (isNaN(rcc_name))) {
-		inventoryModel.setCatalogueInactive(parseInt(fcc_name), function(err, result) {
-			if(err){
-				throw err;
-			}
-			else {
-				productModel.changeProductPrice(parseInt(fcc_name), parseFloat(fcc_purchaseprice), parseFloat(fcc_sellingprice), function(err, result) {	
-					if(err){
-						throw err;
-					}
-					else {
-							req.flash('success_msg', 'Product Change Price Successfully Implemented');
-							res.redirect('/product_catalogue');
-					}
-				});
-			}
-		});
-	} else if ((errors.isEmpty()) && (isNaN(fcc_name)) && !(isNaN(rcc_name))) {
-		inventoryModel.setCatalogueInactive(parseInt(rcc_name), function(err, result) {
-			if(err){
-				throw err;
-			}
-			else {
-				productModel.changeProductPrice(parseInt(rcc_name), parseFloat(rcc_purchaseprice), parseFloat(rcc_sellingprice), function(err, result) {	
-					if(err){
-						throw err;
-					}
-					else {
-							req.flash('success_msg', 'Product Change Price Successfully Implemented');
-							res.redirect('/product_catalogue');
-					}
-				});
-			}
-		});
-	}
-	else {
+	else{
 		req.flash('error_msg', 'Product Change Price Not Successful.');
 		res.redirect('/product_catalogue');
+
 	}
+
+
+
+
+
+
+	// if ((errors.isEmpty()) && !(isNaN(fcc_name)) && !(isNaN(rcc_name))) {
+	// 	inventoryModel.setCatalogueInactive(parseInt(fcc_name), function(err, result) {
+	// 		if(err){
+	// 			throw err;
+	// 		}
+	// 		else {
+	// 			productModel.changeProductPrice(parseInt(fcc_name), parseFloat(fcc_purchaseprice), parseFloat(fcc_sellingprice), function(err, result) {	
+	// 				if(err){
+	// 					throw err;
+	// 				}
+	// 				else {
+	// 					inventoryModel.setCatalogueInactive(parseInt(rcc_name), function(err, result) {
+	// 						if(err){
+	// 							throw err;
+	// 						}
+	// 						else {
+	// 							productModel.changeProductPrice(parseInt(rcc_name), parseFloat(rcc_purchaseprice), parseFloat(rcc_sellingprice), function(err, result) {	
+	// 								if(err){
+	// 									throw err;
+	// 								}
+	// 								else {
+	// 									req.flash('success_msg', 'Product Change Price Successfully Implemented');
+	// 									res.redirect('/product_catalogue');
+	// 								}
+	// 							});
+	// 						}
+	// 					});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
+	// else if ((errors.isEmpty()) && !(isNaN(fcc_name)) && (isNaN(rcc_name))) {
+	// 	inventoryModel.setCatalogueInactive(parseInt(fcc_name), function(err, result) {
+	// 		if(err){
+	// 			throw err;
+	// 		}
+	// 		else {
+	// 			productModel.changeProductPrice(parseInt(fcc_name), parseFloat(fcc_purchaseprice), parseFloat(fcc_sellingprice), function(err, result) {	
+	// 				if(err){
+	// 					throw err;
+	// 				}
+	// 				else {
+	// 						req.flash('success_msg', 'Product Change Price Successfully Implemented');
+	// 						res.redirect('/product_catalogue');
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// } else if ((errors.isEmpty()) && (isNaN(fcc_name)) && !(isNaN(rcc_name))) {
+	// 	inventoryModel.setCatalogueInactive(parseInt(rcc_name), function(err, result) {
+	// 		if(err){
+	// 			throw err;
+	// 		}
+	// 		else {
+	// 			productModel.changeProductPrice(parseInt(rcc_name), parseFloat(rcc_purchaseprice), parseFloat(rcc_sellingprice), function(err, result) {	
+	// 				if(err){
+	// 					throw err;
+	// 				}
+	// 				else {
+	// 						req.flash('success_msg', 'Product Change Price Successfully Implemented');
+	// 						res.redirect('/product_catalogue');
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
+	// else {
+	// 	req.flash('error_msg', 'Product Change Price Not Successful.');
+	// 	res.redirect('/product_catalogue');
+	// }
+
+
+
+	
 };
 
 exports.getProductNameForReportDamage = function(req, res){

@@ -290,6 +290,7 @@ exports.postPaymentForm = function(req, res) {
 						if(err)
 							throw err;
 						else {
+							req.flash('dialog_success_msg', 'Payment has been confirmed.');
 							res.redirect('/view_payments');
 						}
 					});

@@ -277,6 +277,7 @@ exports.loginUser = function(req, res) {
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
+								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');		
 						
@@ -304,6 +305,7 @@ exports.loginUser = function(req, res) {
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
+								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');								
 							} 

@@ -9,6 +9,7 @@ exports.viewDashboard = function(req, res){
 		console.log('!');
 	}
 	else if (req.session.authority === 'Sales Employee') {
+		console.log(req.session.employee_id);
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 			if (err)
 				throw err;

@@ -4,6 +4,33 @@
                             <h3 class="text-dark mb-4">Product Catalogue</h3>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 text-right" style="margin-bottom: 30px;">
+                        {{#if dialog_error_msg}}
+            <div class="popup-dialog-msg error shadow">
+                <div class="d-flex w-100 mt-2">
+                    <div class="ml-auto mr-2">
+                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+                    </div>
+
+                </div>
+                <div class="mx-3 mb-3">
+                    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if dialog_success_msg }}
+            <div class="popup-dialog-msg success shadow">
+                <div class="d-flex w-100 mt-2">
+                    <div class="ml-auto mr-2">
+                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+                    </div>
+
+                </div>
+                <div class="mx-3 mb-3">
+                    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
+                </div>
+            </div>
+        {{/if}}
                             <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModalAddProduct" style="width: 167.344px;height: 38px;padding: 6px 12px;font-size: 16px;"><i class="fa fa-plus"></i>&nbsp;Add new product</a>
                                 <div class="modal fade" role="dialog" tabindex="-1" id="myModalAddProduct">
                                     <div class="modal-dialog" role="document">

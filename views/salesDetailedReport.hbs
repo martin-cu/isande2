@@ -3,7 +3,35 @@
         <h3 class="text-dark mb-0">Sales Report<span>&nbsp;- {{reportTitle}}</span></h3>
     </div>
     <div class="row text-xl-left justify-content-center">
+    {{#if dialog_error_msg}}
+            <div class="popup-dialog-msg error shadow">
+                <div class="d-flex w-100 mt-2">
+                    <div class="ml-auto mr-2">
+                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+                    </div>
+
+                </div>
+                <div class="mx-3 mb-3">
+                    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
+                </div>
+            </div>
+        {{/if}}
+
+        {{#if dialog_success_msg }}
+            <div class="popup-dialog-msg success shadow">
+                <div class="d-flex w-100 mt-2">
+                    <div class="ml-auto mr-2">
+                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+                    </div>
+
+                </div>
+                <div class="mx-3 mb-3">
+                    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
+                </div>
+            </div>
+        {{/if}}
         <div class="col-md-6 col-xl-3 mb-4" style="/*max-width: none;*//*min-width: 14vw;*/padding-top: 1rem;">
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>

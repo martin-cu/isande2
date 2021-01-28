@@ -253,7 +253,7 @@ exports.loginUser = function(req, res) {
 			if (err) throw err;
 			else {
 				if (err) {
-					req.flash('error_msg', 'Invalid login credentials');
+					req.flash('dialog_error_msg', 'Invalid login credentials');
 					res.redirect('/login')
 				}
 				else {
@@ -310,7 +310,7 @@ exports.loginUser = function(req, res) {
 							} 
 							else {
 								// passwords don't match
-								req.flash('error_msg', 'Incorrect password. Please try again.');
+								req.flash('dialog_error_msg', 'Incorrect password. Please try again.');
 								res.redirect('/login')
 							}
 						});
@@ -318,7 +318,7 @@ exports.loginUser = function(req, res) {
 
 
 					else {
-						req.flash('error_msg', 'Invalid username please try again');
+						req.flash('dialog_error_msg', 'Invalid username please try again');
 						res.redirect('/login')
 					}
 					
@@ -329,7 +329,7 @@ exports.loginUser = function(req, res) {
 	}
 	else {
 		const messages = errors.array().map((item) => item.msg);
-		req.flash('error_msg', messages.join(' '));
+		req.flash('dialog_error_msg', messages.join(' '));
 		res.redirect('/login')
 	}
 };

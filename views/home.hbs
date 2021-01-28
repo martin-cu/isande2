@@ -46,6 +46,19 @@
             </div>
         </div>
         <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card shadow border-left-primary py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>MONTHLY ORDERED BAGS ({{orderedBags.[1].name}})</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span> {{orderedBags.[1].total_orders}} bags</span></div>
+                        </div>
+                        <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-left-success py-2">
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
@@ -57,7 +70,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         {{/compareTwoValues}}
 
         <div class="col-md-6 col-xl-3 mb-4">
@@ -99,7 +112,7 @@
 
     {{#compareTwoValues this.view 'Purchasing' operator='==='}}
     <div class="row">
-        <div class="col-md-6 col-xl-3 mb-4">
+        <!-- <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-left-primary py-2">
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
@@ -111,8 +124,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6 col-xl-3 mb-4">
+        </div> -->
+        <!-- <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-left-success py-2">
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
@@ -124,7 +137,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     {{/compareTwoValues}}
 
@@ -179,11 +192,11 @@
                 </div>
                 <div class="card-body" style="padding: 10px;">
                     {{#compareTwoValues this.view 'Logistics' operator='!='}}
-                    <div class="text-center small mt-4" style="margin: 0px;margin-top: 0px;"><span class="mr-2">&nbsp;<i class="fa fa-circle" style="color: rgb(224,112,39);"></i>&nbsp;Pending</span><span class="mr-2"><i class="fas fa-circle text-info"></i>&nbsp;Processing</span><span class="mr-2"><i class="fas fa-circle text-success"></i>&nbsp;Complete</span></div>
+                    <div class="text-center small mt-4" style="margin: 0px;margin-top: 0px;"><span class="mr-2">&nbsp;<i class="fa fa-circle" style="color:  #e07027;"></i>&nbsp;Pending</span><span class="mr-2"><i class="fas fa-circle" style="color: #1c59ff;"></i>&nbsp;Processing</span><span class="mr-2"><i class="fas fa-circle text-success"></i>&nbsp;Complete</span></div>
                     {{/compareTwoValues}}
 
                     {{#compareTwoValues this.view 'Logistics' operator='==='}}
-                    <div class="d-block d-xl-flex mt-2 justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color: rgb(224,145,52);"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: rgb(54,185,204);margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
+                    <div class="d-block d-xl-flex mt-2 justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color: #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
                     {{/compareTwoValues}}
                     <div class="table-responsive" style="margin-top: 10px;">
                         <table class="table">
@@ -221,7 +234,7 @@
                                 {{#each pendingDeliveries}}
                                 <tr>
                                     <td style="padding: 5px;">
-                                        <div href="/view_purchase_details/{{this.supplier_lo}}" class="text-center {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Sell-out' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}Processing{{/compareTwoValues}}">
+                                        <div href="/view_purchase_details/{{this.supplier_lo}}" class="text-center {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Sell-out' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}">
                                             <p class="text-center status-data"> 
                                             {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
                                             {{this.customer_name}}

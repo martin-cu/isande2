@@ -52,7 +52,7 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px">
                                     {{#each this.orders}}
-                                        <div href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}({{this.supplier_lo}})
+                                        <div href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}
                                             {{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
                                             <p class="text-center status-data">
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}

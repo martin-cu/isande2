@@ -109,7 +109,7 @@ exports.updateDelivery = function(req, res) {
 	var type, id = req.body.deliveryReference || req.body.confirmReference;
 	type = id[0]+id[1];
 	id = id.substring(2);
-	if (req.body.orderStatus === 'Processing') { //Going completed 
+	if (req.body.orderStatus === 'Processing') { //Going processing
 		if (type === 'DR') {
 			var update1 = { order_status: req.body.orderStatus };
 			var update2 = { status: req.body.orderStatus, plate_no: req.body.deliveryTruck, driver: req.body.deliveryDriverId };
@@ -133,8 +133,25 @@ exports.updateDelivery = function(req, res) {
 							console.log("NOTIF CREATED");
 						}
 					});
-					req.flash('dialog_success_msg', 'Successfully updated delivery!');
-					res.redirect('track_deliveries');
+					salesModel.getSaleRecordDetail({delivery_receipt : req.body.deliveryReference.slice(2)}, function(err, details){
+						if(err){
+							throw err;
+							req.flash('dialog_error_msg', 'Error scheduling delivery!');
+							res.redirect('/schedule_delivery');
+						}
+						else{
+							productModel.subtractProductQty(details[0].product_name , details[0].qty, function(err){
+								if(err){
+									throw err;
+								}
+								else{
+									console.log("Product quantity updated");
+								}
+							});
+							req.flash('dialog_success_msg', 'Successfully updated delivery!');
+							res.redirect('track_deliveries');
+						}
+					});
 				}
 			});
 		}
@@ -166,7 +183,7 @@ exports.updateDelivery = function(req, res) {
 			});
 		}
 	}
-	else { //Going to be proccessed
+	else { //Going to be completed
 		if (type === 'DR') {
 			var update1 = { order_status: req.body.orderStatus };
 			var update2 = { status: req.body.orderStatus, damaged_bags: req.body.confirmDamaged, date_completed: req.body.confirmDateCompleted };
@@ -180,11 +197,11 @@ exports.updateDelivery = function(req, res) {
 							throw err;
 						else {
 							var query = {
-							url: '/view_sales_details/' + req.body.confirmReference.slice(3),
-							desc:  'Order ' + req.body.confirmReference.slice(3) + ' is completed',
+							url: '/view_sales_details/' + req.body.confirmReference.slice(2),
+							desc:  'Order ' + req.body.confirmReference.slice(2) + ' is completed',
 							id: req.session.employee_id,
 							roles: dataformatter.getNotifRoles('S'),
-							contents: 'Order ' + req.body.confirmReference.slice(3) + ' is completed'
+							contents: 'Order ' + req.body.confirmReference.slice(2) + ' is completed'
 							}
 							/* Creating a Sale Record for Delivery sends a notification to Logistics */
 							notificationModel.createNotif(query, function(err, notif) {
@@ -206,7 +223,7 @@ exports.updateDelivery = function(req, res) {
 			if (supplier_dr === '')
 				supplier_dr = null;
 
-			var update = { status: req.body.orderStatus, time_out: req.body.confirmTimeOut };
+			var update = { status: req.body.orderStatus, time_out: req.body.confirmTimeOut, supplier_dr : req.body.confirmSupplierDR };
 			var query = { supplier_lo: id };
 			purchaseModel.updatePurchaseDetails(update, query, function(err, updatedSaleRecord) {
 				if (err)
@@ -217,11 +234,11 @@ exports.updateDelivery = function(req, res) {
 							throw err;
 						else {
 							var query = {
-							url: '/view_purchase_details/' + req.body.confirmReference.slice(3),
-							desc:  'Purchase ' + req.body.confirmReference.slice(3) + ' is completed',
+							url: '/view_purchase_details/' + req.body.confirmReference.slice(2),
+							desc:  'Purchase ' + req.body.confirmReference.slice(2) + ' is completed',
 							id: req.session.employee_id,
 							roles: dataformatter.getNotifRoles('P'),
-							contents: 'Purchase ' + req.body.confirmReference.slice(3) + ' is completed'
+							contents: 'Purchase ' + req.body.confirmReference.slice(2) + ' is completed'
 							}
 							/* Creating a Sale Record for Delivery sends a notification to Logistics */
 							notificationModel.createNotif(query, function(err, notif) {
@@ -231,6 +248,24 @@ exports.updateDelivery = function(req, res) {
 									console.log("NOTIF CREATED");
 								}
 							});
+							purchaseModel.getPurchaseRecordDetails({supplier_lo : req.body.confirmReference.slice(2)}, function(err, purchase){
+								if(err){
+									throw err;
+								}
+								else{
+									console.log(purchase[0]);
+									productModel.addProductQty(purchase[0].product_name, purchase[0].qty,  function(err){
+										if(err){
+											throw err;
+											console.log("Error adding product quantity");
+										}
+										else{
+											console.log("Product quantity updated");
+										}
+									});	
+								}
+							});
+							
 							req.flash('dialog_success_msg', 'Successfully updated delivery!');
 							res.redirect('track_deliveries');
 						}

@@ -68,6 +68,35 @@ function review_fields(){
 	return status;
 }
 
+function next(){
+	var submit;
+		submit = document.createElement("button");
+		submit.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
+		submit.setAttribute("id", "submit");
+		submit.setAttribute("type", "submit");
+		submit.setAttribute("form", "purchaseForm");
+		submit.innerHTML = "Create";
+
+		var back;
+		back = document.createElement("button");
+		back.setAttribute("class", "btn btn-primary active text-center float-left d-xl-flex justify-content-xl-end align-items-xl-start");
+		back.setAttribute("id", "back");
+		back.setAttribute("onclick", "back()");
+		back.setAttribute("style", "background-color:grey;");
+		back.innerHTML = "Back";
+		
+		if(review_fields()){
+			purchase_review();
+			$("#p_next").remove();
+			$(".card-body").append(submit);
+			$(".card-body").append(back);
+		}
+		else{
+			alert("Please fill up fields");
+		}
+}
+
+
 
 function back(){
 	$("#date").show();
@@ -91,7 +120,14 @@ function back(){
 	$("#back").remove();
 	$("#submit").remove();
 
-	$("#p_next").show();
+	var back;
+		back = document.createElement("button");
+		back.setAttribute("class", "btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start");
+		back.setAttribute("id", "p_next");
+		back.setAttribute("onclick", "next()");
+		back.innerHTML = "Next";
+	$(".card-body").append(back);
+
 }
 
 $(document).ready(function() {
@@ -145,7 +181,7 @@ $(document).ready(function() {
 		
 		if(review_fields()){
 			purchase_review();
-			$("#p_next").hide();
+			$("#p_next").remove();
 			$(".card-body").append(submit);
 			$(".card-body").append(back);
 		}

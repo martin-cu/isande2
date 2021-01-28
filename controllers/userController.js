@@ -253,7 +253,7 @@ exports.loginUser = function(req, res) {
 			if (err) throw err;
 			else {
 				if (err) {
-					req.flash('dialog_error_msg', 'Invalid login credentials');
+					req.flash('error_msg', 'Invalid login credentials');
 					res.redirect('/login')
 				}
 				else {
@@ -269,14 +269,14 @@ exports.loginUser = function(req, res) {
 					else
 						console.log('2');*/
 					if (userQuery.length >= 1 && userQuery[0].password == password){
+						console.log('nakaset na ' + userQuery);
 						//for default set password and non encrypted in the db at the moment
-								
+							
 								console.log(userQuery[0]);
 								var name = userQuery[0].first_name[0] + '.' + userQuery[0].last_name[0];
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
-								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');		
 						
@@ -304,13 +304,12 @@ exports.loginUser = function(req, res) {
 								req.session.initials = name;
 								req.session.authority = userQuery[0].role_id;
 								req.session.username = userQuery[0].username;
-								req.session.employee_id = userQuery[0].employee_id;
 								req.session.tab = true;
 								res.redirect('/home');								
 							} 
 							else {
 								// passwords don't match
-								req.flash('dialog_error_msg', 'Incorrect password. Please try again.');
+								req.flash('error_msg', 'Incorrect password. Please try again.');
 								res.redirect('/login')
 							}
 						});
@@ -318,7 +317,7 @@ exports.loginUser = function(req, res) {
 
 
 					else {
-						req.flash('dialog_error_msg', 'Invalid username please try again');
+						req.flash('error_msg', 'Invalid username please try again');
 						res.redirect('/login')
 					}
 					
@@ -329,7 +328,7 @@ exports.loginUser = function(req, res) {
 	}
 	else {
 		const messages = errors.array().map((item) => item.msg);
-		req.flash('dialog_error_msg', messages.join(' '));
+		req.flash('error_msg', messages.join(' '));
 		res.redirect('/login')
 	}
 };

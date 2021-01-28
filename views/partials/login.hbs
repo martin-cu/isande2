@@ -18,33 +18,14 @@
                         <div class="login-card">
                             <h4 class="text-center" style="font-weight: bold;color: rgb(3,52,97);">Welcome!</h4>
                             <p class="profile-name-card"> <img src="assets/img/cropped_logo.png" style="width: 110px;margin-bottom: 20px;"></p>
-                             {{#if dialog_error_msg}}
-            <div class="popup-dialog-msg error shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
-                    </div>
+                             {{#if error_msg }}
+                                <p id="error">
+                                    <div class="">
+                                        <h6 class="text-darken-2 text-danger"><strong>{{{error_msg}}}</strong></h6>
+                                    </div>
+                                </p>
+                                {{/if}}
 
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
-
-        {{#if dialog_success_msg }}
-            <div class="popup-dialog-msg success shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
-                    </div>
-
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
                             <form class="form-signin" method="post" action="/login"><span class="reauth-email"> </span><input class="form-control" type="" name="username" id="username" required="" autofocus="" placeholder="Username"><input class="form-control" type="password" name="password" id="password" required="" placeholder="Password" style="margin-bottom: 20px;">
                                 <div class="checkbox">
                                     <div class="form-check" style="margin-bottom: 20px;"><input class="form-check-input" type="checkbox" id="formCheck-4"><label class="form-check-label" for="formCheck-4">Remember me</label></div>

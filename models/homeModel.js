@@ -55,6 +55,7 @@ exports.getMonthlyPurchases = function(next) {
 exports.getPendingDeliveries = function(query, next) {
 	var sql = "select case when max(t.purchase_lo) = max(t.supplier_lo) and max(t.dr) is not null then 'Sell-out' when max(t.supplier_lo) is null then 'Sell-in' else 'Restock' end as order_type, max(t.supplier_lo) as supplier_lo, max(t.dr) as delivery_receipt, max(t.purchase_lo) as purchase_lo, case when max(t.customer_name) is null then 'N/A' else max(t.customer_name) end as customer_name from ( select ph.date, ph.supplier_lo, null as dr, ph.supplier_lo as purchase_lo, null as customer_name from purchase_history as ph where ph.status = 'Pending' and datediff(now(), ph.date) >= 0 union select sh.scheduled_date, null, sh.delivery_receipt, case when sh.purchase_lo is null then sh.delivery_receipt else sh.purchase_lo end, ct.customer_name from sales_history as sh join customer_table as ct using(customer_id) where sh.order_status = 'Pending' and datediff(now(), sh.scheduled_date) >= 0 ) as t group by t.purchase_lo order by t.date, field('Sell-in', 'Sell-out', 'Restock') limit ?";
 	sql = mysql.format(sql, query);
+	console.log(sql);
 	mysql.query(sql, next);
 }
 
@@ -68,6 +69,30 @@ exports.getDeliveryByDestination = function(next) {
 	mysql.query(sql, next);
 }
 
+
+exports.getPendingDate = function(id, next){
+	var sql = "SELECT p.supplier_lo as id, date_format(p.date, '%m/%d/%Y') as date from purchase_history p "
+	for(var i = 0; i < id.length; i++){
+		if(i == 0)
+			sql = sql + "WHERE p.supplier_lo = ";
+
+		sql = sql + '"' + id + '"';
+
+		if(i != id.length - 1)
+			sql = sql + " || ";
+	}
+	sql = sql + " UNION SELECT s.delivery_receipt as id, date_format(s.scheduled_date, '%m/%d/%Y') as date from sales_history s "
+	for(var i = 0; i < id.length; i++){
+		if(i == 0)
+			sql = sql + "WHERE s.delivery_receipt = ";
+
+		sql = sql + '"' + id + '"';
+
+		if(i != id.length - 1)
+			sql = sql + " || ";
+	}
+	mysql.query(sql, next);
+}
 /*
 exports.getPurchasesOverview = function(next){
 	var sql = "SELECT ph.status, pt.product_name, ph.supplier_lo, ph.plate_num, c.customer_name FROM purchase_history ph LEFT JOIN product_table pt ON pt.product_id = ph.product_id LEFT JOIN sales_history sh ON sh.purchase_lo = ph.supplier_lo LEFT JOIN customer_table c ON c.customer_id = sh.customer_id WHERE date(ph.date) = CURDATE() OR ph.status = 'Pending' order by ph.status limit 10";

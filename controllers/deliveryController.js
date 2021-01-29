@@ -20,6 +20,7 @@ exports.getSingleDeliveryInfo = function(req, res) {
 		if (err)
 			throw err;
 		else {
+			//record[0].formattedDate = dataformatter.formatDate(record[0].formattedDate, 'mm DD, YYYY');
 			var html_data = {
 				deliveryInfo: record[0]
 			}
@@ -79,22 +80,44 @@ exports.scheduleDelivery = function(req, res) {
 							throw err;
 						else {
 							homeModel.getPendingDeliveries(9999999999, function(err, pendingList) {
-								if (err)
+								if (err){
 									throw err;
+									console.log("ERRORRRR");
+								}
+
 								else {
 									for (var i = 0; i < pendingList.length; i++) {
 										if (pendingList[i].order_type === 'Sell-out')
 											pendingList[i].purchase_lo = pendingList[i].delivery_receipt;
 									}
-									var html_data = {
-										notifCount: notifCount[0],
-										truckList: trucks,
-										pendingDeliveries: pendingDeliveries,
-										pendingList: pendingList
-									}
 									
-									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'schedule_delivery_tab');
-									res.render('scheduleDelivery', html_data);
+									var ids = [];
+									for (var i = 0 ; i < pendingDeliveries.length; i++)
+										ids.push(pendingDeliveries[i].purchase_lo);
+
+									homeModel.getPendingDate(ids, function(err, dates){
+										if(err){
+											throw err;
+										}
+										else{
+											console.log(dates);
+											for(var x = 0; x < dates.length; x++){
+												for(var y = 0; y < pendingDeliveries.length; y++)
+													if(pendingDeliveries[y].purchase_lo == dates[x].id)
+														pendingDeliveries[y]["date"] = dates[x].date;
+											}
+											console.log(pendingDeliveries);
+											var html_data = {
+												notifCount: notifCount[0],
+												truckList: trucks,
+												pendingDeliveries: pendingDeliveries,
+												pendingList: pendingList
+											}
+											
+											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'schedule_delivery_tab');
+											res.render('scheduleDelivery', html_data);
+										}
+									});
 								}
 							});
 						}

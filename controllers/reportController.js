@@ -13,40 +13,47 @@ exports.viewReports = function(req, res){
 				console.log('!');
 			}
 			else if (req.session.authority === 'Sales Employee') {
-				reportModel.getMonthlySalesByProduct(function(err, monthlySalesByProduct) {
+				reportModel.getSalesByCustomerReport(function(err, salesByCustomer) {
 					if (err)
 						throw err;
 					else {
-						homeModel.getNetIncomeData(function(err, netIncome) {
+						reportModel.getMonthlySalesByProduct(function(err, monthlySalesByProduct) {
 							if (err)
 								throw err;
 							else {
-								homeModel.getTaskProgress(function(err, taskProgress) {
+								homeModel.getNetIncomeData(function(err, netIncome) {
 									if (err)
 										throw err;
 									else {
-										var netMonth, netYear;
-										for (var i = 0; i < netIncome.length; i++) {
-											if (netIncome[i].type === 'yearly')
-												netYear = netIncome[i].net_income;
-											else if (netIncome[i].type === 'monthly')
-												netMonth = netIncome[i].net_income;
-										}
-										var html_data = {
-											notifCount: notifCount[0],
-											monthlySalesByProduct: monthlySalesByProduct,
-											netMonth: netMonth,
-											netYear: netYear,
-											taskProgress: taskProgress[0].order_completion,
-											pendingTasks: taskProgress[0].pending_tasks,
-										};
-										
-										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
-										res.render('reports', html_data);
+										homeModel.getTaskProgress(function(err, taskProgress) {
+											if (err)
+												throw err;
+											else {
+												var netMonth, netYear;
+												for (var i = 0; i < netIncome.length; i++) {
+													if (netIncome[i].type === 'yearly')
+														netYear = netIncome[i].net_income;
+													else if (netIncome[i].type === 'monthly')
+														netMonth = netIncome[i].net_income;
+												}
+												var m = dataformatter.aggregateSalesByCustomer(salesByCustomer);
+												var html_data = {
+													notifCount: notifCount[0],
+													monthlySalesByProduct: monthlySalesByProduct,
+													netMonth: netMonth,
+													netYear: netYear,
+													taskProgress: taskProgress[0].order_completion,
+													pendingTasks: taskProgress[0].pending_tasks,
+												};
+												
+												html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+												res.render('reports', html_data);
+											}
+										});
 									}
 								});
 							}
-						});
+						});	
 					}
 				});
 			}

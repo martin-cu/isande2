@@ -1,176 +1,14 @@
 <div class="container-fluid">
     <h3 style="color: rgb(90,92,105);">Schedule Delivery</h3>
     <div class="row" style="margin-top: 20px;">
-        <div class="col-lg-7 col-xl-8">
-        {{#if dialog_error_msg}}
-            <div class="popup-dialog-msg error shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
-                    </div>
-
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
-
-        {{#if dialog_success_msg }}
-            <div class="popup-dialog-msg success shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
-                    </div>
-
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
-            <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary font-weight-bold m-0">Delivery Form</h6>
-                </div>
-                <div class="card-body">
-                    <div class="card">
-                        <div class="card-body" style="border-style: none;">
-                            <form action="/schedule_delivery" method="post">
-                                <input type="hidden" name="orderStatus" value="Processing">
-                                <div class="table-responsive">
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 1px;">Date Scheduled</th>
-                                            <th style="width: 50px;"><input type="date" id="dateScheduled" required="" readonly value=""></th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td class="text-nowrap" style="font-weight: bold;">Delivery Details</td>
-                                            <td style="width: 50px;"></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Reference Number</td>
-                                            <td style="color: rgb(72,72,72);">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryReference" name="deliveryReference">
-                                                    <option value="" selected disabled>...</option>
-                                                    {{#each pendingList}}
-                                                    <option value="{{#compareTwoValues this.order_type 'Restock' operator='==='}}LO{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}DR{{/compareTwoValues}}{{this.purchase_lo}}">
-                                                    {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                                    LO 
-                                                    {{/compareTwoValues}}
-
-                                                    {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                                    DR 
-                                                    {{/compareTwoValues}}
-                                                    {{this.purchase_lo}}
-                                                    </option>
-                                                    {{/each}}
-                                                </select>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Order Type</td>
-                                            <td><span id="deliveryOrderType">N/A</span></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Customer</td>
-                                            <td><input type="text" required="" readonly="" id="deliveryCustomer" style="background: rgb(237,237,237);border-width: 1px;"></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Address</td>
-                                            <td><input type="text" readonly="" id="deliveryAddress" style="background: rgb(237,237,237);border-width: 1px;"></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Order Details</td>
-                                            <td style="width: 0px;"></td>
-                                            <td style="width: 0px;font-weight: bold;">Truck</td>
-                                            <td style="width: 0px;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Product</td>
-                                            <td style="width: 100px;">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;background: rgb(237,237,237);" required="" id="deliveryProduct">
-                                                    <option value="">...</option>
-                                                    <option value="FCC">FCC</option>
-                                                    <option value="RCC">RCC</option>
-                                                </select>
-                                            </td>
-                                            <td style="width: 100px;">Plate Number</td>
-                                            <td style="width: 100px;">
-                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryTruck" name="deliveryTruck">
-                                                    <option value="" selected disabled>...</option>
-                                                    {{#each truckList}}
-                                                    {{#compareTwoValues this.truck_status 'Available' operator='==='}}
-                                                    <option value="{{this.plate_num}}">{{this.plate_num}}</option>
-                                                    {{/compareTwoValues}}
-                                                    {{/each}}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Quantity</td>
-                                            <td style="border-width: 1px;">
-                                                <input type="text" required="" id="deliveryQty" readonly="" style="background: rgb(237,237,237);border-width: 1px;">
-                                                <input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
-                                            <td>Driver</td>
-                                            <td><input style="background-color: none;border: none;" type="text" name="deliveryDriver" id="deliveryDriver" readonly></td>
-                                            <input type="hidden" name="deliveryDriverId" id="deliveryDriverId">
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: normal;">Total Price</td>
-                                            <td style="font-weight: normal;">
-                                                <input type="text" id="deliveryTotal" readonly="" style="background: rgb(237,237,237);border-width: 1px;">
-                                                <input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
-                                            <td style="font-weight: normal;"></td>
-                                            <td class="d-xl-flex align-items-xl-center">
-                                                <div class="d-xl-flex align-items-xl-start"></div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" type="submit" >Schedule</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div></div>
-        </div>
-        <div class="col-lg-5 col-xl-4">
+     <div class="col-lg-5 col-xl-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Pending Deliveries</h6>
                     <input type="hidden" name="getDeliveryInfo" value="">
                 </div>
+
+
                 <div class="card-body">
                     <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color:  #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
                     <div class="table-responsive" style="margin-top: 10px;">
@@ -229,6 +67,43 @@
                 </div>
             </div>
             <div>
+             <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Truck Use</h6>
+                </div>
+                <div class="card-body" style="padding: 10px;">
+                   <h6 style="color: rgb(77,115,229);text-align: center;font-weight: bold;">January 24, 2021- January 30, 2021</h6>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive table-borderless">
+                            <table class="table table-striped table-bordered table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="color: rgb(77,115,229);">TRUCK</th>
+                                        <th style="color: rgb(77,115,229);">DRIVER</th>
+                                        <th style="color: rgb(77,115,229); text-align: center;">DELIVERY COUNT</th>
+                                        <th style="color: rgb(77,115,229); text-align: center;">STATUS</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each truckList}}
+                                        <tr>
+                                            <td style="text-align: left;">{{this.plate_num}}</td>
+                                            <td style="text-align: left;">{{this.driver}}</td>
+                                            <td style="text-align: center;">{{this.weekly_deliveries}}</td>
+                                             <td style="text-align: center;">{{#compareTwoValues this.truck_status 'Available' operator='==='}} <i class="fa fa-check d-xl-flex justify-content-xl-center align-items-xl-center" data-toggle="tooltip" style="text-align: center;color: rgb(68,179,0);" title="Available"></i> {{/compareTwoValues}}{{#compareTwoValues this.truck_status 'Unavailable' operator='==='}} <i class="fa fa-remove d-xl-flex justify-content-xl-center align-items-xl-center" data-toggle="tooltip" style="text-align: center;color: rgb(255,0,0);" title="Unvailable"></i> {{/compareTwoValues}} </td>
+                                        </tr>
+                                        {{/each}}
+                                    
+                                </tbody>
+                            </table>
+                           </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
                 <div class="modal fade" role="dialog" tabindex="-1" id="AddTruck">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -403,48 +278,147 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-lg-7 col-xl-8">
+      
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary font-weight-bold m-0">Truck Use</h6>
+                    <h6 class="text-primary font-weight-bold m-0">Delivery Form</h6>
                 </div>
-                <div class="card-body" style="padding: 10px;">
-                    <div class="row table-topper align-items-center">
-                        <div class="col-4 text-left" style="margin: 0px;padding: 5px 15px;"></div>
-                        <div class="col-4 text-center" style="margin: 0px;padding: 5px 10px;">
-                            <h5 style="color: rgb(77,115,229);font-weight: bold;text-align: center;">January 24, 2021 - January 30, 2021</h5>
-                        </div>
-                        <div class="col"><button class="btn btn-primary float-right btn-sm reset" type="button" style="padding: 5px;margin: 2px;">Reset Filters</button></div>
-                        <div class="col-4 text-right" style="margin: 0px;padding: 5px 10px;"><a href="#" data-toggle="modal" data-target="#tablehelpModal"></a></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div>
-                                <table class="table table tablesorter" id="ipi-table">
-                                    <thead class="thead-dark">
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-body" style="border-style: none;">
+                            <form action="/schedule_delivery" method="post">
+                                <input type="hidden" name="orderStatus" value="Processing">
+                                <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
                                         <tr>
-                                            <th class="text-center sorter-false" style="background: rgb(248,249,252);color: rgb(77,115,229);border-width: 0px;border-style: none;">TRUCK</th>
-                                            <th class="text-left sorter-false" style="background: rgb(248,249,252);color: rgb(77,115,229);border-width: 0px;border-style: none;padding: 0px .5rem !important;">DRIVER</th>
-                                            <th class="text-center sorter-false" style="background: rgb(248,249,252);color: rgb(77,115,229);border-width: 0px;border-style: none;">Delivery count</th>
-                                            <th class="text-center sorter-false" style="background: rgb(248,249,252);color: rgb(77,115,229);border-width: 0px;border-style: none;">status</th>
+                                            <th style="width: 1px;">Date Scheduled</th>
+                                            <th style="width: 50px;"><input type="date" id="dateScheduled" required="" readonly value=""></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each truckList}}
                                         <tr>
-                                            <td class="text-center">{{this.plate_num}}</td>
-                                            <td class="text-left">{{this.driver}}</td>
-                                            <td class="text-center">{{this.weekly_deliveries}}</td>
-                                            <td class="text-center">{{this.truck_status}}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
-                                        {{/each}}
+                                        <tr></tr>
+                                        <tr>
+                                            <td class="text-nowrap" style="font-weight: bold;">Delivery Details</td>
+                                            <td style="width: 50px;"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Reference Number</td>
+                                            <td style="color: rgb(72,72,72);">
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryReference" name="deliveryReference">
+                                                    <option value="" selected disabled>...</option>
+                                                    {{#each pendingList}}
+                                                    <option value="{{#compareTwoValues this.order_type 'Restock' operator='==='}}LO{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}DR{{/compareTwoValues}}{{this.purchase_lo}}">
+                                                    {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                                    LO 
+                                                    {{/compareTwoValues}}
+
+                                                    {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                                    DR 
+                                                    {{/compareTwoValues}}
+                                                    {{this.purchase_lo}}
+                                                    </option>
+                                                    {{/each}}
+                                                </select>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Type</td>
+                                            <td><span id="deliveryOrderType">N/A</span></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Customer</td>
+                                            <td><input type="text" required="" readonly="" id="deliveryCustomer" style="background: rgb(237,237,237);border-width: 1px;"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Address</td>
+                                            <td><input type="text" readonly="" id="deliveryAddress" style="background: rgb(237,237,237);border-width: 1px;"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: bold;">Order Details</td>
+                                            <td style="width: 0px;"></td>
+                                            <td style="width: 0px;font-weight: bold;">Truck</td>
+                                            <td style="width: 0px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Product</td>
+                                            <td style="width: 100px;">
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;background: rgb(237,237,237);" required="" id="deliveryProduct">
+                                                    <option value="">...</option>
+                                                    <option value="FCC">FCC</option>
+                                                    <option value="RCC">RCC</option>
+                                                </select>
+                                            </td>
+                                            <td style="width: 100px;">Plate Number</td>
+                                            <td style="width: 100px;">
+                                                <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" id="deliveryTruck" name="deliveryTruck">
+                                                    <option value="" selected disabled>...</option>
+                                                    {{#each truckList}}
+                                                    {{#compareTwoValues this.truck_status 'Available' operator='==='}}
+                                                    <option value="{{this.plate_num}}">{{this.plate_num}}</option>
+                                                    {{/compareTwoValues}}
+                                                    {{/each}}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Quantity</td>
+                                            <td style="border-width: 1px;">
+                                                <input type="text" required="" id="deliveryQty" readonly="" style="background: rgb(237,237,237);border-width: 1px;">
+                                                <input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                            <td>Driver</td>
+                                            <td><input style="background-color: none;border: none;" type="text" name="deliveryDriver" id="deliveryDriver" readonly></td>
+                                            <input type="hidden" name="deliveryDriverId" id="deliveryDriverId">
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: normal;">Total Price</td>
+                                            <td style="font-weight: normal;">
+                                                <input type="text" id="deliveryTotal" readonly="" style="background: rgb(237,237,237);border-width: 1px;">
+                                                <input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="pesos" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                            <td style="font-weight: normal;"></td>
+                                            <td class="d-xl-flex align-items-xl-center">
+                                                <div class="d-xl-flex align-items-xl-start"></div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" type="submit" >Schedule</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <div></div>
+        </div>
+       
+        <div class="col">
+           
         </div>
     </div>
 </div>

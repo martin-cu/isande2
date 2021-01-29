@@ -589,3 +589,120 @@ exports.getNotifRoles = function(data) {
 	}
 	return arr;
 }
+
+exports.aggregateSalesByCustomer = function(data) {
+	var arr = [];
+	var page = [], customerObj, ordersObj;
+	var grandTotal = 0, pageLimit = 30, rowCount = 0;
+	var pageData = [];
+	var total = 0;
+	var pageObj = {};
+
+	for (var i = 0; i < data.length-1; i++) {
+		customerObj = { customer_name: data[i].customer_name, orders_arr: [], total_amount: parseFloat(data[i].formattedAmount.replace(',','')) };
+		ordersObj = { 
+			date: data[i].formattedDate,
+			desc: data[i].qty+' bags of '+data[i].product_name,
+			amount: data[i].formattedAmount
+		}
+		customerObj.orders_arr.push(ordersObj);
+		if (i+2 == data.length) {
+			if (data[i].customer_name == data[i+1].customer_name) {
+				i++;
+				ordersObj = { 
+					date: data[i].formattedDate,
+					desc: data[i].qty+' bags of '+data[i].product_name,
+					amount: data[i].formattedAmount
+				}
+				customerObj.orders_arr.push(ordersObj);
+				customerObj.total_amount += parseFloat(data[i].formattedAmount.replace(',',''));
+				customerObj.total_amount = customerObj.total_amount.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
+				customerObj['rows'] = customerObj.orders_arr.length+1;
+				arr.push(customerObj);
+			}
+			else {
+				for (var x = i; x < i+2; x++) {
+					customerObj = { customer_name: data[x].customer_name, orders_arr: [], total_amount: parseFloat(data[x].formattedAmount.replace(',','')) };
+					ordersObj = { 
+						date: data[x].formattedDate,
+						desc: data[x].qty+' bags of '+data[x].product_name,
+						amount: data[x].formattedAmount
+					}
+					customerObj.orders_arr.push(ordersObj);
+					customerObj.total_amount = customerObj.total_amount.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
+					customerObj['rows'] = customerObj.orders_arr.length+1;
+					arr.push(customerObj);
+				}
+			}
+		}
+		else {
+			while (data[i].customer_name == data[i+1].customer_name && i < data.length-2) {
+				i++;
+				ordersObj = { 
+					date: data[i].formattedDate,
+					desc: data[i].qty+' bags of '+data[i].product_name,
+					amount: data[i].formattedAmount
+				}
+				customerObj.orders_arr.push(ordersObj);
+				customerObj.total_amount += parseFloat(data[i].formattedAmount.replace(',',''));
+			}
+			customerObj.total_amount = customerObj.total_amount.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
+			customerObj['rows'] = customerObj.orders_arr.length+1;
+			arr.push(customerObj);
+		}
+	}
+
+	for (var i = 0; i < arr.length; i++) {
+		grandTotal += parseFloat(arr[i].total_amount.replace(',',''));
+		rowCount += arr[i].rows;
+		if (rowCount < pageLimit && i < arr.length) {
+			pageData.push(arr[i]);
+			if (i+1 == arr.length) {
+				page.push(pageData);
+			}
+		}
+		else {
+			if (rowCount == pageLimit) {
+				pageData.push(arr[i]);
+				page.push(pageData);
+				rowCount = 0;
+				pageData = [];
+			}
+			else {
+				var endingPos = arr[i].orders_arr.length;
+
+				customerObj = { customer_name: arr[i].customer_name, orders_arr: [] };
+				for (var x = 0; x < endingPos; x++) {
+					customerObj.orders_arr.push(arr[i].orders_arr[x]);
+				}
+				pageData.push(customerObj);
+				page.push(pageData);
+				rowCount = 0;
+				pageData = [];
+
+				customerObj = { customer_name: '', orders_arr: [], total_amount: arr[i].total_amount };
+				for (var y = endingPos; y < arr[i].orders_arr.length; y++) {
+					customerObj.orders_arr.push(arr[i].orders_arr[y]);
+				}
+				pageData.push(customerObj);
+
+				rowCount += arr[i].orders_arr.length;
+
+				if (i+1 == arr.length) {
+					page.push(pageData);
+				}
+
+			}
+		}
+	}
+	for (var i = 0; i < page.length; i++)
+		console.log(page[i]);
+
+	grandTotal = grandTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
+
+	pageObj['pages'] = page;
+	pageObj['grandTotal'] = grandTotal;
+
+	console.log(pageObj);
+	return pageObj;
+}

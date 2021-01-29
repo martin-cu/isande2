@@ -60,3 +60,8 @@ exports.pendingRequestsRecord = function(next) {
 	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate,ct.customer_name, pt.product_name, sh.* from sales_history as sh join product_table as pt using(product_id) join customer_table as ct using(customer_id) where order_status = 'Pending' and datediff(now(), scheduled_date) >= 0 order by sh.scheduled_date, sh.customer_id desc, sh.time_recorded";
 	mysql.query(sql, next);
 };
+
+exports.getSalesByCustomerReport = function(next) {
+	var sql = "select ct.customer_name, date_format(sh.scheduled_date, '%Y/%m/%d') as formattedDate, pt.product_name, format((sh.qty*sh.amount), 2) as formattedAmount , sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.void = 0 and month(now()) = month(sh.scheduled_date) order by sh.customer_id, sh.scheduled_date";
+	mysql.query(sql,next);
+}

@@ -1,0 +1,75 @@
+{{#each reportData.pages}}
+
+<div class="container-body">
+    <div class="col" style="background: rgb(3,52,97);margin-bottom: 15px;padding: 5px;">
+        <div><img class="d-block" src="../reportAssets/img/cropped_logo.png" style="width: 80px;margin-left: auto;margin-right: auto;">
+            <h5 class="text-center" style="margin-bottom: 0px;margin-top: 5px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;font-size: 18px;">JM AQUINO TRADINGS AND SERVICES</h5>
+            <h6 class="text-center" style="margin-bottom: 0px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;">Monthly Sales Per Customer Report</h6>
+            <h6 class="text-center" style="margin-bottom: 0px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;">For the Month {{../dateRange.firstDay}} - {{../dateRange.lastDay}}</h6>
+        </div>
+    </div>
+    <div class="table-responsive" style="min-height: 792px !important;">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Customer Name</th>
+                    <th class="text-center" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Date Paid</th>
+                    <th class="text-center" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Product</th>
+                    <th class="text-center" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Quantity</th>
+                    <th class="text-right" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this.customers}}
+
+                    {{#each this.orders_arr}}
+                    <tr style="padding: 2px;">
+                        <td style="font-family: Alata, sans-serif;font-weight: bold;font-size: 12px;border-style: none;padding: 3px;">{{this.customer_name}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.date}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.product}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.qty}}</td>
+                        <td class="text-right" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.amount}}</td>
+                    </tr>
+                    {{/each}}
+
+                {{#if this.total_amount}}
+                <tr style="font-size: 12px;font-family: Alata, sans-serif;font-weight: normal;">
+                    <td style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-right" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">{{this.orders_arr.[0].customer_name}} Total</td>
+                    <td class="text-right" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">{{this.total_amount}}</td>
+                </tr>
+                {{/if}}
+
+                {{#if this.grandTotal}}
+                <tr class="" style="font-size: 12px;font-family: Alata, sans-serif;font-weight: normal;">
+                    <td style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;"></td>
+                    <td class="text-right font-weight-bold" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Total</td>
+                    <td class="text-right font-weight-bold" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.grandTotal}}</td>
+                </tr>
+                {{/if}}
+
+                {{/each}}
+            </tbody>
+
+        </table>
+    </div>
+    <div class="footer-clean" style="padding: 0px;">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col"></div>
+                    <div class="col-sm-4 col-md-3 col-xl-3 item" style="text-align: center;"></div>
+                    <div class="col footer">
+                        <h3 style="text-align: right;font-weight: normal;font-family: Alata, sans-serif;font-size: 14px;">Page {{incrementIndex @index 1}} of {{../pageLength}}</h3>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+{{/each}}

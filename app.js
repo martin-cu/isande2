@@ -48,6 +48,9 @@ app.engine('hbs', exphbs({
       }
       return out;
     },
+    incrementIndex: function(index, value) {
+      return parseInt(index)+value;
+    },
     compareTwoValues: function(lvalue, rvalue, options) {
       if (arguments.length < 3)
           throw new Error("Handlerbars Helper 'compare' needs 2 parameters");

@@ -21,6 +21,16 @@ exports.viewReports = function(req, res){
 						res.redirect('/home');
 					}
 					else {
+						var html_data = {
+							notifCount: notifCount[0],
+							salesByCustomer: dataformatter.aggregateSalesByCustomer(salesByCustomer)
+						};
+						
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+						res.render('reports', html_data);
+					}
+					/*
+					else {
 						reportModel.getMonthlySalesByProduct(function(err, monthlySalesByProduct) {
 							if (err) {
 								req.flash('dialog_error_msg', 'Oops something went wrong!');
@@ -65,6 +75,7 @@ exports.viewReports = function(req, res){
 							}
 						});	
 					}
+					*/
 				});
 			}
 			else if (req.session.authority === 'Purchasing Employee') {
@@ -94,6 +105,34 @@ exports.viewSalesDetailedReport = function(req, res) {
 	var type = req.params.type, param = req.query;
 	param = param[Object.keys(param)]
 
+	var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+	var dateRange = {
+		firstDay: dataformatter.formatDate(new Date(y, m, 1), 'MM DD, YYYY'),
+		lastDay: dataformatter.formatDate(new Date(y, m + 1, 0), 'MM DD, YYYY')
+	}	
+
+	if (type === 'monthlySalesByCustomer') {
+		reportModel.getSalesByCustomerReport(function(err, salesByCustomer) {
+			if (err) {
+				req.flash('dialog_error_msg', 'Oops something went wrong!');
+				res.redirect('/home');
+			}
+			else {
+				var html_data = { 
+					reports: true,
+					dateRange: dateRange,
+					reportData: dataformatter.aggregateSalesByCustomer(salesByCustomer),
+					pageLength: dataformatter.aggregateSalesByCustomer(salesByCustomer).pages.length
+				};
+				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+				res.render('salesByCustomerReport', html_data);
+			}
+		});
+	}
+	else {
+		
+	}
+	/*
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
 			req.flash('dialog_error_msg', 'Oops something went wrong!');
@@ -195,7 +234,6 @@ exports.viewSalesDetailedReport = function(req, res) {
 			}
 		}
 	});			
-	/*
 	var html_data = { };
 	html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 	res.render('salesDetailedReport', html_data);

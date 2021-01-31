@@ -1,3 +1,43 @@
+<div>
+    <div class="modal fade" role="dialog" tabindex="-1" id="voidModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;">
+                    <h4>Cancel Order</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-left text-muted" style="margin-bottom: 20px;">Enter admin password to continue</p>
+                    <form action="" method="post">
+                        <div class="form-row w-100">
+                            <div class="col">
+                                <form class="register-form w-100">
+                                    <fieldset>
+                                        <div class="form-row">
+                                            <div class="w-100">
+                                                <div id="lp-name-wrapper">
+                                                    <h5 class="text-left" style="font-weight: bold;">Password</h5><input class="form-control" type="password" id="" name="" placeholder="Password..." required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="w-100">
+                                                <div id="lp-name-wrapper">
+                                                    <h5 class="text-left" style="font-weight: bold;">Confirm Password</h5><input class="form-control" type="password" id="" name="" placeholder="Password..." required="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"><button class="btn btn-light" data-dismiss="modal" type="button">Close</button><button class="btn btn-primary" type="submit">Confirm</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
                         <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Sales Records&nbsp;</h3>
@@ -35,10 +75,25 @@
                                 <section></section>
                             </form>
                             <div class="card">
-                                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);"></i>
-                                <i class="fa fa-archive float-right" style="font-size: 22px;color: rgb(0,0,0);margin-right: 15px;"></i>
+                                <div class="card-header">
+                                    <i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0); cursor: pointer;"></i>
+                                    {{#compareTwoValues sale_record.status 'Pending' operator="==="}}
+                                    <i class="fa fa-archive float-right" style="font-size: 22px;color: rgb(0,0,0);margin-right: 15px; cursor: pointer;" data-toggle="modal" data-target="#voidModal"></i>
+                                    {{/compareTwoValues}}
                                     <ul class="nav nav-tabs card-header-tabs">
-                                        <li class="nav-item"><a class="nav-link active" href="#" style="font-weight: bold;">DR Number: 20200110001</a></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="#" style="font-weight: bold;"><span class="mr-2" style="color: inherit !important">DR Number: {{sale_record.delivery_receipt}}</span>
+                                            {{#compareTwoValues sale_record.status 'Pending' operator="==="}}
+                                            <i class="fa fa-circle Pending" style="font-size: 16px;"></i>
+                                            {{/compareTwoValues}}
+                                            {{#compareTwoValues sale_record.status 'Processing' operator="==="}}
+                                            <i class="fa fa-circle Processing" style="font-size: 16px;"></i>
+                                            {{/compareTwoValues}}
+                                            {{#compareTwoValues sale_record.status 'Completed' operator="==="}}
+                                            <i class="fa fa-circle text-success" style="font-size: 16px;"></i>
+                                            {{/compareTwoValues}}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="card-body">

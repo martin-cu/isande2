@@ -120,6 +120,8 @@ exports.formatDate = function(date, format) {
 	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 	];
+	const fullMonthNames = ["", "January", "February", "March", "April", "May", "June",
+	  "July", "August", "September", "October", "November", "December"];
 	year = date.getFullYear();
 	month = date.getMonth()+1;
 	day = date.getDate();
@@ -140,6 +142,9 @@ exports.formatDate = function(date, format) {
 	}
 	else if (format === 'mm DD, YYYY') {
 		date = monthNames[month]+' '+day+', '+year;
+	}
+	else if (format === 'MM DD, YYYY') {
+		date = fullMonthNames[month]+' '+day+', '+year;
 	}
 
 	return date;
@@ -594,10 +599,11 @@ exports.aggregateSalesByCustomer = function(data) {
 	var arr = [];
 	var page = [], customerObj, ordersObj;
 	var grandTotal = 0, pageLimit = 30, rowCount = 0;
-	var pageData = [];
+	var pageData = { customers: [] };
 	var total = 0;
 	var pageObj = {};
 
+	//Group Records by Customer Together
 	for (var i = 0; i < data.length-1; i++) {
 		customerObj = { customer_name: data[i].customer_name, orders_arr: [], total_amount: parseFloat(data[i].formattedAmount.replace(',','')) };
 		ordersObj = { 
@@ -656,39 +662,47 @@ exports.aggregateSalesByCustomer = function(data) {
 		}
 	}
 
+	//Transform Customer Data by Record
 	for (var i = 0; i < arr.length; i++) {
+		arr[i].orders_arr[0]['customer_name'] = arr[i].customer_name;
 		grandTotal += parseFloat(arr[i].total_amount.replace(',',''));
+	}
+	grandTotal = grandTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
+
+	arr.push({ customer_name: '', orders_arr: [], grandTotal: grandTotal, rows: 1 })
+
+	//Seggregate to Pages according to page limit
+	for (var i = 0; i < arr.length; i++) {
 		rowCount += arr[i].rows;
 		if (rowCount < pageLimit && i < arr.length) {
-			pageData.push(arr[i]);
+			pageData.customers.push(arr[i]);
 			if (i+1 == arr.length) {
 				page.push(pageData);
 			}
 		}
 		else {
 			if (rowCount == pageLimit) {
-				pageData.push(arr[i]);
+				pageData.customers.push(arr[i]);
 				page.push(pageData);
 				rowCount = 0;
-				pageData = [];
+				pageData = { customers: [] };
 			}
 			else {
-				var endingPos = arr[i].orders_arr.length;
-
+				var endingPos = arr[i].orders_arr.length - (rowCount - pageLimit);
 				customerObj = { customer_name: arr[i].customer_name, orders_arr: [] };
-				for (var x = 0; x < endingPos; x++) {
+				for (var x = 0; x <= endingPos; x++) {
 					customerObj.orders_arr.push(arr[i].orders_arr[x]);
 				}
-				pageData.push(customerObj);
+				pageData.customers.push(customerObj);
 				page.push(pageData);
 				rowCount = 0;
-				pageData = [];
+				pageData = { customers: [] };
 
 				customerObj = { customer_name: '', orders_arr: [], total_amount: arr[i].total_amount };
 				for (var y = endingPos; y < arr[i].orders_arr.length; y++) {
 					customerObj.orders_arr.push(arr[i].orders_arr[y]);
 				}
-				pageData.push(customerObj);
+				pageData.customers.push(customerObj);
 
 				rowCount += arr[i].orders_arr.length;
 
@@ -699,14 +713,9 @@ exports.aggregateSalesByCustomer = function(data) {
 			}
 		}
 	}
-	for (var i = 0; i < page.length; i++)
-		console.log(page[i]);
-
-	grandTotal = grandTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});
 
 	pageObj['pages'] = page;
 	pageObj['grandTotal'] = grandTotal;
 
-	console.log(pageObj);
 	return pageObj;
 }

@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html>
 
+{{#if reports}}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>report</title>
+    <link rel="stylesheet" href="../reportAssets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alata">
+    <link rel="stylesheet" href="../reportAssets/css/styles.css">
+</head>
+
+<body>
+    {{{body}}}
+
+    <script src="../reportAssets/js/jquery.min.js"></script>
+    <script src="../reportAssets/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+{{else}}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -61,5 +79,6 @@
     <script src="../assets/js/sales.js"></script>
     <script src="../assets/js/purchase.js"></script>
 </body>
+{{/if}}
 
 </html>

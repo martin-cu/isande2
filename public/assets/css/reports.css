@@ -4,6 +4,25 @@ select[readonly] {
 	touch-action: none;
 }
 
+.fa.fa-circle.Pending {
+	color: rgb(224,112,39);
+    background: white !important;
+    border-radius: 0px;
+    padding: 0px !important;
+    min-height: auto !important;
+    min-width: auto !important;
+    box-shadow: none !important;
+}
+
+.fa .fa-circle .Processing {
+	color: #1c59ff;
+}
+
+.fa .fa-circle .Pending {
+	color: #1c59ff;
+}
+
+
 .chart-no-data {
 	top:40%;
 	position:absolute;

@@ -609,6 +609,7 @@ exports.viewSalesDetails = function(req,res){
 													terms: payment_terms,
 													customer_location : location[0].location_name
 												};
+												console.log(record[0]);
 												html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
 																						
 												res.render('salesDetails', html_data);

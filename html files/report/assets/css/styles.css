@@ -1,19 +1,15 @@
 html {
   font: 16px/1 'Open Sans', sans-serif;
   overflow: auto;
-  padding: 0px 0.5in;
+  padding: 0.5in;
   background: #999;
   cursor: default;
 }
 
 body {
-  background: #999;
-}
-
-.container-body {
   box-sizing: border-box;
   height: 11in;
-  margin: 0.5in auto;
+  margin: 0 auto;
   overflow: hidden;
   padding: 0.5in;
   width: 8.5in;

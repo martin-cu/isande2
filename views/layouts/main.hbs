@@ -45,6 +45,7 @@
 </head>
 
 <body id="page-top">
+    {{> messages}}
     {{#if session}}
         <div id="wrapper">
             {{> nav}}
@@ -71,7 +72,12 @@
     <script type="text/javascript">
         var employee = {{{employee}}};
         $(document).ready(function() {
-            $('*[href]').on('click',function () {
+            $(document).on('click', function() {
+                $('.dialog-msg').fadeOut(50, function() {
+                    $(this).remove();
+                });
+            });
+            $('*[href]').on('click',function (event) {
                 window.location = $(this).attr('href');
             });
         }); 

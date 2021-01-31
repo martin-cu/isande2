@@ -11,6 +11,8 @@ const dataformatter = require('../public/assets/js/dataformatter.js');
 const bcrypt = require('bcrypt');
 
 exports.voidPurchase = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	userModel.queryAdmin({ role_id: 'System Admin' }, function(err, admin) {
 		if (err) {
 			throw err;
@@ -37,6 +39,8 @@ exports.voidPurchase = function(req, res) {
 }
 
 exports.changeCalendar = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	purchaseModel.getTrackOrders(req.query.offset, function(err, orders) {
 		if (err)
 			throw err;
@@ -130,7 +134,8 @@ exports.changeCalendar = function(req, res) {
 // }
 
 exports.getAllPurchases = function(req,res){
-
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	console.log("HERE WE GO");
 	var offset = 0;
 	var limit = 10;
@@ -311,12 +316,16 @@ exports.getAllPurchases = function(req,res){
 
 //add updating of price for product when changed
 exports.getCreatePurchase = function(req,res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var html_data = {};
 	html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'purchasing_role','create_purchase_tab');
 	res.render("purchase_create", html_data);
 };
 
 exports.postCreatePurchase = function(req,res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var amount = 0;
 	console.log(req.query);
 	purchaseModel.getDatePrice( parseInt(req.body.purchase_product), req.body.date, function(err, price){
@@ -433,6 +442,8 @@ exports.postCreatePurchase = function(req,res){
 
 
 exports.getPrice = function(req,res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var product = req.query.product;
 	var date = req.query.date;
 	console.log(req.query);
@@ -485,6 +496,8 @@ exports.getPrice = function(req,res){
 
 
 exports.postAddPurchase = function(req,res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var amount = 0;
 	purchaseModel.getDatePrice( parseInt(req.body.purchase_product), req.body.purchase_schedule.toString(), function(err, price){
 		if(err){
@@ -573,7 +586,8 @@ exports.postAddPurchase = function(req,res){
 
 
 exports.getPurchaseDetails = function(req,res){
-
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var html_data = {};
 
 	purchaseModel.getPurchaseDetails(req.params.lo, function(err, details){
@@ -624,6 +638,8 @@ exports.getPurchaseDetails = function(req,res){
 	});
 }
 exports.getTrackOrdersPage = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -655,6 +671,8 @@ exports.getTrackOrdersPage = function(req, res) {
 }
 
 exports.getPurchaseRecords = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;

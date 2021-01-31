@@ -9,6 +9,8 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.getSingleDeliveryInfo = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var query;
 
 	if (req.query.type === 'Restock')
@@ -30,6 +32,8 @@ exports.getSingleDeliveryInfo = function(req, res) {
 }
 
 exports.ajaxChangeDriver = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	truckModel.getSelectedTruck({ plate_no: req.query.plate_no }, function(err, truckData) {
 		if (err)
 			throw err;
@@ -43,6 +47,8 @@ exports.ajaxChangeDriver = function(req, res) {
 }
 
 exports.changeCalendar = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	deliveryModel.getTrackDelivery(req.query.offset, function(err, orders) {
 		if (err)
 			throw err;
@@ -67,6 +73,8 @@ exports.changeCalendar = function(req, res) {
 }
 
 exports.scheduleDelivery = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -129,6 +137,8 @@ exports.scheduleDelivery = function(req, res) {
 }
 
 exports.updateDelivery = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var type, id = req.body.deliveryReference || req.body.confirmReference;
 	type = id[0]+id[1];
 	id = id.substring(2);
@@ -300,6 +310,8 @@ exports.updateDelivery = function(req, res) {
 }
 
 exports.getConfirmDelivery = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -337,6 +349,8 @@ exports.getConfirmDelivery = function(req, res) {
 }
 
 exports.getTrackDelivery = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -369,6 +383,8 @@ exports.getTrackDelivery = function(req, res) {
 }
 
 exports.getDeliveryRecords = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -398,6 +414,8 @@ exports.getDeliveryRecords = function(req, res) {
 }
 
 exports.viewDeliveryDetails = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;

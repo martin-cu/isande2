@@ -5,6 +5,7 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.viewReports = function(req, res){
+	req.session.success_msg = [];
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
 			req.flash('dialog_error_msg', 'Oops something went wrong!');
@@ -21,11 +22,10 @@ exports.viewReports = function(req, res){
 						res.redirect('/home');
 					}
 					else {
-						var html_data = {
+						html_data = {
 							notifCount: notifCount[0],
 							salesByCustomer: dataformatter.aggregateSalesByCustomer(salesByCustomer)
 						};
-						
 						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 						res.render('reports', html_data);
 					}

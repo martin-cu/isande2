@@ -7,6 +7,8 @@ const e = require('express');
 
 
 exports.reportDamagedInventory = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	console.log(req.body);
 	var { damaged_amt, comments, product_id } = req.body;
 	var query = {
@@ -46,6 +48,8 @@ exports.reportDamagedInventory = function(req, res) {
 }
 
 exports.reportManualCount = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var { physical_count, comments2, product_id2 } = req.body;
 	var query = {
 		physical_count: physical_count,
@@ -119,6 +123,8 @@ exports.reportManualCount = function(req, res) {
 
 
 exports.getProductInventory = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	inventoryModel.getCurrentInventory(function(err, currinv) {
 		if(err){
 			throw err;
@@ -161,6 +167,8 @@ console.log(dailysales);
 )};
 
 exports.getProductCatalogue = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	console.log(req.session);
 	inventoryModel.getProductCatalogue(function(err, monresult) {
 		if(err){
@@ -197,6 +205,8 @@ exports.getProductCatalogue = function(req, res){
 )};
 
 exports.getProductName = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){
@@ -220,6 +230,8 @@ exports.getProductName = function(req, res){
 }
 
 exports.getProductNameForManualCount = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){
@@ -243,6 +255,8 @@ exports.getProductNameForManualCount = function(req, res){
 }
 
 exports.changeProductPrice = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	const errors = validationResult(req);
 	var { fcc_name, fcc_purchaseprice, fcc_sellingprice } = req.body;
 	var { rcc_name, rcc_purchaseprice, rcc_sellingprice } = req.body;
@@ -353,6 +367,8 @@ exports.changeProductPrice = function(req, res){
 };
 
 exports.getProductNameForReportDamage = function(req, res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){

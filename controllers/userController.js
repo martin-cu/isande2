@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const js = require('../public/assets/js/session.js');
 
 exports.registerUser = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	const errors = validationResult(req);
 	
 	if (errors.isEmpty()) {
@@ -54,6 +56,8 @@ exports.registerUser = function(req, res) {
 };
 
 exports.queryAll = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var offset = 0;
 	var limit = 10;
 	var { offset, limit } = req.query;
@@ -94,6 +98,8 @@ exports.queryAll = function(req, res) {
 
 
 exports.queryAllPagination = function(req,res){
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var offset = parseInt(req.query.offset);
 	var limit = 10;
 	console.log(offset);
@@ -119,6 +125,8 @@ exports.queryAllPagination = function(req,res){
 }
 
 exports.myAccount = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	userModel.singleQuery(req.session.username, function(err, result) {
 		if (err) {
 			req.flash('error_msg', 'Something went wrong');
@@ -143,6 +151,8 @@ exports.myAccount = function(req, res) {
 };
 
 exports.changePassword = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	const errors = validationResult(req);
 
 	if (errors.isEmpty()) {
@@ -192,6 +202,8 @@ exports.changePassword = function(req, res) {
 }
 
 exports.updateAccount = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	var user = req.params.username;
 	var { userfield, newval, passval1, passval2, authority } = req.body;
 	var query = 'lqkJmHoBJY'+user+'lqkJmHoBJY';
@@ -242,6 +254,8 @@ exports.updateAccount = function(req, res) {
 }
 
 exports.loginUser = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	const errors = validationResult(req);
 
 	if(errors.isEmpty()) {
@@ -336,6 +350,8 @@ exports.loginUser = function(req, res) {
 };
 
 exports.logout = function(req, res) {
+	res.locals.success_msg = null;
+	res.locals.error_msg = null;
 	if (req.session) {
 		req.session.destroy(() => {
 			res.clearCookie('connect.sid');

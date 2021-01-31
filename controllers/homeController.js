@@ -5,13 +5,15 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.viewDashboard = function(req, res){
+	res.locals.success_msg = 'sdasda';
+	res.locals.error_msg = null;
 	if (req.session.authority === 'System Admin') {
 		console.log('!');
 	}
 	else if (req.session.authority === 'Sales Employee') {
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 			if (err) {
-				req.flash('dialog_error_msg', err);
+				res.locals.error_msg = 'error';
 				res.redirect('/logout');
 			}
 			else {
@@ -52,7 +54,7 @@ exports.viewDashboard = function(req, res){
 															else if (netIncome[i].type === 'monthly')
 																netMonth = netIncome[i].net_income;
 														}
-														var html_data = {
+														html_data = {
 															notifCount: notifCount[0],
 															netMonth: netMonth,
 															netYear: netYear,
@@ -60,10 +62,11 @@ exports.viewDashboard = function(req, res){
 															pendingTasks: taskProgress[0].pending_tasks,
 															recentOrders: recentOrders,
 															overDueOrders: overDueOrders,
-															monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlySales(monthlySale))
+															monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlySales(monthlySale)),
 														};
+
 														html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
-														res.render('home', html_data);
+														res.render('home', html_data);	
 													}
 												});
 											}

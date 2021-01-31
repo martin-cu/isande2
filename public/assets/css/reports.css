@@ -4,6 +4,25 @@ select[readonly] {
 	touch-action: none;
 }
 
+.dialog-msg {
+  position: absolute !important;
+  top: 10%;
+  left: 47%;
+  background-color: white;
+  z-index: 9999;
+  width: 300px;
+  height: 80px;
+  border: solid 1px gainsboro;
+  border-radius: 5px;
+  box-shadow: 10px;
+
+	-webkit-transition: opacity 3s ease-in-out;
+	-moz-transition: opacity 3s ease-in-out;
+	-ms-transition: opacity 3s ease-in-out;
+	-o-transition: opacity 3s ease-in-out;
+	opacity: 1;
+}
+
 .fa.fa-circle {
 	background: white !important;
     border-radius: 0px;

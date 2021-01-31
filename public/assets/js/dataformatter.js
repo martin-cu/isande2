@@ -602,7 +602,8 @@ exports.aggregateSalesByCustomer = function(data) {
 		customerObj = { customer_name: data[i].customer_name, orders_arr: [], total_amount: parseFloat(data[i].formattedAmount.replace(',','')) };
 		ordersObj = { 
 			date: data[i].formattedDate,
-			desc: data[i].qty+' bags of '+data[i].product_name,
+			qty: data[i].qty,
+			product: data[i].product_name,
 			amount: data[i].formattedAmount
 		}
 		customerObj.orders_arr.push(ordersObj);
@@ -611,7 +612,8 @@ exports.aggregateSalesByCustomer = function(data) {
 				i++;
 				ordersObj = { 
 					date: data[i].formattedDate,
-					desc: data[i].qty+' bags of '+data[i].product_name,
+					qty: data[i].qty,
+					product: data[i].product_name,
 					amount: data[i].formattedAmount
 				}
 				customerObj.orders_arr.push(ordersObj);
@@ -625,7 +627,8 @@ exports.aggregateSalesByCustomer = function(data) {
 					customerObj = { customer_name: data[x].customer_name, orders_arr: [], total_amount: parseFloat(data[x].formattedAmount.replace(',','')) };
 					ordersObj = { 
 						date: data[x].formattedDate,
-						desc: data[x].qty+' bags of '+data[x].product_name,
+						qty: data[i].qty,
+						product: data[i].product_name,
 						amount: data[x].formattedAmount
 					}
 					customerObj.orders_arr.push(ordersObj);
@@ -640,7 +643,8 @@ exports.aggregateSalesByCustomer = function(data) {
 				i++;
 				ordersObj = { 
 					date: data[i].formattedDate,
-					desc: data[i].qty+' bags of '+data[i].product_name,
+					qty: data[i].qty,
+					product: data[i].product_name,
 					amount: data[i].formattedAmount
 				}
 				customerObj.orders_arr.push(ordersObj);

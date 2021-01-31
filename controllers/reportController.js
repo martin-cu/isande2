@@ -6,28 +6,38 @@ const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.viewReports = function(req, res){
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			if (req.session.authority === 'System Admin') {
 				console.log('!');
 			}
 			else if (req.session.authority === 'Sales Employee') {
 				reportModel.getSalesByCustomerReport(function(err, salesByCustomer) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
 					else {
 						reportModel.getMonthlySalesByProduct(function(err, monthlySalesByProduct) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
 							else {
 								homeModel.getNetIncomeData(function(err, netIncome) {
-									if (err)
-										throw err;
+									if (err) {
+										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										res.redirect('/home');
+									}
 									else {
 										homeModel.getTaskProgress(function(err, taskProgress) {
-											if (err)
-												throw err;
+											if (err) {
+												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												res.redirect('/home');
+											}
 											else {
 												var netMonth, netYear;
 												for (var i = 0; i < netIncome.length; i++) {
@@ -85,17 +95,23 @@ exports.viewSalesDetailedReport = function(req, res) {
 	param = param[Object.keys(param)]
 
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			if (type == 'Monthly_Sales') {
 				reportModel.filteredMonthlySales(param, function(err, result) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
 					else {
 						reportModel.filteredMonthlySalesRecord(param, function(err, records) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
 							else {
 								var html_data = { notifCount: notifCount[0], reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
 								reportTitle: result[0].product_name+' Monthly Sales', 
@@ -109,12 +125,16 @@ exports.viewSalesDetailedReport = function(req, res) {
 			}
 			else if (type == 'Monthly_Earnings') {
 				reportModel.filteredEarningsPeriod(param, function(err, result) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
 					else {
 						reportModel.filteredEarningsPeriodRecord(param, function(err, records) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
 							else {
 								result[0]['product_name'] = 'All';
 								var html_data = { notifCount: notifCount[0], reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
@@ -128,12 +148,16 @@ exports.viewSalesDetailedReport = function(req, res) {
 			}
 			else if (type == 'Order_Progress' && param == 'All') {
 				reportModel.getTaskProgress(function(err, result) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
 					else {
 						reportModel.taskProgressRecords(function(err, records) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
 							else {
 								result[0]['product_name'] = 'All';
 								var html_data = { notifCount: notifCount[0], reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),
@@ -148,12 +172,16 @@ exports.viewSalesDetailedReport = function(req, res) {
 			}
 			else if (type == 'Order_Progress' && param == 'Pending') {
 				reportModel.getPendingRequests(function(err, result) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
 					else {
 						reportModel.pendingRequestsRecord(function(err, records) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
 							else {
 								result[0]['product_name'] = 'All';
 								var html_data = { notifCount: notifCount[0], reportType: type, records: records, data: result[0], metrics: dataformatter.formatReportMetrics(result[0]),

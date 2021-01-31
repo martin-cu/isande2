@@ -11,8 +11,10 @@ const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.changeCalendar = function(req, res) {
 	salesModel.getTrackOrders(req.query.offset, function(err, orders) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			var newDate = new Date();
 			newDate.setDate(newDate.getDate()-req.query.offset);
@@ -47,24 +49,34 @@ exports.getSaleOrderForm = function(req, res) {
 		{ name: 'Delivery' }, { name: 'Pick-up' }
 	];
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			customerModel.queryLocationbyCustomer(function(err, customers) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
+				}
 				else {
 					customerModel.queryCustomers(function(err, customerArr) {
-						if (err)
-							throw err;
+						if (err) {
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/home');
+						}
 						else {
 							productModel.queryProductbyPrice(function(err, products) {
-								if (err)
-									throw err;
+								if (err) {
+									req.flash('dialog_error_msg', err);
+									res.redirect('/home');
+								}
 								else {
 									salesModel.getMonthlyCount(function(err, monthlyCount) {
-										if (err)
-											throw err;
+										if (err) {
+											req.flash('dialog_error_msg', 'Oops something went wrong!');
+											res.redirect('/home');
+										}
 										else {
 											var date, month, year, count, due_date, dr, add_days;
 											date = new Date();
@@ -111,12 +123,16 @@ exports.createSaleRecord = function(req, res) {
 		}
 		else {
 			productModel.queryProductbyPrice(function(err, price) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', err);
+					res.redirect('/create_sales');
+				}
 				else {
 					customerModel.queryLocationbyCustomer(function(err, customer_id) {
-						if (err)
-							throw err;
+						if (err) {
+							req.flash('dialog_error_msg', err);
+							res.redirect('/create_sales');
+						}
 						else {
 							var date, month, year, count, due_date, dr, add_days, productPrice, customerID;
 							date = new Date();
@@ -161,7 +177,7 @@ exports.createSaleRecord = function(req, res) {
 										res.redirect('/create_sales');
 									}
 									else {
-										// res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+										req.flash('dialog_success_msg', 'Successfully created sale record!');
 										res.redirect('/create_sales');
 
 									}
@@ -212,8 +228,10 @@ exports.createSaleRecord = function(req, res) {
 																	}
 																	/* Creating a Sale Record for Delivery sends a notification to Logistics */
 																	notificationModel.createNotif(query, function(err, notif) {
-																		if (err)
-																			throw err;
+																		if (err) {
+																			req.flash('dialog_error_msg', 'Oops something went wrong!');
+																			res.redirect('/create_sales');
+																		}
 																		else {
 																			req.flash('dialog_success_msg', 'Successfully created sale record!');
 																			res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
@@ -240,16 +258,22 @@ exports.createSaleRecord = function(req, res) {
 
 exports.getPaymentsPage = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			salesModel.getUnpaidOrders(function(err, unpaidOrders) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
+				}
 				else {
 					customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
-						if (err)
-							throw err;
+						if (err) {
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/home');
+						}
 						else {
 							var groupedCustomer;
 							groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
@@ -275,20 +299,26 @@ exports.postPaymentForm = function(req, res) {
 	var { paymentDR, paymentType, amountPaid, bankID, checkNo, paymentDate } = req.body;
 
 	salesModel.getSaleRecordDetail({ delivery_receipt: paymentDR }, function(err, saleRecord) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			var paymentObj = { amount: amountPaid, date_paid: paymentDate };
 			if(paymentType === 'Check')
 				paymentObj['check_num'] = bankID+checkNo;
 
 			paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
+				}
 				else {
 					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.payment_id }, { delivery_receipt: paymentDR }, function(err, newRecord) {
-						if(err)
-							throw err;
+						if(err) {
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/home');
+						}
 						else {
 							res.redirect('/view_payments');
 						}
@@ -301,12 +331,16 @@ exports.postPaymentForm = function(req, res) {
 
 exports.getTrackOrdersPage = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			salesModel.getTrackOrders(0, function(err, orders) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
+				}
 				else {
 					var dates = [], curdate = dataformatter.startOfWeek(new Date());
 
@@ -331,14 +365,16 @@ exports.getTrackOrdersPage = function(req, res) {
 }
 
 exports.getSalesRecords = function(req, res) {
-	console.log("Hello");
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount){
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			salesModel.getAllSaleRecords(function(err, records) {
-				if (err){
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
 				}
 				else {
 					var blanks = [];
@@ -509,21 +545,29 @@ exports.viewSalesDetails = function(req,res){
 	var query = { delivery_receipt: dr };
 
 	salesModel.getSaleRecordDetail(query, function(err, record) {
-		if (err)
-			throw err;
+		if (err) {
+			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			res.redirect('/home');
+		}
 		else {
 			salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
-				if (err)
-					throw err;
+				if (err) {
+					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					res.redirect('/home');
+				}
 				else {
 					sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
 					productModel.getProductPriceByDate(sale_date, function(err, products) {
-						if (err)
-							throw err;
+						if (err) {
+							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							res.redirect('/home');
+						}
 						else {
 							customerModel.queryLocationbyCustomer(function(err, customers) {
-								if (err)
-									throw err;
+								if (err) {
+									req.flash('dialog_error_msg', 'Oops something went wrong!');
+									res.redirect('/home');
+								}
 								else {
 									var order_status = [
 										{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }, { name: 'Cancelled' }
@@ -538,8 +582,9 @@ exports.viewSalesDetails = function(req,res){
 									console.log(record[0]);
 									if(record[0].delivery_address != null){
 										salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
-											if(err){
-												throw err;
+											if(err) {
+												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												res.redirect('/home');
 											}
 											else{
 												console.log(location[0]);

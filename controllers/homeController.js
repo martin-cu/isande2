@@ -9,30 +9,41 @@ exports.viewDashboard = function(req, res){
 		console.log('!');
 	}
 	else if (req.session.authority === 'Sales Employee') {
-		console.log(req.session.employee_id);
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-			if (err)
-				throw err;
+			if (err) {
+				req.flash('dialog_error_msg', err);
+				res.redirect('/logout');
+			}
 			else {
 				homeModel.getNetIncomeData(function(err, netIncome) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', err);
+						res.redirect('/logout');
+					}
 					else {
 						homeModel.getTaskProgress(function(err, taskProgress) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', err);
+								res.redirect('/logout');
+							}
 							else {
 								homeModel.getOverdueUnpaid(function(err, overDueOrders) {
-									if (err)
-										throw err;
+									if (err) {
+										req.flash('dialog_error_msg', err);
+										res.redirect('/logout');
+									}
 									else {
 										homeModel.getRecentSales(function(err, recentOrders) {
-											if (err)
-												throw err;
+											if (err) {
+												req.flash('dialog_error_msg', err);
+												res.redirect('/logout');
+											}
 											else {
 												homeModel.getMonthlySales(function(err, monthlySale) {
-													if (err)
-														throw err;
+													if (err) {
+														req.flash('dialog_error_msg', err);
+														res.redirect('/logout');
+													}
 													else {
 														var netMonth, netYear;
 														for (var i = 0; i < netIncome.length; i++) {
@@ -68,28 +79,40 @@ exports.viewDashboard = function(req, res){
 	}
 	else if (req.session.authority === 'Purchasing Employee') {
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-			if (err)
-				throw err;
+			if (err) {
+				req.flash('dialog_error_msg', err);
+				res.redirect('/logout');
+			}
 			else {
 				homeModel.getOrderedBags(function(err, orderedBags) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', err);
+						res.redirect('/logout');
+					}
 					else {
 						homeModel.getPurchaseProgress(function(err, taskProgress) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', err);
+								res.redirect('/logout');
+							}
 							else {
 								homeModel.getRecentOrders(function(err, recentOrders) {
-									if (err)
-										throw err;
+									if (err) {
+										req.flash('dialog_error_msg', err);
+										res.redirect('/logout');
+									}
 									else {
 										homeModel.getMonthlyPurchases(function(err, monthlyPurchases) {
-											if (err)
-												throw err;
+											if (err) {
+												req.flash('dialog_error_msg', err);
+												res.redirect('/logout');
+											}
 											else {
 												recommendationModel.getRecommendation2(function(err, recommendation) {
-													if (err)
-														throw err;
+													if (err) {
+														req.flash('dialog_error_msg', err);
+														res.redirect('/logout');
+													}
 													else {
 														/*
 														var netMonth, netYear;
@@ -128,20 +151,28 @@ exports.viewDashboard = function(req, res){
 	}
 	else if (req.session.authority === 'Logistics Employee') {
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
-			if (err)
-				throw err;
+			if (err) {
+				req.flash('dialog_error_msg', err);
+				res.redirect('/logout');
+			}
 			else {
 				homeModel.getPerfectOrderRate(function(err, perfectOrderRate) {
-					if (err)
-						throw err;
+					if (err) {
+						req.flash('dialog_error_msg', err);
+						res.redirect('/logout');
+					}
 					else {
 						homeModel.getDeliveryByDestination(function(err, deliveryByDestination) {
-							if (err)
-								throw err;
+							if (err) {
+								req.flash('dialog_error_msg', err);
+								res.redirect('/logout');
+							}
 							else {
 								homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
-									if (err)
-										throw err;
+									if (err) {
+										req.flash('dialog_error_msg', err);
+										res.redirect('/logout');
+									}
 									else {
 										var html_data = {
 											notifCount: notifCount[0],

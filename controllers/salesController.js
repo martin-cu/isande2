@@ -5,9 +5,39 @@ const productModel = require('../models/productModel');
 const salesModel = require('../models/salesModel');
 const deliveryDetailModel = require('../models/deliveryDetailModel');
 const employeeModel = require('../models/employeeModel');
+const userModel = require('../models/userModel');
 const truckModel = require('../models/truckModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
+
+const bcrypt = require('bcrypt');
+
+exports.voidSales = function(req, res) {
+	userModel.queryAdmin({ role_id: 'System Admin' }, function(err, admin) {
+		if (err) {
+			throw err;
+		}
+		else {
+				bcrypt.compare(req.body.voidPassword, admin[0].password, (err, result) => {
+					if (result) {
+						salesModel.updateSaleRecord({ void: 1 }, { delivery_receipt: req.params.dr } , function(err, isVoid) {
+							if (err) {
+								throw err;
+							}
+							else {
+								res.redirect('/home');
+							}
+						});
+					}
+					else {
+						req.flash('dialog_error_msg', 'Incorrect admin password!');
+						res.redirect('/view_sales_details/'+req.params.dr);
+					}
+				});
+			
+		}
+	});
+}
 
 exports.changeCalendar = function(req, res) {
 	salesModel.getTrackOrders(req.query.offset, function(err, orders) {

@@ -3,9 +3,38 @@ const productModel = require('../models/productModel');
 const purchaseModel = require('../models/purchaseModel');
 const notificationModel = require('../models/notificationModel');
 const recommendationModel = require('../models/recommendationModel');
+const userModel = require('../models/userModel');
 const deliveryDetailModel = require('../models/deliveryDetailModel');
 const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
+
+const bcrypt = require('bcrypt');
+
+exports.voidPurchase = function(req, res) {
+	userModel.queryAdmin({ role_id: 'System Admin' }, function(err, admin) {
+		if (err) {
+			throw err;
+		}
+		else {
+			bcrypt.compare(req.body.voidPassword, admin[0].password, (err, result) => {
+				if (result) {
+					purchaseModel.updatePurchaseDetails({ void: 1 }, { supplier_lo: req.params.lo } , function(err, isVoid) {
+						if (err) {
+							throw err;
+						}
+						else {
+							res.redirect('/home');
+						}
+					});
+				}
+				else {
+					req.flash('dialog_error_msg', 'Incorrect admin password!');
+					res.redirect('/view_purchase_details/'+req.params.lo);
+				}
+			});
+		}
+	});
+}
 
 exports.changeCalendar = function(req, res) {
 	purchaseModel.getTrackOrders(req.query.offset, function(err, orders) {
@@ -792,7 +821,7 @@ exports.viewPurchaseDetails = function(req, res) {
 						notifCount: notifCount[0],
 						purchaseRecord: purchaseRecord[0]
 					};
-					
+					console.log(purchaseRecord[0]);
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'purchase_record_tab');
 					res.render('purchasingDetails', html_data);
 				}

@@ -2,7 +2,7 @@ var mysql = require('./connectionModel');
 mysql = mysql.connection;
 
 exports.getMonthlySalesByProduct = function(next) {
-	var sql = "select max(t.product_name) as product_name, case when format(max(t.t1), 2) is null then 0 else format(max(t.t1), 2) end as total_sales from (select pt.product_id, null as t1, pt.product_name from product_table as pt union select sh.product_id, sum((sh.qty*sh.amount)), null from sales_history as sh where month(sh.scheduled_date) = month(now()) and year(sh.scheduled_date) = year(now()) group by sh.product_id ) as t group by t.product_id";
+	var sql = "select max(t.product_name) as product_name, case when format(max(t.t1), 2) is null then 0 else format(max(t.t1), 2) end as total_sales from (select pt.product_id, null as t1, pt.product_name from product_table as pt union select sh.product_id, sum((sh.qty*sh.amount)), null from sales_history as sh where sh.void != 1 and month(sh.scheduled_date) = month(now()) and year(sh.scheduled_date) = year(now()) group by sh.product_id ) as t group by t.product_id";
 
 	mysql.query(sql, next);
 }
@@ -14,13 +14,13 @@ exports.filteredMonthlySales = function(filters, next) {
 }
 
 exports.filteredMonthlySalesRecord = function(filters, next) {
-	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, ct.customer_name, sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where pt.product_name = ? and month(sh.scheduled_date) = month(now()) and year(sh.scheduled_date) = year(now())";
+	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, ct.customer_name, sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.void != 1 and pt.product_name = ? and month(sh.scheduled_date) = month(now()) and year(sh.scheduled_date) = year(now())";
 	sql = mysql.format(sql, filters);
 	mysql.query(sql, next);
 }
 
 exports.filteredEarningsPeriod = function(filters, next) {
-	var sql = "select date_format(last_day(curdate()), '%Y-%m-%d') as last_day, date_format(last_day(curdate() - interval 1 month) + interval 1 day, '%Y-%m-%d') as first_day, ? as period, case when format(sum(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(sum(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as total_sales, case when format(sum(sh.qty),0) is null then 0 else format(sum(sh.qty),0) end as total, count(*) as order_count, case when format(avg(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(avg(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as avg_profit, case when format(max(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(max(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as max_profit, case when format(min(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(min(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as min_profit, case when concat(round(avg(pct.selling_price/pct.purchase_price),4),'%') is null then 0 else concat(round(avg(pct.selling_price/pct.purchase_price),4),'%') end as markup from product_catalogue_table as pct left join sales_history as sh using(product_id) where ?(sh.scheduled_date) = ?(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid'";
+	var sql = "select date_format(last_day(curdate()), '%Y-%m-%d') as last_day, date_format(last_day(curdate() - interval 1 month) + interval 1 day, '%Y-%m-%d') as first_day, ? as period, case when format(sum(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(sum(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as total_sales, case when format(sum(sh.qty),0) is null then 0 else format(sum(sh.qty),0) end as total, count(*) as order_count, case when format(avg(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(avg(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as avg_profit, case when format(max(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(max(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as max_profit, case when format(min(sh.qty*(pct.selling_price-pct.purchase_price)),2) is null then 0 else format(min(sh.qty*(pct.selling_price-pct.purchase_price)),2) end as min_profit, case when concat(round(avg(pct.selling_price/pct.purchase_price),4),'%') is null then 0 else concat(round(avg(pct.selling_price/pct.purchase_price),4),'%') end as markup from product_catalogue_table as pct left join sales_history as sh using(product_id) where sh.void != 1 and ?(sh.scheduled_date) = ?(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid'";
 	while (sql.includes('?')) {
 		sql = mysql.format(sql, filters);
 	}
@@ -31,7 +31,7 @@ exports.filteredEarningsPeriod = function(filters, next) {
 }
 
 exports.filteredEarningsPeriodRecord = function(filters, next) {
-	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, ct.customer_name, sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where ?(sh.scheduled_date) = ?(now()) and sh.payment_status = 'Paid'";
+	var sql = "select date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, ct.customer_name, sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.void != 1 and ?(sh.scheduled_date) = ?(now()) and sh.payment_status = 'Paid'";
 	while (sql.includes('?')) {
 		sql = mysql.format(sql, filters);
 	}
@@ -42,7 +42,7 @@ exports.filteredEarningsPeriodRecord = function(filters, next) {
 }
 
 exports.getTaskProgress = function(next) {
-	var sql = "select date_format(last_day(curdate()), '%Y-%m-%d') as last_day, date_format(last_day(curdate() - interval 1 month) + interval 1 day, '%Y-%m-%d') as first_day, case when concat(round((max(t.completed)/(max(t.processing)+max(t.pending)+max(t.completed))*100),2),'%') is null then 'No orders yet' else concat(round((max(t.completed)/(max(t.processing)+max(t.pending)+max(t.completed))*100),2),'%') end as task_progress,(max(t.pending)+max(t.processing)+max(t.completed)) as total_orders,max(t.pending) as pending, max(t.completed) as completed, max(t.processing) as processing from ( select count(*) as pending, null as completed, null as processing from sales_history where order_status = 'Pending' and datediff(now(), scheduled_date) >= 0 union select null, count(*) as completed, null as processing from sales_history where order_status = 'Completed' and datediff(now(), scheduled_date) >= 0 and month(now()) = month(scheduled_date) union select null, null as completed, count(*) as processing from sales_history where order_status = 'Processing' and datediff(now(), scheduled_date) >= 0 and month(now()) = month(scheduled_date) ) as t";
+	var sql = "select date_format(last_day(curdate()), '%Y-%m-%d') as last_day, date_format(last_day(curdate() - interval 1 month) + interval 1 day, '%Y-%m-%d') as first_day, case when concat(round((max(t.completed)/(max(t.processing)+max(t.pending)+max(t.completed))*100),2),'%') is null then 'No orders yet' else concat(round((max(t.completed)/(max(t.processing)+max(t.pending)+max(t.completed))*100),2),'%') end as task_progress,(max(t.pending)+max(t.processing)+max(t.completed)) as total_orders,max(t.pending) as pending, max(t.completed) as completed, max(t.processing) as processing from ( select count(*) as pending, null as completed, null as processing from sales_history where void != 1 and order_status = 'Pending' and datediff(now(), scheduled_date) >= 0 union select null, count(*) as completed, null as processing from sales_history where void != 1 and order_status = 'Completed' and datediff(now(), scheduled_date) >= 0 and month(now()) = month(scheduled_date) union select null, null as completed, count(*) as processing from sales_history where void != 1 and order_status = 'Processing' and datediff(now(), scheduled_date) >= 0 and month(now()) = month(scheduled_date) ) as t";
 	mysql.query(sql, next);
 };
 

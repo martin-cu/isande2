@@ -1,13 +1,14 @@
+{{#compareTwoValues sale_record.status 'Pending' operator="==="}}
 <div>
     <div class="modal fade" role="dialog" tabindex="-1" id="voidModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="height: 50px;">
-                    <h4>Cancel Order</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4>Cancel Sale Order</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                     <p class="text-left text-muted" style="margin-bottom: 20px;">Enter admin password to continue</p>
-                    <form action="" method="post">
+                    <form action="/void_sales/{{sale_record.delivery_receipt}}" method="post" id="voidForm">
                         <div class="form-row w-100">
                             <div class="col">
                                 <form class="register-form w-100">
@@ -15,14 +16,7 @@
                                         <div class="form-row">
                                             <div class="w-100">
                                                 <div id="lp-name-wrapper">
-                                                    <h5 class="text-left" style="font-weight: bold;">Password</h5><input class="form-control" type="password" id="" name="" placeholder="Password..." required="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="w-100">
-                                                <div id="lp-name-wrapper">
-                                                    <h5 class="text-left" style="font-weight: bold;">Confirm Password</h5><input class="form-control" type="password" id="" name="" placeholder="Password..." required="">
+                                                    <h5 class="text-left" style="font-weight: bold;">Password</h5><input class="form-control" type="password" id="voidPassword" name="voidPassword" placeholder="Password..." required>
                                                 </div>
                                             </div>
                                         </div>
@@ -32,11 +26,12 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer"><button class="btn btn-light" data-dismiss="modal" type="button">Close</button><button class="btn btn-primary" type="submit">Confirm</button></div>
+                <div class="modal-footer"><button class="btn btn-light" data-dismiss="modal" type="button">Close</button><button class="btn btn-primary" type="submit" form="voidForm">Confirm</button></div>
             </div>
         </div>
     </div>
 </div>
+{{/compareTwoValues}}
 
 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">

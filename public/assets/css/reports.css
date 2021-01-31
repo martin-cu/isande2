@@ -4,9 +4,8 @@ select[readonly] {
 	touch-action: none;
 }
 
-.fa.fa-circle.Pending {
-	color: rgb(224,112,39);
-    background: white !important;
+.fa.fa-circle {
+	background: white !important;
     border-radius: 0px;
     padding: 0px !important;
     min-height: auto !important;
@@ -14,11 +13,15 @@ select[readonly] {
     box-shadow: none !important;
 }
 
-.fa .fa-circle .Processing {
+.fa.fa-circle.Pending {
+	color: rgb(224,112,39);
+}
+
+.fa.fa-circle.Processing {
 	color: #1c59ff;
 }
 
-.fa .fa-circle .Pending {
+.fa.fa-circle.Complete {
 	color: #1c59ff;
 }
 

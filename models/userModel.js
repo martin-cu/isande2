@@ -23,6 +23,12 @@ exports.queryUserCount = function(query, next){
 	mysql.query(sql, next);
 }
 
+exports.queryAdmin = function(query, next) {
+	var sql = "select * from user_table where ?";
+	sql = mysql.format(sql, query);
+	mysql.query(sql, next);
+}
+
 
 exports.singleQuery = function(username, next) {
 	var sql = "SELECT u.employee_id, u.username as username, u.password as password, u.email as email, u.role_id as role_id, e.first_name as first_name , e.last_name as last_name, e.job as job, e.status as status FROM user_table as u JOIN employee_table as e using (employee_id) WHERE username = ? OR email = ?";

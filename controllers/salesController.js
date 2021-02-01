@@ -250,24 +250,29 @@ exports.createSaleRecord = function(req, res) {
 															}
 															else {
 																salesModel.getSaleRecordDetail({delivery_receipt : dr}, function(err, record){
-																	var query = {
-																	url: '/schedule_delivery',
-																	desc: 'New order for ' + record[0].customer_name,
-																	id: req.session.employee_id,
-																	roles: dataformatter.getNotifRoles('L'),
-																	contents: 'New order for '+ record[0].customer_name
+																	if (err) {
+
 																	}
-																	/* Creating a Sale Record for Delivery sends a notification to Logistics */
-																	notificationModel.createNotif(query, function(err, notif) {
-																		if (err) {
-																			req.flash('error_msg', 'Oops something went wrong!');
-																			res.redirect('/create_sales');
+																	else {
+																		var query = {
+																		url: '"/schedule_delivery?id='+record[0].delivery_receipt+'&&type=Sell-in"',
+																		desc: 'Sale',
+																		id: req.session.employee_id,
+																		roles: dataformatter.getNotifRoles('L'),
+																		contents: 'New order for '+ record[0].customer_name
 																		}
-																		else {
-																			req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
-																			res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
-																		}
-																	});
+																		/* Creating a Sale Record for Delivery sends a notification to Logistics */
+																		notificationModel.createNotif(query, function(err, notif) {
+																			if (err) {
+																				req.flash('error_msg', 'Oops something went wrong!');
+																				res.redirect('/create_sales');
+																			}
+																			else {
+																				req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
+																				res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+																			}
+																		});
+																	}		
 																});
 															}
 														});

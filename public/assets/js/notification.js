@@ -2,8 +2,9 @@ function addNotifToDropdown(arr) {
 	var dropdown = $('#notifDropdownMenu :last');
 	var elemClass1, elemClass2, href;
 	var a, div1, div2, div3, iElem, span, p;
-	
+	var iElemClass;
 	for (var i = 0; i < arr.length; i++) {
+		arr[i].role_id = arr[i].role_id.replace('Employee', 'Department');
 		href = arr[i].url;
 		if (arr[i].seen) {
 			elemClass1 = 'seen';
@@ -13,6 +14,21 @@ function addNotifToDropdown(arr) {
 			elemClass1 = 'unseen';
 			elemClass2 = 'font-weight-bold';
 		}
+		if (arr[i].description === 'Delivery Done') {
+			iElemClass = 'fa fa-truck d-xl-flex justify-content-xl-center invert';
+		}
+		else if (arr[i].description === 'Delivery Processing') {
+			iElemClass = 'fa fa-truck d-xl-flex justify-content-xl-center';
+		}
+		else if (arr[i].description === 'Sale') {
+			iElemClass = 'fa fa-shopping-cart d-xl-flex justify-content-xl-center';
+		}
+		else if (arr[i].description === 'Purchase') {
+			iElemClass = 'fa fa-product-hunt d-xl-flex justify-content-xl-center';
+		}
+		else {
+			iElemClass = 'fa fa-truck d-xl-flex justify-content-xl-center';
+		}
 		a = document.createElement('a');
 		a.setAttribute('class', 'd-flex align-items-center dropdown-item border-top '+elemClass1);
 		a.setAttribute('href', href);
@@ -21,7 +37,8 @@ function addNotifToDropdown(arr) {
 		div1 = document.createElement('div');
 		div1.setAttribute('class', 'dropdown-list-image mr-3');
 		iElem = document.createElement('i');
-		iElem.setAttribute('class', 'fa fa-truck d-xl-flex justify-content-xl-center');
+		
+		iElem.setAttribute('class', iElemClass);
 		iElem.setAttribute('style', 'font-size: 30px;');
 		div1.appendChild(iElem);
 

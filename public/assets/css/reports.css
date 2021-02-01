@@ -91,6 +91,10 @@ select[readonly] {
   border-left: 1px solid rgb(205,205,205);
 }
 
+.invert {
+	transform: scaleX(-1);
+}
+
 .status-data {
 	margin-bottom: 0px;
 	color: rgb(255,255,255);

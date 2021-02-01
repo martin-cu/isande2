@@ -8,8 +8,19 @@
                                 <h6 class="dropdown-header" style="background: rgb(3,52,97);">NOTIFICATIONS</h6>
                                 {{#each notifs}}
                                 <a class="d-flex align-items-center dropdown-item border-top {{#if this.seen}}seen{{else}}unseen{{/if}}" href="{{this.url}}" style="padding: .25rem 0.75rem !important;">
+
                                     <div class="dropdown-list-image mr-3">
+                                        {{#compareTwoValues this.description 'Delivery Done' operator="==="}}
+                                        <i class="fa fa-shopping-cart d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i>
+                                        {{/compareTwoValues}}
+                                        {{#compareTwoValues this.description 'Purchase' operator="==="}}
+                                        <span class="material-icons">
+                                        inventory
+                                        </span>
+                                        {{/compareTwoValues}}
+                                        {{#compareTwoValues this.description 'Sale' operator="==="}}
                                         <i class="fa fa-truck d-xl-flex justify-content-xl-center" style="font-size: 30px;"></i>
+                                        {{/compareTwoValues}}
                                     </div>
                                     <div class="{{#if this.seen}}text-gray-700{{else}}font-weight-bold{{/if}}">
                                         <div class=""><span>{{this.contents}}</span></div>
@@ -17,7 +28,7 @@
                                     </div>
                                 </a>
                                 {{/each}}
-                                <a class="text-center dropdown-item small text-gray-500" href="#">Show All Notifications</a>
+                                <a class="text-center dropdown-item small text-gray-500" href="#">&nbsp</a>
                             </div>
                         </div>
                         <div class="shadow dropdown-list dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown"></div>

@@ -35,16 +35,26 @@
                 <section></section>
             </form>
             <div class="card">
-                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);"></i>
+                <div class="card-header"><i class="fa fa-print float-right" style="font-size: 22px;color: rgb(0,0,0);cursor: pointer;"></i>
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#" style="font-weight: bold;">
+                            <a class="nav-link active" href="#" style="font-weight: bold;"><span class="mr-2"  style="color: inherit !important">
                             {{#compareTwoValues deliveryInfo.order_type 'Restock' operator='==='}}
                             Load Number: {{deliveryInfo.supplier_lo}}
                             {{/compareTwoValues}}
 
                             {{#compareTwoValues deliveryInfo.order_type 'Restock' operator='!='}}
                             Delivery Receipt: {{deliveryInfo.purchase_lo}}
+                            {{/compareTwoValues}}
+                            </span>
+                            {{#compareTwoValues deliveryInfo.order_status 'Pending' operator="==="}}
+                            <i class="fa fa-circle Pending" style="font-size: 16px;"></i>
+                            {{/compareTwoValues}}
+                            {{#compareTwoValues deliveryInfo.order_status 'Processing' operator="==="}}
+                            <i class="fa fa-circle Processing" style="font-size: 16px;"></i>
+                            {{/compareTwoValues}}
+                            {{#compareTwoValues deliveryInfo.order_status 'Completed' operator="==="}}
+                            <i class="fa fa-circle text-success" style="font-size: 16px;"></i>
                             {{/compareTwoValues}}
                             </a>
                         </li>

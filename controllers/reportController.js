@@ -129,7 +129,30 @@ exports.viewSalesDetailedReport = function(req, res) {
 		});
 	}
 	else {
-		
+		reportModel.getMonthlyRevenue(function(err, revenue) {
+			if (err) {
+				req.flash('error_msg', 'Oops something went wrong!');
+				res.redirect('/home');
+			}
+			else {
+				reportModel.getCOGS(function(err,cogs) {
+					if (err) {
+						req.flash('error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
+					else {
+						var html_data = { 
+							reports: true,
+							dateRange: dateRange,
+							reportData: dataformatter.aggregateRevenueByPage(revenue, cogs),
+							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).length
+						};
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+						res.render('monthlyEarnings', html_data);
+					}
+				});
+			}
+		});
 	}
 	/*
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {

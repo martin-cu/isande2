@@ -1,0 +1,94 @@
+{{#each reportData}}
+<div class="container-body">
+    <div class="col" style="background: rgb(3,52,97);margin-bottom: 15px;padding: 5px;">
+        <div><img class="d-block" src="../reportAssets/img/cropped_logo.png" style="width: 80px;margin-left: auto;margin-right: auto;">
+            <h5 class="text-center" style="margin-bottom: 0px;margin-top: 5px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;font-size: 18px;">JM AQUINO TRADINGS AND SERVICES</h5>
+            <h6 class="text-center" style="margin-bottom: 0px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;">Monthly Earnings Report</h6>
+            <h6 class="text-center" style="margin-bottom: 0px;background: rgba(251,179,90,0);color: rgb(255,255,255);font-family: Alata, sans-serif;">For the Month {{../dateRange.firstDay}} - {{../dateRange.lastDay}}</h6>
+        </div>
+    </div>
+
+    <div style="min-height: 792px !important;">
+        {{#if this.revenueTitle}}
+        <div class="d-block" style="background: #033461;">
+            <h5 style="font-family: Alata, sans-serif;font-size: 16px;font-weight: normal;padding: 3px;margin-bottom: 2px;color: rgb(255,255,255);">{{this.revenueTitle}}</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {{#each this.revenueHeaders}}
+                        <th class="{{this.class}}" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">{{this.title}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.revenue}}
+                    <tr style="padding: 2px;">
+                        <td style="font-family: Alata, sans-serif;font-weight: bold;font-size: 12px;border-style: none;padding: 3px;">{{{this.delivery_receipt}}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedDate}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.product_name}}</td>
+                        {{#if this.totalAmount}}
+                        <td class="text-right font-weight-bold" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Net Sales</td>
+                        <td class="text-right font-weight-bold" style="width: 15%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.totalAmount}}</td>
+                        {{else}}
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.qty}}</td>
+                        <td class="text-right" style="width: 15%;font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedAmount}}</td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if this.cogsTitle}}
+        <div class="d-block" style="background: #033461;">
+            <h5 style="font-family: Alata, sans-serif;font-size: 16px;font-weight: normal;padding: 3px;margin-bottom: 2px;color: rgb(255,255,255);">{{this.cogsTitle}}</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {{#each this.cogsHeaders}}
+                        <th class="{{this.class}}" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">{{this.title}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each this.cogs}}
+                    <tr style="padding: 2px;">
+                        <td style="font-family: Alata, sans-serif;font-weight: bold;font-size: 12px;border-style: none;padding: 3px;">{{{this.delivery_receipt}}}</td>
+                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.product_name}}</td>
+                        {{#if this.totalAmount}}
+                        <td class="text-right font-weight-bold" style="width: 20%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Total Cost of Goods Sold</td>
+                        <td class="text-right font-weight-bold" style="width: 21%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.totalAmount}}</td>
+                        {{else if this.grossProfit}}
+                        <td class="text-right font-weight-bold" style="width: 20%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Gross Profit</td>
+                        <td class="text-right font-weight-bold" style="width: 21%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.grossProfit}}</td>
+                        {{else}}
+                        <td class="text-right" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.buyingPrice}}</td>
+                        <td class="text-right" style="width: 21%;font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedAmount}}</td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+    </div>
+    <div class="footer-clean" style="padding: 0px;">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col"></div>
+                    <div class="col-sm-4 col-md-3 col-xl-3 item" style="text-align: center;"></div>
+                    <div class="col footer">
+                        <h3 style="text-align: right;font-weight: normal;font-family: Alata, sans-serif;font-size: 14px;">Page {{incrementIndex @index 1}} of {{../pageLength}}</h3>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+{{/each}}

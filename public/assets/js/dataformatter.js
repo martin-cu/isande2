@@ -719,3 +719,95 @@ exports.aggregateSalesByCustomer = function(data) {
 
 	return pageObj;
 }
+
+exports.aggregateRevenueByPage = function(revenue, cogs) {
+	var blankRevenue = { delivery_receipt: '&nbsp', formattedDate: '', product_name: '', qty: '', formattedAmount: '' };
+	var totalRevenue = { delivery_receipt: '', formattedDate: '', product_name: '', qty: '', totalAmount: '' };
+	var blankCogs = { delivery_receipt: '&nbsp', product_name: ' ', qty: '', formattedAmount: ' ' };
+	var totalCogs = { delivery_receipt: '', product_name: '', qty: '', totalAmount: '' };
+	var grossProfit = { delivery_receipt: '', product_name: '', qty: '', grossProfit: '' };
+	var page = [], pageData = { 
+		revenue: [], revenueTitle: 'Revenue', 
+		revenueHeaders: [{ title: 'DR Number', class: '' }, { title: 'Transaction Date', class: 'text-center' }, { title: 'Product', class: 'text-center' }, { title: 'Qty', class: 'text-center' }, { title: 'Amount', class: 'text-right' }], 
+		cogs: [] , cogsTitle: null,
+		cogsHeaders: []
+	};
+	rowCount = 2;
+	var pageLimit = 32, total = 0;
+	var revenueTotal = 0, cogsTotal = 0;
+	var pageObj = {};
+
+	for (var i = 0; i < revenue.length; i++)
+		revenueTotal += parseFloat(revenue[i].formattedAmount.replace(',',''));
+
+	for (var i = 0; i < cogs.length; i++)
+		cogsTotal += parseFloat(cogs[i].formattedAmount.replace(',',''));
+
+	grossProfit['grossProfit'] = (revenueTotal - cogsTotal).toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
+	totalRevenue['totalAmount'] = revenueTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
+	totalCogs['totalAmount'] = cogsTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
+
+	revenue = JSON.parse(JSON.stringify(revenue));
+	revenue.push(blankRevenue);
+	revenue.push(totalRevenue);
+
+	cogs = JSON.parse(JSON.stringify(cogs));
+	cogs.push(blankCogs);
+	cogs.push(totalCogs);
+	cogs.push(blankCogs);
+	cogs.push(grossProfit);
+	cogs.push(blankCogs);
+	
+	for (var i = 0; i < revenue.length; i++) {
+		rowCount++;
+		if (rowCount < pageLimit && i < revenue.length) {
+			pageData.revenue.push(revenue[i]);
+			if (i+1 == revenue.length) {
+				//page.push(pageData);
+			}
+		}
+		else {
+			if (rowCount == pageLimit) {
+				pageData.revenue.push(revenue[i]);
+				if (i+1 != revenue.length)
+					page.push(pageData);
+				rowCount = 2;
+				pageData = { 
+					revenue: [], revenueTitle: 'Revenue', 
+					revenueHeaders: [{ title: 'DR Number', class: '' }, { title: 'Transaction Date', class: 'text-center' }, { title: 'Product', class: 'text-center' }, { title: 'Qty', class: 'text-center' }, { title: 'Amount', class: 'text-right' }], 
+					cogs: [] , cogsTitle: null,
+					cogsHeaders: []
+				};	
+			}
+		}
+	}
+
+	for (var i = 0; i < cogs.length; i++) {
+		rowCount++;
+		if (i == 0 && rowCount <= pageLimit) {
+			pageData.cogsTitle = 'Cost of Goods Sold';
+			pageData.cogsHeaders = [{ title: 'DR Number', class: '' },{ title: 'Product', class: 'text-center' },{ title: 'Buying Price', class: 'text-right' },{ title: 'Amount', class: 'text-right' }];
+		}
+		if (rowCount < pageLimit && i < cogs.length) {
+			pageData.cogs.push(cogs[i]);
+			if (i+1 == cogs.length) {
+				page.push(pageData);
+			}
+		}
+		else {
+			if (rowCount == pageLimit) {
+				pageData.cogs.push(cogs[i]);
+				page.push(pageData);
+				rowCount = 2;
+				pageData = { 
+					revenue: [], revenueTitle: null, 
+					revenueHeaders: [],
+					cogs: [] , cogsTitle: 'Cost of Goods Sold',
+					cogsHeaders: [{ title: 'DR Number', class: '' },{ title: 'Product', class: 'text-center' },{ title: 'Buying Price', class: 'text-right' },{ title: 'Amount', class: 'text-right' }]
+				};
+			}
+		}
+	}
+
+	return page;
+}

@@ -97,6 +97,22 @@ select[readonly] {
 	text-align: center;
 }
 
+.btn.Pending {
+	border-color: transparent !important;
+}
+
+.btn.Pending:hover {
+	background: #c96423 !important;
+}
+
+.btn.Completed {
+	border-color: transparent !important;
+}
+
+.btn.Completed:hover {
+	background: #39B47C !important;
+}
+
 .Processing {
 	background: #1c59ff;
 	border-radius: 5px;

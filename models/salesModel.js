@@ -10,7 +10,7 @@ exports.getMonthlyCount = function(next) {
 exports.createSales = function(query, next) {
 	var sql = "insert into sales_history set ?";
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 };
 

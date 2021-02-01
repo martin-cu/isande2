@@ -12,7 +12,7 @@ exports.updateProductQtySales = function(query ,next) {
 	var sql = "update product_table set qty = qty - (select sh.qty from sales_history as sh where ?) where product_id = (select sh.product_id from sales_history as sh where ?)";
 	sql = mysql.format(sql, query);
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 
@@ -60,7 +60,7 @@ exports.addProductQty = function(product, qty, next){
 
 	sql = mysql.format(sql, qty);
 	sql = mysql.format(sql, product);
-	// console.log(sql);
+	
 	mysql.query(sql,next);
 }
 
@@ -69,7 +69,7 @@ exports.subtractProductQty = function(product, qty, next){
 
 	sql = mysql.format(sql, qty);
 	sql = mysql.format(sql, product);
-	// console.log(sql);
+	
 	mysql.query(sql,next);
 }
 
@@ -79,7 +79,7 @@ exports.changeProductPrice = function(product, purchase_price, selling_price, ne
 	sql = mysql.format(sql, product);
 	sql = mysql.format(sql, purchase_price);
 	sql = mysql.format(sql, selling_price);
-	console.log(sql);
+	
 	mysql.query(sql,next);
 }
 

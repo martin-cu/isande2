@@ -25,14 +25,14 @@ exports.addPurchase = function(query, next){
 	sql = mysql.format(sql, query.qty);
 	sql = mysql.format(sql, query.amount);
 	sql = mysql.format(sql, pending);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 
 exports.getPurchaseRecordDetails = function(query, next) {
 	var sql = "select case when plate_num is null then 'N/A' else plate_num end as newPlate, format((ph.amount/ph.qty),2) as pricePiece, pt.product_name, case when concat(et.last_name, ', ', et.first_name) is null then 'N/A' else concat(et.last_name, ', ', et.first_name) end as driverName, case when time_out is null then 'N/A' else time_out end as newTimeOut, date_format(ph.date, '%Y-%m-%d') as formattedDate, format(ph.amount, 2) as formattedAmount, ph.* from purchase_history as ph join product_table as pt using(product_id) left join employee_table as et on ph.driver = et.employee_id where ?";
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 
@@ -40,7 +40,7 @@ exports.getCurrentPrice = function(product, next){
 	var sql = "SELECT pc.product_id, pc.purchase_price, pt.product_name  FROM product_catalogue_table pc JOIN product_table pt ON pc.product_id = pt.product_id WHERE pc.product_id = ? && status = 'Active';";
 
 	sql = mysql.format(sql, product);
-	console.log(sql);
+	
 	mysql.query(sql,next);
 }
 
@@ -50,7 +50,7 @@ exports.getDatePrice = function(product, date, next){
 	sql = mysql.format(sql, product);
 	sql = mysql.format(sql, date);
 	sql = mysql.format(sql, date);
-	console.log(sql);
+	
 	mysql.query(sql,next);
 }
 exports.updatePurchaseDetails = function(update, query, next) {

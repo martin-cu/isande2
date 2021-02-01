@@ -55,7 +55,7 @@ exports.getMonthlyPurchases = function(next) {
 exports.getPendingDeliveries = function(query, next) {
 	var sql = "select case when max(t.purchase_lo) = max(t.supplier_lo) and max(t.dr) is not null then 'Sell-out' when max(t.supplier_lo) is null then 'Sell-in' else 'Restock' end as order_type, max(t.supplier_lo) as supplier_lo, max(t.dr) as delivery_receipt, max(t.purchase_lo) as purchase_lo, case when max(t.customer_name) is null then 'N/A' else max(t.customer_name) end as customer_name from ( select ph.date, ph.supplier_lo, null as dr, ph.supplier_lo as purchase_lo, null as customer_name from purchase_history as ph where ph.void != 1 and ph.status = 'Pending' and datediff(now(), ph.date) >= 0 union select sh.scheduled_date, null, sh.delivery_receipt, case when sh.purchase_lo is null then sh.delivery_receipt else sh.purchase_lo end, ct.customer_name from sales_history as sh join customer_table as ct using(customer_id) where sh.void != 1 and sh.order_status = 'Pending' and datediff(now(), sh.scheduled_date) >= 0 ) as t group by t.purchase_lo order by t.date, field('Sell-in', 'Sell-out', 'Restock') limit ?";
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 
@@ -65,7 +65,7 @@ exports.getPerfectOrderRate = function(next) {
 }
 
 exports.getDeliveryByDestination = function(next) {
-	var sql = "SELECT clt.location_name, count(*) as count_deliveries, concat(format((count(*)/(select count(*) FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where sh.void != 1 and month(now()) = month(sh.scheduled_date))*100),2),'%') as delivery_percentage FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where sh.void != 1 and month(now()) = month(sh.scheduled_date) group by ddt.delivery_address order by count(ddt.delivery_address) desc, clt.location_name";
+	var sql = "SELECT clt.location_name, count(*) as count_deliveries, concat(format((count(*)/(select count(*) FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) )*100),2),'%') as delivery_percentage FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id join customer_location_table as clt on ddt.delivery_address = clt.location_id where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) group by ddt.delivery_address order by count(ddt.delivery_address) desc, clt.location_name";
 	mysql.query(sql, next);
 }
 

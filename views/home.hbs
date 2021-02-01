@@ -234,7 +234,7 @@
                                 {{#each pendingDeliveries}}
                                 <tr>
                                     <td style="padding: 5px;">
-                                        <div href="/view_purchase_details/{{this.supplier_lo}}" class="text-center {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Sell-out' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}">
+                                        <div href="/schedule_delivery?id={{#compareTwoValues this.order_type 'Restock' operator="==="}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator="!="}}{{this.delivery_receipt}}{{/compareTwoValues}}&type={{this.order_type}}" class="text-center {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Sell-out' operator='==='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}">
                                             <p class="text-center status-data"> 
                                             {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
                                             {{this.customer_name}}

@@ -2,14 +2,14 @@
     <h3 style="color: rgb(90,92,105);">Schedule Delivery</h3>
     <div class="row" style="margin-top: 20px;">
      <div class="col-lg-5 col-xl-4">
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Pending Deliveries</h6>
                     <input type="hidden" name="getDeliveryInfo" value="">
                 </div>
 
 
-                <div class="card-body">
+                <div class="card-body" style=" padding-bottom: 0px;">
                     <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color:  #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
                     <div class="table-responsive" style="margin-top: 10px;">
                         <table class="table table-sm">
@@ -56,6 +56,7 @@
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}
                                             LO {{this.supplier_lo}}
                                             {{/compareTwoValues}}
+                                             - {{this.date}}
                                             </p>
                                         </div>
                                     </td>
@@ -71,12 +72,12 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary font-weight-bold m-0">Truck Use</h6>
                 </div>
-                <div class="card-body" style="padding: 10px;">
+                <div class="card-body" style="padding: 10px; padding-bottom: 0px;">
                    <h6 style="color: rgb(77,115,229);text-align: center;font-weight: bold;">January 24, 2021- January 30, 2021</h6>
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive table-borderless">
-                            <table class="table table-striped table-bordered table-sm">
+                            <table class="table table-striped table-bordered table-sm"  style="font-size: 12px;">
                                 <thead>
                                     <tr>
                                         <th style="color: rgb(77,115,229);">TRUCK</th>
@@ -88,7 +89,7 @@
                                 </thead>
                                 <tbody>
                                     {{#each truckList}}
-                                        <tr>
+                                        <tr class="{{#compareTwoValues this.truck_status 'Available' operator='==='}}driver-clickable{{/compareTwoValues}}">
                                             <td style="text-align: left;">{{this.plate_num}}</td>
                                             <td style="text-align: left;">{{this.driver}}</td>
                                             <td style="text-align: center;">{{this.weekly_deliveries}}</td>
@@ -425,6 +426,10 @@
 
 <script type="text/javascript">
     var ajaxView = 'scheduleDelivery';
+    {{#if selectedItem.id}}
+    var selectedId = '{{selectedItem.id}}';
+    var selectedType = '{{selectedItem.type}}';
+    {{/if}}
 </script>
 
 <script src="../assets/js/ajax.js"></script>

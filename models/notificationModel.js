@@ -26,7 +26,7 @@ exports.getNotifs = function(query, next) {
 exports.getUnseenNotifCount = function(query, next) {
 	var sql = "select count(*) as count from notification where seen = 0 and user = ?;";
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 

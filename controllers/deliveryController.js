@@ -9,8 +9,6 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.getSingleDeliveryInfo = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	var query;
 
 	if (req.query.type === 'Restock')
@@ -32,8 +30,6 @@ exports.getSingleDeliveryInfo = function(req, res) {
 }
 
 exports.ajaxChangeDriver = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	truckModel.getSelectedTruck({ plate_no: req.query.plate_no }, function(err, truckData) {
 		if (err)
 			throw err;
@@ -47,8 +43,6 @@ exports.ajaxChangeDriver = function(req, res) {
 }
 
 exports.changeCalendar = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	deliveryModel.getTrackDelivery(req.query.offset, function(err, orders) {
 		if (err)
 			throw err;
@@ -73,8 +67,6 @@ exports.changeCalendar = function(req, res) {
 }
 
 exports.scheduleDelivery = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -83,7 +75,7 @@ exports.scheduleDelivery = function(req, res) {
 				if (err)
 					throw err;
 				else {
-					homeModel.getPendingDeliveries(10, function(err, pendingDeliveries) {
+					homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
 						if (err)
 							throw err;
 						else {
@@ -108,18 +100,18 @@ exports.scheduleDelivery = function(req, res) {
 											throw err;
 										}
 										else{
-											console.log(dates);
 											for(var x = 0; x < dates.length; x++){
 												for(var y = 0; y < pendingDeliveries.length; y++)
 													if(pendingDeliveries[y].purchase_lo == dates[x].id)
 														pendingDeliveries[y]["date"] = dates[x].date;
 											}
-											console.log(pendingDeliveries);
+											
 											var html_data = {
 												notifCount: notifCount[0],
 												truckList: trucks,
 												pendingDeliveries: pendingDeliveries,
-												pendingList: pendingList
+												pendingList: pendingList,
+												selectedItem: { id: req.query.id, type: req.query.type }
 											}
 											
 											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'schedule_delivery_tab');
@@ -137,8 +129,6 @@ exports.scheduleDelivery = function(req, res) {
 }
 
 exports.updateDelivery = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	var type, id = req.body.deliveryReference || req.body.confirmReference;
 	type = id[0]+id[1];
 	id = id.substring(2);
@@ -310,8 +300,6 @@ exports.updateDelivery = function(req, res) {
 }
 
 exports.getConfirmDelivery = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -349,8 +337,6 @@ exports.getConfirmDelivery = function(req, res) {
 }
 
 exports.getTrackDelivery = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -383,8 +369,6 @@ exports.getTrackDelivery = function(req, res) {
 }
 
 exports.getDeliveryRecords = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;
@@ -414,8 +398,6 @@ exports.getDeliveryRecords = function(req, res) {
 }
 
 exports.viewDeliveryDetails = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err)
 			throw err;

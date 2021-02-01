@@ -12,7 +12,7 @@ exports.queryAll = function(offset, limit, next) {
 	var sql = "SELECT u.username as username, u.email as email, u.role_id as role_id, e.first_name as first_name , e.last_name as last_name, e.job as job, e.status as status FROM user_table as u JOIN employee_table as e using (employee_id) ORDER BY e.status, u.role_id,e.last_name, e.first_name limit ?, ?";
 	sql = mysql.format(sql, offset);
 	sql = mysql.format(sql, limit);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 };
 

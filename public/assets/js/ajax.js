@@ -40,6 +40,10 @@ function changeCurrentDeliveryInfo(target, event) {
 		type = $(target[0]).val();
 		id = $(target[1]).val();
 	}
+	else if (event === 'automatic') {
+		type = selectedType;
+		id = selectedId;
+	}
 	else {
 		type = $(target).find('option:selected').text().replace(/(\r\n|\n|\r)/gm, "").replace(/\s+/g, "");
 		id = $(target).val().substring(2);
@@ -73,6 +77,11 @@ function changeCurrentDeliveryInfo(target, event) {
 	});
 }
 
+function changeTruck(trigger) {
+	$('#deliveryTruck').val(trigger.children()[0].innerHTML);
+	$('#deliveryTruck').trigger('change');
+}
+
 function changeDriver(truck) {
 	$.get('/ajaxChangeDriver', { plate_no: truck }, function(data) {
 		if (ajaxView === 'scheduleDelivery') {
@@ -87,6 +96,8 @@ function changeDriver(truck) {
 }
 
 $(document).ready(function() {
+	if (typeof selectedId != 'undefined')
+		changeCurrentDeliveryInfo('', 'automatic');
 	$('[name="deliveryCardItem"]').on('click', function() {
 		changeCurrentDeliveryInfo($(this).children(), 'card');
 	});
@@ -102,5 +113,8 @@ $(document).ready(function() {
 	});
 	$('#confirmPlateNo').on('change', function() {
 		changeDriver($(this).val());
+	});
+	$('.driver-clickable').on('click', function() {
+		changeTruck($(this));
 	});
 });

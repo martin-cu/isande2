@@ -4,6 +4,14 @@ select[readonly] {
 	touch-action: none;
 }
 
+.driver-clickable {
+	cursor: pointer;
+}
+
+.driver-clickable:hover {
+	background-color: #E8E8E8 !important;
+}
+
 .dialog-msg {
   position: absolute !important;
   top: 10%;

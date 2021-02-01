@@ -173,7 +173,7 @@ exports.getDeliveries = function(filters, offset, limit, next) {
 	sql = mysql.format(sql, offset);
 	sql = mysql.format(sql, limit);
 
-	console.log(sql);
+	
 	mysql.query(sql, next);
 };
 
@@ -187,7 +187,7 @@ exports.getStockReplenishment = function(query, next) {
 exports.getSellOut = function(query, next) {
 	var sql = "select t.supplier_dr, et.employee_id, t.status, pt.product_name, case when t.plate_no is null then 'Pending' else t.plate_no end as plate_no, t.purchase_lo, t.delivery_receipt, case when t.location_name is null then 'Warehouse' else t.location_name end as location_name, t.date, case when t.driver is null then 'Pending' else concat(et.last_name, ', ', et.first_name) end as driver, case when order_type is null then 'Stock Replenishment' else order_type end as order_type, t.qty from (select ddt.status, ddt.plate_no, ddt.driver, sh.product_id, sh.purchase_lo, ddt.delivery_receipt, clt.location_name, sh.scheduled_date as date, ddt.delivery_type as order_type, ddt.status + 0 as status_index, sh.qty, null as supplier_dr from delivery_detail_table as ddt join sales_history as sh using (delivery_receipt) join customer_location_table as clt on clt.location_id = ddt.delivery_address left outer join purchase_history as ph on sh.purchase_lo = ph.supplier_lo union all select ph.status, ph.plate_num, ph.driver, ph.product_id, ph.supplier_lo, ph.supplier_dr, null as delivery_address, ph.date, null, ph.status + 0 as status_index, ph.qty, ph.supplier_dr from purchase_history as ph ) as t join product_table as pt using(product_id) left outer join employee_table as et on et.employee_id = t.driver where ? order by order_type";
 	sql = mysql.format(sql, query);
-	console.log(sql);
+	
 	mysql.query(sql, next);
 }
 

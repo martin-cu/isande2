@@ -7,9 +7,6 @@ const e = require('express');
 
 
 exports.reportDamagedInventory = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
-	console.log(req.body);
 	var { damaged_amt, comments, product_id } = req.body;
 	var query = {
 		damaged_amt: damaged_amt,
@@ -20,24 +17,24 @@ exports.reportDamagedInventory = function(req, res) {
 	}
 	inventoryModel.createDamageReport(query, function(err, result) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/inventory');
 		}
 		else {
 			inventoryModel.getCurProductQty({ product_id: product_id }, function(err, qty) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/inventory');
 				}
 				else {
 					var update = { qty: (qty[0].qty - parseInt(damaged_amt)) };
 					inventoryModel.subtractProductQty(update, { product_id: product_id }, function(err, newProduct) {
 						if (err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/inventory');
 						}
 						else {
-							req.flash('dialog_success_msg', 'Successfully created damage report!');
+							req.flash('success_msg', 'Successfully created damage report!');
 							res.redirect('inventory_overview');
 						}
 					})
@@ -48,8 +45,6 @@ exports.reportDamagedInventory = function(req, res) {
 }
 
 exports.reportManualCount = function(req, res) {
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	var { physical_count, comments2, product_id2 } = req.body;
 	var query = {
 		physical_count: physical_count,
@@ -60,14 +55,14 @@ exports.reportManualCount = function(req, res) {
 	}
 	inventoryModel.getCurProductQty({ product_id: product_id2 }, function(err, qty) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/inventory');
 		}
 		else {
 			query['system_count'] = qty[0].qty;
 			inventoryModel.createManualCountReport(query, function(err, result) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/inventory');
 				}
 				else {
@@ -75,7 +70,7 @@ exports.reportManualCount = function(req, res) {
 					if (query.system_count > query.physical_count) {
 						inventoryModel.subtractProductQty(update, { product_id: product_id2 }, function(err, newQty) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/inventory');
 							}
 							else {
@@ -88,11 +83,11 @@ exports.reportManualCount = function(req, res) {
 								}
 								inventoryModel.createDamageReport(damage, function(err, dmg_report) {
 									if (err) {
-										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/inventory');
 									}
 									else {
-										req.flash('dialog_error_msg', 'System Count is higher than physical count successfuly adjusted records and created damage report!');
+										req.flash('error_msg', 'System Count is higher than physical count successfuly adjusted records and created damage report!');
 										res.redirect('inventory_overview');
 									}
 								});
@@ -102,17 +97,17 @@ exports.reportManualCount = function(req, res) {
 					else if (query.system_count < query.physical_count) {
 						inventoryModel.subtractProductQty(update, { product_id: product_id2 }, function(err, newQty) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/inventory');
 							}
 							else {
-								req.flash('dialog_error_msg', 'Physical Count is higher than system count successfuly adjusted records!');
+								req.flash('error_msg', 'Physical Count is higher than system count successfuly adjusted records!');
 								res.redirect('inventory_overview');
 							}
 						});
 					}
 					else {
-						req.flash('dialog_success_msg', 'System count matches physical count!');
+						req.flash('success_msg', 'System count matches physical count!');
 						res.redirect('inventory_overview');
 					}
 				}
@@ -123,32 +118,33 @@ exports.reportManualCount = function(req, res) {
 
 
 exports.getProductInventory = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	inventoryModel.getCurrentInventory(function(err, currinv) {
-		if(err){
-			throw err;
+		if(err){ 
+			req.flash('error_msg', 'Oops something went wrong!');
+			res.redirect('/inventory');
 		}
 		else
 			inventoryModel.getOutgoingProducts(function(err, outgoing)  {
 			if (err) {
-
+				req.flash('error_msg', 'Oops something went wrong!');
+				res.redirect('/inventory');
 			}
 			else {
 				inventoryModel.getIncomingProducts(function(err, incoming)  {
 					if (err) {
-
+						req.flash('error_msg', 'Oops something went wrong!');
+						res.redirect('/inventory');
 					}
 					else {
 						inventoryModel.DailyInventorySales(function(err, dailysales) {
 							if (err){
-
+								req.flash('error_msg', 'Oops something went wrong!');
+								res.redirect('/inventory');
 							}
 							else {
 								inventoryModel.DailyInventoryPurchases(function(err, dailypur) {
 								var count = 0;
 								var offset = parseInt(req.query.offset);
-console.log(dailysales);
 								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailysales" : dailysales, "dailypur" : dailypur};
 								
 								html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
@@ -167,12 +163,10 @@ console.log(dailysales);
 )};
 
 exports.getProductCatalogue = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
-	console.log(req.session);
 	inventoryModel.getProductCatalogue(function(err, monresult) {
 		if(err){
-			throw err;
+			req.flash('error_msg', 'Oops something went wrong!');
+			res.redirect('/inventory');
 		}
 		else
 		
@@ -205,12 +199,11 @@ exports.getProductCatalogue = function(req, res){
 )};
 
 exports.getProductName = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){
-			throw err;
+			req.flash('error_msg', 'Oops something went wrong!');
+			res.redirect('/inventory');
 		}
 		else
 
@@ -230,12 +223,11 @@ exports.getProductName = function(req, res){
 }
 
 exports.getProductNameForManualCount = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){
-			throw err;
+			req.flash('error_msg', 'Oops something went wrong!');
+			res.redirect('/inventory');
 		}
 		else
 
@@ -255,8 +247,6 @@ exports.getProductNameForManualCount = function(req, res){
 }
 
 exports.changeProductPrice = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	const errors = validationResult(req);
 	var { fcc_name, fcc_purchaseprice, fcc_sellingprice } = req.body;
 	var { rcc_name, rcc_purchaseprice, rcc_sellingprice } = req.body;
@@ -273,6 +263,7 @@ exports.changeProductPrice = function(req, res){
 			}
 			else{
 				productModel.changeProductPrice(parseInt(req.body.product_id), parseFloat(req.body.purchase_price), parseFloat(req.body.selling_price), function(err, result) {
+					req.flash('success_msg', 'Successfully changed product price!.');
 					res.redirect('/product_catalogue');
 				});
 			}
@@ -367,8 +358,6 @@ exports.changeProductPrice = function(req, res){
 };
 
 exports.getProductNameForReportDamage = function(req, res){
-	res.locals.success_msg = null;
-	res.locals.error_msg = null;
 	inventoryModel.getProductName(function(err, monresult) {
 		
 		if(err){

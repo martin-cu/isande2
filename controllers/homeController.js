@@ -5,8 +5,6 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.viewDashboard = function(req, res){
-	res.locals.success_msg = 'sdasda';
-	res.locals.error_msg = null;
 	if (req.session.authority === 'System Admin') {
 		console.log('!');
 	}
@@ -19,31 +17,31 @@ exports.viewDashboard = function(req, res){
 			else {
 				homeModel.getNetIncomeData(function(err, netIncome) {
 					if (err) {
-						req.flash('dialog_error_msg', err);
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/logout');
 					}
 					else {
 						homeModel.getTaskProgress(function(err, taskProgress) {
 							if (err) {
-								req.flash('dialog_error_msg', err);
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/logout');
 							}
 							else {
 								homeModel.getOverdueUnpaid(function(err, overDueOrders) {
 									if (err) {
-										req.flash('dialog_error_msg', err);
+										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/logout');
 									}
 									else {
 										homeModel.getRecentSales(function(err, recentOrders) {
 											if (err) {
-												req.flash('dialog_error_msg', err);
+												req.flash('error_msg', 'Oops something went wrong!');
 												res.redirect('/logout');
 											}
 											else {
 												homeModel.getMonthlySales(function(err, monthlySale) {
 													if (err) {
-														req.flash('dialog_error_msg', err);
+														req.flash('error_msg', 'Oops something went wrong!');
 														res.redirect('/logout');
 													}
 													else {
@@ -83,37 +81,37 @@ exports.viewDashboard = function(req, res){
 	else if (req.session.authority === 'Purchasing Employee') {
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 			if (err) {
-				req.flash('dialog_error_msg', err);
+				req.flash('error_msg', 'Oops something went wrong!');
 				res.redirect('/logout');
 			}
 			else {
 				homeModel.getOrderedBags(function(err, orderedBags) {
 					if (err) {
-						req.flash('dialog_error_msg', err);
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/logout');
 					}
 					else {
 						homeModel.getPurchaseProgress(function(err, taskProgress) {
 							if (err) {
-								req.flash('dialog_error_msg', err);
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/logout');
 							}
 							else {
 								homeModel.getRecentOrders(function(err, recentOrders) {
 									if (err) {
-										req.flash('dialog_error_msg', err);
+										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/logout');
 									}
 									else {
 										homeModel.getMonthlyPurchases(function(err, monthlyPurchases) {
 											if (err) {
-												req.flash('dialog_error_msg', err);
+												req.flash('error_msg', 'Oops something went wrong!');
 												res.redirect('/logout');
 											}
 											else {
 												recommendationModel.getRecommendation2(function(err, recommendation) {
 													if (err) {
-														req.flash('dialog_error_msg', err);
+														req.flash('error_msg', 'Oops something went wrong!');
 														res.redirect('/logout');
 													}
 													else {
@@ -155,25 +153,25 @@ exports.viewDashboard = function(req, res){
 	else if (req.session.authority === 'Logistics Employee') {
 		notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 			if (err) {
-				req.flash('dialog_error_msg', err);
+				req.flash('error_msg', 'Oops something went wrong!');
 				res.redirect('/logout');
 			}
 			else {
 				homeModel.getPerfectOrderRate(function(err, perfectOrderRate) {
 					if (err) {
-						req.flash('dialog_error_msg', err);
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/logout');
 					}
 					else {
 						homeModel.getDeliveryByDestination(function(err, deliveryByDestination) {
 							if (err) {
-								req.flash('dialog_error_msg', err);
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/logout');
 							}
 							else {
 								homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
 									if (err) {
-										req.flash('dialog_error_msg', err);
+										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/logout');
 									}
 									else {

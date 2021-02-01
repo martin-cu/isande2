@@ -70,7 +70,9 @@
     <script src="../assets/js/Multi-step-form.js"></script>
     <script src="../assets/js/theme.js"></script>
     <script type="text/javascript">
+        {{#if session}}
         var employee = {{{employee}}};
+        {{/if}}
         $(document).ready(function() {
             $(document).on('click', function() {
                 $('.dialog-msg').fadeOut(50, function() {

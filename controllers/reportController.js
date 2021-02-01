@@ -5,10 +5,9 @@ const js = require('../public/assets/js/session.js');
 const dataformatter = require('../public/assets/js/dataformatter.js');
 
 exports.viewReports = function(req, res){
-	req.session.success_msg = [];
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
@@ -18,7 +17,7 @@ exports.viewReports = function(req, res){
 			else if (req.session.authority === 'Sales Employee') {
 				reportModel.getSalesByCustomerReport(function(err, salesByCustomer) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/home');
 					}
 					else {
@@ -33,19 +32,19 @@ exports.viewReports = function(req, res){
 					else {
 						reportModel.getMonthlySalesByProduct(function(err, monthlySalesByProduct) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/home');
 							}
 							else {
 								homeModel.getNetIncomeData(function(err, netIncome) {
 									if (err) {
-										req.flash('dialog_error_msg', 'Oops something went wrong!');
+										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/home');
 									}
 									else {
 										homeModel.getTaskProgress(function(err, taskProgress) {
 											if (err) {
-												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												req.flash('error_msg', 'Oops something went wrong!');
 												res.redirect('/home');
 											}
 											else {
@@ -114,7 +113,7 @@ exports.viewSalesDetailedReport = function(req, res) {
 	if (type === 'monthlySalesByCustomer') {
 		reportModel.getSalesByCustomerReport(function(err, salesByCustomer) {
 			if (err) {
-				req.flash('dialog_error_msg', 'Oops something went wrong!');
+				req.flash('error_msg', 'Oops something went wrong!');
 				res.redirect('/home');
 			}
 			else {
@@ -135,20 +134,20 @@ exports.viewSalesDetailedReport = function(req, res) {
 	/*
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
 			if (type == 'Monthly_Sales') {
 				reportModel.filteredMonthlySales(param, function(err, result) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/home');
 					}
 					else {
 						reportModel.filteredMonthlySalesRecord(param, function(err, records) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/home');
 							}
 							else {
@@ -165,13 +164,13 @@ exports.viewSalesDetailedReport = function(req, res) {
 			else if (type == 'Monthly_Earnings') {
 				reportModel.filteredEarningsPeriod(param, function(err, result) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/home');
 					}
 					else {
 						reportModel.filteredEarningsPeriodRecord(param, function(err, records) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/home');
 							}
 							else {
@@ -188,13 +187,13 @@ exports.viewSalesDetailedReport = function(req, res) {
 			else if (type == 'Order_Progress' && param == 'All') {
 				reportModel.getTaskProgress(function(err, result) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/home');
 					}
 					else {
 						reportModel.taskProgressRecords(function(err, records) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/home');
 							}
 							else {
@@ -212,13 +211,13 @@ exports.viewSalesDetailedReport = function(req, res) {
 			else if (type == 'Order_Progress' && param == 'Pending') {
 				reportModel.getPendingRequests(function(err, result) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/home');
 					}
 					else {
 						reportModel.pendingRequestsRecord(function(err, records) {
 							if (err) {
-								req.flash('dialog_error_msg', 'Oops something went wrong!');
+								req.flash('error_msg', 'Oops something went wrong!');
 								res.redirect('/home');
 							}
 							else {

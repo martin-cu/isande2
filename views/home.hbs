@@ -339,7 +339,7 @@
                                     <td class="text-left align-middle">{{this.safety_limit}} bags </td>
                                     <td class="text-left align-middle">{{this.recommended}} bags </td>
                                     <td class="text-center align-middle">
-                                        <button class="btn btn-primary" href="/create_purchase">Replenish</button>
+                                        <button class="btn btn-primary" href="/create_purchase?product={{this.product_name}}&&qty={{this.recommended}}">Replenish</button>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -370,50 +370,7 @@
         </div>
         {{/compareTwoValues}}
 
-        <div class="col">
-            <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary font-weight-bold m-0">To-do list</h6>
-                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                        <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                            <p class="text-center dropdown-header">TO-do list</p><a class="btn btn-primary btn-block btn-lg text-left" role="button" data-toggle="modal" href="#AddTask" style="font-size: 13.6px;background: rgb(255,255,255);color: rgb(34,39,41);">Add task</a>
-                        </div>
-                    </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col mr-2">
-                                <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-1"><label class="custom-control-label" for="formCheck-1"></label></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col mr-2">
-                                <h6 class="mb-0"><strong>Go to bank</strong></h6><span class="text-xs">11:30 AM</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-2"><label class="custom-control-label" for="formCheck-2"></label></div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col mr-2">
-                                <h6 class="mb-0"><strong>Call ABC Hardware</strong></h6><span class="text-xs">12:30 AM</span>
-                            </div>
-                            <div class="col-auto">
-                                <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-3"><label class="custom-control-label" for="formCheck-3"></label></div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js"></script>

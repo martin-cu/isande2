@@ -310,7 +310,10 @@ exports.getAllPurchases = function(req,res){
 
 //add updating of price for product when changed
 exports.getCreatePurchase = function(req,res){
-	var html_data = {};
+	var html_data = {
+		selectedProduct: { product: req.query.product, qty: req.query.qty },
+		today: dataformatter.formatDate(new Date(), 'YYYY-MM-DD')
+	};
 	html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'purchasing_role','create_purchase_tab');
 	res.render("purchase_create", html_data);
 };

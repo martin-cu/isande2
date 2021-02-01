@@ -95,7 +95,19 @@ function changeDriver(truck) {
 	});
 }
 
+function applyRecommendedPurchase() {
+	if (selectedQty <= 0)
+		selectedQty = 1;
+	$('#purchase_product').find('option[text='+selectedProduct+']').prop('selected', true);
+	$('#purchase_product').trigger('change');
+	$('#p_qty').val(selectedQty);
+	$('#p_qty').trigger('change');
+	var total = parseFloat($('#product_price').text()) * parseFloat(selectedQty);
+	$('#total_amt').val(total);
+}
+
 $(document).ready(function() {
+	/****************** Logistics Ajax *****************/
 	if (typeof selectedId != 'undefined')
 		changeCurrentDeliveryInfo('', 'automatic');
 	$('[name="deliveryCardItem"]').on('click', function() {
@@ -117,4 +129,27 @@ $(document).ready(function() {
 	$('.driver-clickable').on('click', function() {
 		changeTruck($(this));
 	});
+
+	/****************** Purchasing Ajax *****************/
+	$('#date').change(function() {
+		$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
+			//update price in hbs
+			$("#product_price").html(result.price);
+		});
+	});
+	$("#p_qty").change(function(){
+		if($("#date").val())
+			$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
+				var total = result.price * $("#p_qty").val();
+				$("#total_amt").val(total);
+			});
+	});
+	if (employee == 'purchasing_role') {
+		$('#date').val(dateToday);
+		$('#date').trigger('change');
+	}
+	if (typeof selectedProduct != 'undefined') {
+		applyRecommendedPurchase();
+		$('#p_qty').trigger('change');
+	}
 });

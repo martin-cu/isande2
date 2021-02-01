@@ -1,111 +1,121 @@
 <div class="container-fluid">
-                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Purchasing Order Form</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
-                           {{#if dialog_error_msg}}
-            <div class="popup-dialog-msg error shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
-                    </div>
+    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Purchasing Order Form</h3>
+    </div>
+    <div class="row">
+        <div class="col" style="height: 600px;background: rgba(233,235,237,0);margin-top: -20px;">
+           {{#if dialog_error_msg}}
+<div class="popup-dialog-msg error shadow">
+<div class="d-flex w-100 mt-2">
+    <div class="ml-auto mr-2">
+        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+    </div>
 
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
+</div>
+<div class="mx-3 mb-3">
+    <h6 class=""><strong>{{{dialog_error_msg}}}</strong></h6>
+</div>
+</div>
+{{/if}}
 
-        {{#if dialog_success_msg }}
-            <div class="popup-dialog-msg success shadow">
-                <div class="d-flex w-100 mt-2">
-                    <div class="ml-auto mr-2">
-                        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+{{#if dialog_success_msg }}
+<div class="popup-dialog-msg success shadow">
+<div class="d-flex w-100 mt-2">
+    <div class="ml-auto mr-2">
+        <button type="button" class="btn-transparent" onclick="$(this).parent().parent().parent().remove();"><span style="padding: 0rem !important; margin: 0px !important; color: gray;" class="material-icons">close</span></button>
+    </div>
+
+</div>
+<div class="mx-3 mb-3">
+    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
+</div>
+</div>
+{{/if}}
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item"><a class="nav-link active" href="#">Create Order</a></li>
+                        </ul>
                     </div>
-
-                </div>
-                <div class="mx-3 mb-3">
-                    <h6 class=""><strong>{{{dialog_success_msg}}}</strong></h6>
-                </div>
-            </div>
-        {{/if}}
-                                <div class="card">
-                                    <div class="card-header">
-                                        <ul class="nav nav-tabs card-header-tabs">
-                                            <li class="nav-item"><a class="nav-link active" href="#">Create Order</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                             <form action="/create_purchase" method="post" autocomplete="off" id="purchaseForm">
-                                            <table class="table table-sm">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 200px;">Pick-up Date</th>
-                                                        <th style="width: 50px;"><input class="form-control" type="date" required="" id="date" name="date"><span style="font-size: 1.2rem; font-weight: bold"id="date_review"></span></th>
-                                                        <th style="width: 0px;font-weight: bold;"></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-nowrap" style="font-weight: bold;">Order Details</td>
-                                                        <td style="width: 50px;"></td>
-                                                        <td style="width: 0px;font-weight: bold;"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr></tr>
-                                                    <tr>
-                                                        <td style="font-weight: normal;">Supplier LO</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_lo" name="purchase_lo" class="form-control" type="number" required=""  min="0" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_lo_review"></span></td>
-                                                        <td style="width: 0px;font-weight: bold;"></td>
-                                                        <td style="font-weight: normal;">Supplier SO</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_so" name="purchase_so" class="form-control" type="number" min="0" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_so_review"></span></td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td style="font-weight: bold;"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr> -->
-                                                    <tr>
-                                                        <td style="font-weight: normal;">Product</td>
-                                                        <td style="width: 400px;"><select class="form-control" style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px; height: 2rem" required="" id="purchase_product" name="purchase_product">
-                                                                <option value="1">FCC</option>
-                                                                <option value="2">RCC</option>
-                                                            </select>
-                                                            <span style="font-size: 1.2rem; font-weight: bold" id="purchase_product_review"></span>
-                                                        </td>
-                                                        <td style="width:100px;font-weight: bold;"></td>
-                                                        <td style="width: 150px; text-align: left;"><span style="width: 100%; float: right;">Product price</span></td>
-                                                        <td style="width: 0px; text-align: left; font-weight: 600"><span id="product_price" name="product_price">210.00 </span><span style="font-size: 0.9rem">Php</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="font-weight: normal;">Quantity</td>
-                                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="p_qty" name="qty" type="number" required="" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="p_qty_review"></span><input class="form-control-plaintext" type="text" value="bag/s" readonly="" style="margin-left: 1rem;width: 42px;padding: 0px;"></div></td>
-                                                        <td></td>
-                                                        <td style="width: 0px;font-weight: bold;"></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr style="">
-                                                        <td style="font-weight: normal;">Total Price</td>
-                                                        <td style="font-weight: normal;padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="total_amt" name="total_amt" type="text" readonly="" style="width: 15rem; height: 2rem; "><span style="font-size: 1.2rem; font-weight: bold" id="total_amt_review"></span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="width: 50px;padding: 0px; margin-left: 1rem"></div></td>
-                                                        <td style="font-weight: normal;"></td>
-                                                        <td style="width: 0px;font-weight: bold;"></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            </form>
-                                        </div>
-                                        <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" id="p_next">Next</button>
-                                    </div>
-                                </div>
-                            
+                    <div class="card-body">
+                        <div class="table-responsive">
+                             <form action="/create_purchase" method="post" autocomplete="off" id="purchaseForm">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 200px;">Pick-up Date</th>
+                                        <th style="width: 50px;"><input class="form-control" type="date" required="" id="date" name="date"><span style="font-size: 1.2rem; font-weight: bold"id="date_review"></span></th>
+                                        <th style="width: 0px;font-weight: bold;"></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-nowrap" style="font-weight: bold;">Order Details</td>
+                                        <td style="width: 50px;"></td>
+                                        <td style="width: 0px;font-weight: bold;"></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr></tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Supplier LO</td>
+                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_lo" name="purchase_lo" class="form-control" type="number" required=""  min="0" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_lo_review"></span></td>
+                                        <td style="width: 0px;font-weight: bold;"></td>
+                                        <td style="font-weight: normal;">Supplier SO</td>
+                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><input id="purchase_so" name="purchase_so" class="form-control" type="number" min="0" style="width: 200px; height: 2rem; margin-left: 5px;"><span style="font-size: 1.2rem; font-weight: bold" id="purchase_so_review"></span></td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td style="font-weight: bold;"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> -->
+                                    <tr>
+                                        <td style="font-weight: normal;">Product</td>
+                                        <td style="width: 400px;"><select class="form-control" style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px; height: 2rem" required="" id="purchase_product" name="purchase_product">      
+                                                <option value="1" selected>FCC</option>
+                                                <option value="2">RCC</option>
+                                            </select>
+                                            <span style="font-size: 1.2rem; font-weight: bold" id="purchase_product_review"></span>
+                                        </td>
+                                        <td style="width:100px;font-weight: bold;"></td>
+                                        <td style="width: 150px; text-align: left;"><span style="width: 100%; float: right;">Product price</span></td>
+                                        <td style="width: 0px; text-align: left; font-weight: 600"><span id="product_price" name="product_price"></span><span style="font-size: 0.9rem">Php</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: normal;">Quantity</td>
+                                        <td class="text-nowrap" style="padding: 0px; padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="p_qty" name="qty" type="number" required="" style="width: 200px; height: 2rem; margin-left: 5px;" min="1"><span style="font-size: 1.2rem; font-weight: bold" id="p_qty_review"></span><input class="form-control-plaintext" type="text" value="bag/s" readonly="" style="margin-left: 1rem;width: 42px;padding: 0px;"></div></td>
+                                        <td></td>
+                                        <td style="width: 0px;font-weight: bold;"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style="">
+                                        <td style="font-weight: normal;">Total Price</td>
+                                        <td style="font-weight: normal;padding-top: 0.5rem; padding-bottom: 0.5rem;"><div style="display: flex;"><input class="form-control" id="total_amt" name="total_amt" type="text" readonly="" style="width: 15rem; height: 2rem; "><span style="font-size: 1.2rem; font-weight: bold" id="total_amt_review"></span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="width: 50px;padding: 0px; margin-left: 1rem"></div></td>
+                                        <td style="font-weight: normal;"></td>
+                                        <td style="width: 0px;font-weight: bold;"></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </form>
                         </div>
+                        <button class="btn btn-primary active text-center float-right d-xl-flex justify-content-xl-end align-items-xl-start" id="p_next">Next</button>
                     </div>
                 </div>
+            
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var dateToday = '{{today}}';
+    {{#if selectedProduct.product}}
+    var selectedProduct = '{{selectedProduct.product}}';
+    var selectedQty = '{{selectedProduct.qty}}';
+    {{/if}}
+</script>
+
+<script src="../assets/js/ajax.js"></script>

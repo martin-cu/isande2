@@ -146,6 +146,15 @@ $(document).ready(function() {
 				$("#total_amt").val(total);
 			});
 	});
+	$("#p_qty").change(function(){
+		//update total
+		console.log('!!');
+		if($("#date").val())
+			$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
+				var total = result.price * $("#p_qty").val();
+				$("#total_amt").val(total);
+			});
+	});
 
 	$("#purchase_product").change(function(){
 		//update total

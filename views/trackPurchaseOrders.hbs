@@ -52,7 +52,8 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px">
                                     {{#each this.orders}}
-                                        <div class="mb-2 card shadow border-left-{{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
+
+                                        <div class="{{#compareTwoValues ../this.date ../../today operator="!="}}opaque{{/compareTwoValues}} mb-2 card shadow border-left-{{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
                                             <div href="/view_purchase_details/{{this.supplier_lo}}" class="text-center">
                                                 <p class="text-center status-data">LO {{this.supplier_lo}}</p>
                                                 <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>

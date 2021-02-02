@@ -94,6 +94,10 @@ select[readonly] {
 	margin: auto;
 }
 
+.opaque {
+	opacity: 0.5;
+}
+
 .border-left-Completed {
 	border-left: .25rem solid #40c88a !important;
 	height: 50px;

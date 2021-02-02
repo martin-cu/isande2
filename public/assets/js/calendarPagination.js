@@ -1,3 +1,49 @@
+function formatDate(date, format) {
+	var year,month,day;
+	const monthNames = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+	];
+	year = date.getFullYear();
+	month = date.getMonth()+1;
+	day = date.getDate();
+
+	if (format === 'MM/DD/YYYY') {
+		if (month < 10)
+			month = '0'+month;
+		if (day < 10)
+			day = '0'+day;
+		date = month+'/'+day+'/'+year;
+	}
+	else if (format === 'YYYY-MM-DD') {
+		if (month < 10)
+			month = '0'+month;
+		if (day < 10)
+			day = '0'+day;
+		date = year+'-'+month+'-'+day;
+	}
+	else if (format === 'mm DD, YYYY') {
+		date = monthNames[month]+' '+day+', '+year;
+	}
+	else if (format === 'HH:m') {
+		var hour = parseInt(date.getHours());
+		var lbl;
+		if (hour < 12)
+			lbl = 'AM';
+		else {
+			lbl = 'PM';
+		}
+
+		if (hour == 0)
+			hour = 12;
+		else if (hour > 12)
+			hour -= 12;
+
+		date = hour+':'+date.getMinutes()+lbl;
+	}
+
+	return date;
+}
+
 function appendCalendarDates(arr) {
 	var td, tr = $('#calendarDates');
 	for (var i = 0; i < arr.length; i++) {
@@ -13,11 +59,17 @@ function appendCalendarCards(arr) {
 	var br, td, div, p1, p2, tr = $('#calendarCards');
 	var href, pContent, pContent2, elemClass;
 	var divParent;
+	var opaque = '';
+	var today = formatDate(new Date(), 'mm DD, YYYY');
 	for (var i = 0; i < arr.length; i++) {
 		td = document.createElement('td');
 		td.setAttribute('class', 'text-center');
 		td.setAttribute('style', 'width: 170px;');
 
+		if (today != arr[i].date)
+			opaque = ' opaque ';
+		else
+			opaque = '';
 		for (var x = 0; x < arr[i].orders.length; x++) {
 			if (view === 'Sales Employee') {
 				href = '/view_sale_details/'+arr[i].orders[x].deliveryReceipt;
@@ -46,7 +98,7 @@ function appendCalendarCards(arr) {
 
 			divParent = document.createElement('div');
 			divParent.setAttribute('onclick', 'location.href="'+href+'"');
-			divParent.setAttribute('class', 'mb-2 card shadow border-left-'+arr[i].orders[x].status);
+			divParent.setAttribute('class', 'mb-2 card shadow border-left-'+arr[i].orders[x].status+opaque);
 
 			div = document.createElement('div');
 			div.setAttribute('class', 'text-center cursor');

@@ -410,7 +410,8 @@ exports.getTrackOrdersPage = function(req, res) {
 					var html_data = {
 						notifCount: notifCount[0],
 						weeklyDate: dates,
-						weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
+						weeklyOrders: dataformatter.groupByDayofWeek(dates, orders),
+						today: dataformatter.formatDate(new Date(), 'mm DD, YYYY')
 					}
 					console.log(orders);
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'track_orders_tab');

@@ -1,6 +1,60 @@
 <div class="container-fluid">
     <h3 style="color: rgb(90,92,105);">Confirm Delivery</h3>
     <div class="row" style="margin-top: 20px;">
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary font-weight-bold m-0">Processing Deliveries</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color:  #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
+                    <div class="table-responsive" style="margin-top: 10px;">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr></tr>
+                            </thead>
+                            <tbody>
+                                {{#each processingDeliveries}}
+                                <tr>
+                                    <td class="text-center" style="text-align: center;border-width: 0px;">
+                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}" style="cursor: pointer;">
+                                            <input type="hidden" name="" value="{{this.order_type}}">
+                                            
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            <input type="hidden" name="" value="{{this.supplier_lo}}">
+                                            {{/compareTwoValues}}
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            <input type="hidden" name="" value="{{this.delivery_receipt}}">
+                                            {{/compareTwoValues}}
+
+                                            <p class="text-center status-data">
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            Restock
+                                            {{/compareTwoValues}}
+
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            {{{this.customer_name}}}
+                                            {{/compareTwoValues}}
+                                            </p>
+                                            <p class="text-center status-data" style="font-size: 12px;">
+                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                            LO {{this.supplier_lo}}
+                                            {{/compareTwoValues}}
+
+                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                            DR {{this.delivery_receipt}}
+                                            {{/compareTwoValues}}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-7 col-xl-8">
         {{#if dialog_error_msg}}
             <div class="popup-dialog-msg error shadow">
@@ -160,60 +214,7 @@
             </div>
             <div></div>
         </div>
-        <div class="col-lg-5 col-xl-4">
-            <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="text-primary font-weight-bold m-0">Processing Deliveries</h6>
-                </div>
-                <div class="card-body">
-                    <div class="d-block d-xl-flex justify-content-xl-center align-items-xl-center" style="margin-top: -10px;"><i class="fa fa-circle d-xl-flex" style="color:  #82aecf;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Sales</span><i class="fa fa-circle d-xl-flex" style="color: #a680a1;margin-left: 10px;"></i><span class="d-xl-flex align-items-xl-center" style="font-size: 14px;color: rgb(3,52,97);margin-left: 5px;">Purchase</span></div>
-                    <div class="table-responsive" style="margin-top: 10px;">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr></tr>
-                            </thead>
-                            <tbody>
-                                {{#each processingDeliveries}}
-                                <tr>
-                                    <td class="text-center" style="text-align: center;border-width: 0px;">
-                                        <div name="deliveryCardItem" class="text-center {{#compareTwoValues this.order_type 'Restock' operator='!='}}sale_div{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='==='}}purchase_div{{/compareTwoValues}}" style="cursor: pointer;">
-                                            <input type="hidden" name="" value="{{this.order_type}}">
-                                            
-                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                            <input type="hidden" name="" value="{{this.supplier_lo}}">
-                                            {{/compareTwoValues}}
-                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                            <input type="hidden" name="" value="{{this.delivery_receipt}}">
-                                            {{/compareTwoValues}}
-
-                                            <p class="text-center status-data">
-                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                            Restock
-                                            {{/compareTwoValues}}
-
-                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                            {{{this.customer_name}}}
-                                            {{/compareTwoValues}}
-                                            </p>
-                                            <p class="text-center status-data" style="font-size: 12px;">
-                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                            LO {{this.supplier_lo}}
-                                            {{/compareTwoValues}}
-
-                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                            DR {{this.delivery_receipt}}
-                                            {{/compareTwoValues}}
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 

@@ -140,7 +140,6 @@
         </div> -->
     </div>
     {{/compareTwoValues}}
-
     <div class="row">
         <div class="col-lg-7 col-xl-8">
             <div class="card shadow mb-4">
@@ -151,7 +150,7 @@
                         {{/compareTwoValues}}
 
                         {{#compareTwoValues this.view 'Logistics' operator='==='}}
-                        Perfect Order Accuracy
+                        Deliveries by Destination
                         {{/compareTwoValues}}
                     </h6>
                 </div>
@@ -166,8 +165,8 @@
                         {{/compareTwoValues}}
 
                         {{#compareTwoValues this.view 'Logistics' operator='==='}}
-                        {{#if perfectOrderRate}}
-                        <canvas id="overviewSales" style="max-height: 100%; max-width: 100%;"></canvas>
+                        {{#if monthlyByDestination}}
+                        <canvas id="deliveryByDestination" style="max-height: 100%; max-width: 100%;"></canvas>
                         {{else}}
                         <h6 class="text-center align-middle chart-no-data">No data to show</h6>
                         {{/if}}
@@ -177,6 +176,7 @@
 
             </div>
         </div>
+
         <div class="col-lg-5 col-xl-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -351,25 +351,6 @@
         </div>
         {{/compareTwoValues}}
 
-        {{#compareTwoValues this.view 'Logistics' operator='==='}}
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="text-primary font-weight-bold m-0">Deliveries by Destination</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-area">
-                        {{#if monthlyByDestination}}
-                        <canvas id="deliveryByDestination" style="max-height: 100%; max-width: 100%;"></canvas>
-                        {{else}}
-                        <h6 class="text-center align-middle chart-no-data">No data to show</h6>
-                        {{/if}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{/compareTwoValues}}
-
         
     </div>
 </div>
@@ -395,7 +376,6 @@
     {{#if monthlyByDestination}}
     createPieChart({{{monthlyByDestination}}});
     {{/if}}
-    var chartData = {{{perfectOrderRate}}};
-    createAreaChart({{{perfectOrderRate}}});
+
     {{/compareTwoValues}}
 </script>

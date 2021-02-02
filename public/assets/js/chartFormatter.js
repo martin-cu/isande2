@@ -194,7 +194,9 @@ function createPieChart(arr) {
 	      labels: arr.labels,
 	      datasets: [{
 	        label: "Population (millions)",
-	        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+	        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", 
+	        '#A2F189', '#F9F871', '#A53774', '#E69C24', '#3A4856', '#007668', 
+	        '#002B59'],
 	        data: arr.data
 	      }]
 	    },

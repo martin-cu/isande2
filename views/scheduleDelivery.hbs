@@ -51,7 +51,7 @@
 
                                             {{#compareTwoValues this.order_type 'Sell-out' operator='==='}}
                                             DR {{this.delivery_receipt}}
-                                            {{/compareTwoValues}}
+                                            {{/compareTwoValues}} | {{this.date}}
 
                                             {{#compareTwoValues this.order_type 'Restock' operator='==='}}
                                             LO {{this.supplier_lo}}

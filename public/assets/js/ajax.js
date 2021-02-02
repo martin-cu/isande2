@@ -67,7 +67,7 @@ function changeCurrentDeliveryInfo(target, event) {
 
 			changeDisabledFields(type);
 		}
-		console.log(type);
+		
 		if (type === 'Restock')
 			data.deliveryInfo.purchase_lo = 'LO'+data.deliveryInfo.purchase_lo;
 		else

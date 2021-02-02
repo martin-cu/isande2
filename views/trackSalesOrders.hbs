@@ -52,10 +52,14 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px;">
                                     {{#each this.orders}}
-                                        <div href="/view_sales_details/{{this.deliveryReceipt}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
-                                            <p class="text-center status-data">{{this.customer}}</p>
-                                            <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>
-                                        </div><br>
+                                        <div class="card shadow border-left-{{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}} mb-2">
+                                            <div href="/view_sales_details/{{this.deliveryReceipt}}" class="text-center">
+                                                <p class="text-center status-data">{{this.customer}}</p>
+                                                <p class="text-center status-data">{{this.product}} - {{this.qty}} bags</p>
+                                            </div><br>
+                                        </div>
+
+                                        
                                     {{/each}}
                                 </td>
                             {{/each}}

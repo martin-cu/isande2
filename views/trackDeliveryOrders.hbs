@@ -52,19 +52,21 @@
                             {{#each weeklyOrders}}
                                 <td class="text-center" style="width: 170px">
                                     {{#each this.orders}}
-                                        <div href="{{#compareTwoValues this.status 'Pending' operator='==='}}/schedule_delivery?id={{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}
-                                            {{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}/confirm_delivery?id={{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}}{{/compareTwoValues}}{{/compareTwoValues}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
-                                            <p class="text-center status-data">
-                                            {{#compareTwoValues this.order_type 'Restock' operator='==='}}
-                                            Restock
-                                            {{/compareTwoValues}}
+                                        <div class="mb-2 card shadow border-left-{{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
+                                            <div href="{{#compareTwoValues this.status 'Pending' operator='==='}}/schedule_delivery?id={{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}
+                                                {{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}/confirm_delivery?id={{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}} {{/compareTwoValues}}{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.deliveryReceipt}}{{/compareTwoValues}}{{/compareTwoValues}}" class="text-center">
+                                                <p class="text-center status-data">
+                                                {{#compareTwoValues this.order_type 'Restock' operator='==='}}
+                                                Restock
+                                                {{/compareTwoValues}}
 
-                                            {{#compareTwoValues this.order_type 'Restock' operator='!='}}
-                                            {{this.customer}}
-                                            {{/compareTwoValues}}
-                                            </p>
-                                            <p class="text-center status-data" style="font-size: 12px;">{{this.product}} - {{this.qty}} bags</p>
-                                        </div><br>
+                                                {{#compareTwoValues this.order_type 'Restock' operator='!='}}
+                                                {{this.customer}}
+                                                {{/compareTwoValues}}
+                                                </p>
+                                                <p class="text-center status-data" style="font-size: 12px;">{{this.product}} - {{this.qty}} bags</p>
+                                            </div><br>
+                                        </div>
                                     {{/each}}
                                 </td>
                             {{/each}}

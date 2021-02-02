@@ -87,6 +87,27 @@ select[readonly] {
   text-align: right;
 }
 
+.border-left-Pending {
+	border-left: .25rem solid #e07027 !important;
+	height: 50px;
+	width: 85%;
+	margin: auto;
+}
+
+.border-left-Completed {
+	border-left: .25rem solid #40c88a !important;
+	height: 50px;
+	width: 85%;
+	margin: auto;
+}
+
+.border-left-Processing {
+	border-left: .25rem solid #1c59ff !important;
+	height: 50px;
+	width: 85%;
+	margin: auto;
+}
+
 .report-upper-table {
   border-left: 1px solid rgb(205,205,205);
 }
@@ -99,6 +120,11 @@ select[readonly] {
 	margin-bottom: 0px;
 	color: rgb(255,255,255);
 	text-align: center;
+}
+
+.card > div > .status-data {
+	color: black;
+	font-size: .8rem;
 }
 
 .btn.Pending {

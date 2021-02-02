@@ -12,7 +12,7 @@ function appendCalendarDates(arr) {
 function appendCalendarCards(arr) {
 	var br, td, div, p1, p2, tr = $('#calendarCards');
 	var href, pContent, pContent2, elemClass;
-
+	var divParent;
 	for (var i = 0; i < arr.length; i++) {
 		td = document.createElement('td');
 		td.setAttribute('class', 'text-center');
@@ -44,9 +44,12 @@ function appendCalendarCards(arr) {
 				pContent2 = arr[i].orders[x].product+' - '+arr[i].orders[x].qty+' bags';
 			}
 
+			divParent = document.createElement('div');
+			divParent.setAttribute('onclick', 'location.href="'+href+'"');
+			divParent.setAttribute('class', 'mb-2 card shadow border-left-'+arr[i].orders[x].status);
+
 			div = document.createElement('div');
-			div.setAttribute('onclick', 'location.href="'+href+'"');
-			div.setAttribute('class', 'text-center cursor '+arr[i].orders[x].status);
+			div.setAttribute('class', 'text-center cursor');
 
 			p1 = document.createElement('p');
 			p1.setAttribute('class', 'text-center status-data');
@@ -59,8 +62,8 @@ function appendCalendarCards(arr) {
 
 			div.appendChild(p1);
 			div.appendChild(p2);
-			td.appendChild(div);
-			td.appendChild(br);
+			divParent.appendChild(div);
+			td.appendChild(divParent);
 		}
 		tr.append(td);
 	}

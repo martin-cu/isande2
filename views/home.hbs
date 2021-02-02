@@ -311,7 +311,7 @@
         {{/compareTwoValues}}
 
         {{#compareTwoValues this.view 'Purchasing' operator='==='}}
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-8 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="text-primary font-weight-bold m-0">Current Inventory</h6>
@@ -324,6 +324,7 @@
                                     <th></th>
                                     <th>Product</th>
                                     <th class="text-left">Current Stock</th>
+                                    <th class="text-left">7-day Moving Average</th>
                                     <th class="text-left">Safety limit</th>
                                     <th class="text-left">Recommended</th>
                                     <th>Action</th>
@@ -336,6 +337,7 @@
                                     </td>
                                     <td class="text-center align-middle">{{this.product_name}}</td>
                                     <td class="text-left align-middle">{{this.current_stock}} bags</td>
+                                    <td class="text-left align-middle">{{this.moving_avg}} bags</td>
                                     <td class="text-left align-middle">{{this.safety_limit}} bags </td>
                                     <td class="text-left align-middle">{{this.recommended}} bags </td>
                                     <td class="text-center align-middle">

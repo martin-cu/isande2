@@ -135,6 +135,7 @@ exports.viewDashboard = function(req, res){
 															recentOrders: recentOrders,
 															monthlyEarnings: JSON.stringify(dataformatter.groupedMonthlyPurchases(monthlyPurchases))
 														};
+														console.log(recommendation);
 														html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
 														res.render('home', html_data);	
 													}

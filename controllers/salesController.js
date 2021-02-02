@@ -371,7 +371,7 @@ exports.postPaymentForm = function(req, res) {
 					res.redirect('/home');
 				}
 				else {
-					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.payment_id }, { delivery_receipt: paymentDR }, function(err, newRecord) {
+					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.insertId }, { delivery_receipt: paymentDR }, function(err, newRecord) {
 						if(err) {
 							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/home');
@@ -600,109 +600,126 @@ exports.getSalesRecords = function(req,res){
 exports.viewSalesDetails = function(req,res){
 	var { dr } = req.params;
 	var query = { delivery_receipt: dr };
-
 	salesModel.getSaleRecordDetail(query, function(err, record) {
 		if (err) {
 			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
-			salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
-				if (err) {
-					req.flash('error_msg', 'Oops something went wrong!');
-					res.redirect('/home');
-				}
-				else {
-					sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
-					productModel.getProductPriceByDate(sale_date, function(err, products) {
-						if (err) {
-							req.flash('error_msg', 'Oops something went wrong!');
-							res.redirect('/home');
-						}
-						else {
-							customerModel.queryLocationbyCustomer(function(err, customers) {
-								if (err) {
-									req.flash('error_msg', 'Oops something went wrong!');
-									res.redirect('/home');
-								}
-								else {
-									var order_status = [
-										{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }, { name: 'Cancelled' }
-									];
-									var payment_terms = [
-										{ name: 'Cash' }, { name: 'NET 7' }, { name: 'NET 15' }, { name: 'NET 30' }
-									];
-									var customer_obj = { customer_id: '', customer_name: '', locations: [] };
-									var location_obj = { location_id: '', location_name: '' };
-									var customer_arr = [];
-									var json_customer_arr;
-									console.log(record[0]);
-									if(record[0].delivery_address != null){
-										salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
-											if(err) {
-												req.flash('error_msg', 'Oops something went wrong!');
-												res.redirect('/home');
-											}
-											else{
-												console.log(location[0]);
-												customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
-												json_customer_arr = JSON.stringify(customer_arr);
-
-												record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
-												record[0].due_date = dataformatter.formatDate(record[0].due_date, 'mm DD, YYYY')
-												//record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
-												record[0].qty = JSON.stringify(record[0].qty);
-												console.log(record[0]);
-
-												
-												var html_data = { 
-													sale_record: record[0],
-													carriers: carriers,
-													customers: json_customer_arr,
-													customer_list: customer_arr,
-													products: products,
-													product_json: JSON.stringify(products),
-													status: order_status,
-													terms: payment_terms,
-													customer_location : location[0].location_name
-												};
-												console.log(record[0]);
-												html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
-																						
-												res.render('salesDetails', html_data);
-											}
-
-										});
+			if (record.length == 0) {
+				salesModel.getPickupRecordDetail(query, function(err, pickUpRecord) {
+					if (err) {
+						req.flash('error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
+					else {
+						var html_data = { 
+							sale_record: pickUpRecord[0],
+							customer_location: pickUpRecord[0].customer_location
+						};
+						
+						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
+																
+						res.render('salesDetails', html_data);
+					}
+				});
+			}
+			else {
+				salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
+					if (err) {
+						req.flash('error_msg', 'Oops something went wrong!');
+						res.redirect('/home');
+					}
+					else {
+						sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
+						productModel.getProductPriceByDate(sale_date, function(err, products) {
+							if (err) {
+								req.flash('error_msg', 'Oops something went wrong!');
+								res.redirect('/home');
+							}
+							else {
+								customerModel.queryLocationbyCustomer(function(err, customers) {
+									if (err) {
+										req.flash('error_msg', 'Oops something went wrong!');
+										res.redirect('/home');
 									}
-									else{
-										record[0].scheduled_date =  dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
-												record[0].due_date = dataformatter.formatDate(record[0].due_date,  'mm DD, YYYY')
-												record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
-												record[0].qty = JSON.stringify(record[0].qty);
-										var html_data = { 
-											sale_record: record[0],
-											carriers: carriers,
-											customers: json_customer_arr,
-											customer_list: customer_arr,
-											products: products,
-											product_json: JSON.stringify(products),
-											status: order_status,
-											terms: payment_terms,
-											customer_location : "N/A"
-										};
-										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
-																				
-										res.render('salesDetails', html_data);
-									}
-									
+									else {
+										var order_status = [
+											{ name: 'Pending' }, { name: 'Processing' }, { name: 'Completed' }, { name: 'Cancelled' }
+										];
+										var payment_terms = [
+											{ name: 'Cash' }, { name: 'NET 7' }, { name: 'NET 15' }, { name: 'NET 30' }
+										];
+										var customer_obj = { customer_id: '', customer_name: '', locations: [] };
+										var location_obj = { location_id: '', location_name: '' };
+										var customer_arr = [];
+										var json_customer_arr;
+										if(record[0].delivery_address != null){
+											salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
+												if(err) {
+													console.log('5');
+													req.flash('error_msg', 'Oops something went wrong!');
+													res.redirect('/home');
+												}
+												else{
+													
+													customer_arr = dataformatter.formatLocByCustomer(customer_arr, customers);
+													json_customer_arr = JSON.stringify(customer_arr);
 
-									
-								}
-							});
-						}
-					});
-				}
-			});
+													record[0].scheduled_date = dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
+													record[0].due_date = dataformatter.formatDate(record[0].due_date, 'mm DD, YYYY')
+													//record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+													record[0].qty = JSON.stringify(record[0].qty);
+
+													var html_data = { 
+														sale_record: record[0],
+														carriers: carriers,
+														customers: json_customer_arr,
+														customer_list: customer_arr,
+														products: products,
+														product_json: JSON.stringify(products),
+														status: order_status,
+														terms: payment_terms,
+														customer_location : location[0].location_name
+													};
+													
+													html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
+																							
+													res.render('salesDetails', html_data);
+												}
+
+											});
+										}
+										else{
+											record[0].scheduled_date =  dataformatter.formatDate(record[0].scheduled_date, 'mm DD, YYYY')
+													record[0].due_date = dataformatter.formatDate(record[0].due_date,  'mm DD, YYYY')
+													record[0].total_amt = dataformatter.formatMoney(record[0].total_amt.toFixed(2), '');
+													record[0].qty = JSON.stringify(record[0].qty);
+											var html_data = { 
+												sale_record: record[0],
+												carriers: carriers,
+												customers: json_customer_arr,
+												customer_list: customer_arr,
+												products: products,
+												product_json: JSON.stringify(products),
+												status: order_status,
+												terms: payment_terms,
+												customer_location : "N/A"
+											};
+											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'sales_record_tab');
+																					
+											res.render('salesDetails', html_data);
+										}
+										
+
+										
+									}
+								});
+							}
+						});
+					}
+				});
+			}
 		}
 	});
 

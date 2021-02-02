@@ -62,6 +62,7 @@ exports.changeCalendar = function(req, res) {
 				weeklyDate: dates,
 				weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
 			}
+			console.log(html_data);
 			res.send(html_data);
 		}
 	});

@@ -21,12 +21,28 @@ exports.viewReports = function(req, res){
 						res.redirect('/home');
 					}
 					else {
-						html_data = {
-							notifCount: notifCount[0],
-							salesByCustomer: dataformatter.aggregateSalesByCustomer(salesByCustomer)
-						};
-						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
-						res.render('reports', html_data);
+						reportModel.getMonthlyRevenue(function(err, revenue) {
+							if (err) {
+								throw err;
+							}
+							else {
+								reportModel.getCOGS(function(err, cogs) {
+									if (err) {
+										throw err;
+									}
+									else {
+										var m = dataformatter.aggregateRevenueByPage(revenue, cogs);
+										html_data = {
+											notifCount: notifCount[0],
+											salesByCustomer: dataformatter.aggregateSalesByCustomer(salesByCustomer),
+											grossProfit: m[m.length-1].cogs[m[m.length-1].cogs.length-2].grossProfit
+										};
+										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
+										res.render('reports', html_data);
+									}
+								})
+							}
+						})
 					}
 					/*
 					else {

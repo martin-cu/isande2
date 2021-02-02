@@ -8,7 +8,7 @@ exports.getNetIncomeData = function(next) {
 }
 
 exports.getTaskProgress = function(next) {
-	var sql = "select case when concat(round((max(t.t2)/(max(t.t1)+max(t.t2))*100), 2), '%') is null then 'No orders yet' else concat(round((max(t.t2)/(max(t.t1)+max(t.t2))*100), 2), '%') end as order_completion, max(t.t3) as pending_tasks from ( select count(*) as t1, null as t2, null as t3 from sales_history as sh where sh.void != 1 and datediff(now(), sh.scheduled_date) >= 0 and sh.order_status != 'Completed' union select null, count(*), null from sales_history as sh where sh.void != 1 and sh.order_status = 'Completed' and datediff(now(), sh.scheduled_date) >= 0 and month(now()) = month(sh.scheduled_date) union select null,null, count(*) from sales_history where void != 1 and order_status = 'Pending' and datediff(now(), scheduled_date) >= 0) as t";
+	var sql = "select max(t.pending) as pending_tasks, max(t.processing) as processing, max(t.completed) as completed, concat(round((max(t.completed)/(max(t.pending)+max(t.completed)+max(t.processing))*100),2),'%') as order_completion from ( select count(*) as pending, null as processing, null as completed from sales_history as sh where sh.void != 1 and datediff(now(), sh.scheduled_date) >= 0 and sh.order_status = 'Pending' union select null, count(*), null from sales_history as sh where sh.void != 1 and sh.order_status = 'Processing' and datediff(now(), sh.scheduled_date) >= 0 and month(now()) = month(sh.scheduled_date) union select null,null, count(*) from sales_history where void != 1 and order_status = 'Completed' and year(now()) = year(scheduled_date) and month(now()) = month(scheduled_date) ) as t";
 	mysql.query(sql, next);
 }
 

@@ -157,33 +157,51 @@ exports.viewDashboard = function(req, res){
 				res.redirect('/logout');
 			}
 			else {
-				homeModel.getPerfectOrderRate(function(err, perfectOrderRate) {
+				homeModel.getPurchaseProgress(function(err, purchaseProgress) {
 					if (err) {
-						req.flash('error_msg', 'Oops something went wrong!');
-						res.redirect('/logout');
+						throw err;
 					}
 					else {
-						homeModel.getDeliveryByDestination(function(err, deliveryByDestination) {
+						homeModel.getTaskProgress(function(err, salesProgress) {
 							if (err) {
-								req.flash('error_msg', 'Oops something went wrong!');
-								res.redirect('/logout');
+								throw err;
 							}
 							else {
-								homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
+								homeModel.getPerfectOrderRate(function(err, perfectOrderRate) {
 									if (err) {
 										req.flash('error_msg', 'Oops something went wrong!');
 										res.redirect('/logout');
 									}
 									else {
-										var html_data = {
-											notifCount: notifCount[0],
-											pendingDeliveries: pendingDeliveries,
-											perfectOrderRate: JSON.stringify(dataformatter.transformPerfectOrderRate(perfectOrderRate)),
-											monthlyByDestination: JSON.stringify(dataformatter.groupedDeliveryByLoc(deliveryByDestination))
-										};
+										homeModel.getDeliveryByDestination(function(err, deliveryByDestination) {
+											if (err) {
+												req.flash('error_msg', 'Oops something went wrong!');
+												res.redirect('/logout');
+											}
+											else {
+												homeModel.getPendingDeliveries(5, function(err, pendingDeliveries) {
+													if (err) {
+														req.flash('error_msg', 'Oops something went wrong!');
+														res.redirect('/logout');
+													}
+													else {
+														var task_progress = (purchaseProgress[0].completed + salesProgress[0].completed) / (purchaseProgress[0].pending+purchaseProgress[0].processing+purchaseProgress[0].completed+salesProgress[0].pending_tasks+salesProgress[0].processing+salesProgress[0].completed);
+														task_progress = parseFloat(task_progress).toFixed(2)*100+'%';
+														var html_data = {
+															notifCount: notifCount[0],
+															pendingDeliveries: pendingDeliveries,
+															perfectOrderRate: JSON.stringify(dataformatter.transformPerfectOrderRate(perfectOrderRate)),
+															monthlyByDestination: JSON.stringify(dataformatter.groupedDeliveryByLoc(deliveryByDestination)),
+															taskProgress: task_progress,
+															pendingTasks: purchaseProgress[0].pending + salesProgress[0].pending_tasks
+														};
 
-										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
-										res.render('home', html_data);	
+														html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'dashboard_tab');
+														res.render('home', html_data);	
+													}
+												});
+											}
+										});
 									}
 								});
 							}

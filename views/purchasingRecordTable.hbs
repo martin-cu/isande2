@@ -69,7 +69,11 @@
                         <tbody class="text-center">
             {{#each purchases}}
                             <tr onclick='location.href="/view_purchase_details/{{this.supplier_lo}}"'>
-                                <td class="text-center"><a class="btn btn-primary text-center btn-sm reset {{this.status}}" role="button" style="padding: 5px;margin: 2px;">{{this.status}}</a></td>
+                                <td class="text-center">
+                                    <div class="pr-1">
+                                        <a class="btn btn-primary text-center btn-sm reset {{this.status}} mr-1" role="button" style="padding: 5px;margin: 2px;">{{this.status}}</a>
+                                    </div>
+                                </td>
                                 <td class="text-center">{{this.formattedDate}}<br></td>
                                 <td class="text-center">{{this.supplier_lo}}<br></td>
                                 <td class="text-center">{{this.product_name}}</td>

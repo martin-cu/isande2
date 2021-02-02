@@ -70,7 +70,11 @@
                         <tbody class="text-center">
             {{#each sales}}
                             <tr onclick='location.href="/view_sales_details/{{delivery_receipt}}"'>
-                                <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
+                                <td class="text-center">
+                                    <div class="pr-1">
+                                        <a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a>
+                                    </div>
+                                </td>
                                 <td class="text-center">{{this.formattedDate}}<br></td>
                                 <td class="text-center">{{this.delivery_receipt}}<br></td>
                                 <td class="text-left"><div class="ml-1">{{this.customer_name}}</div></td>

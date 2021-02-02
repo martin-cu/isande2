@@ -60,21 +60,25 @@
                                             <table class="table table-striped table-sm" id="unpaidOrderTable">
                                                 <thead>
                                                     <tr>
-                                                        <th>DR</th>
+                                                        <th class="text-center">To Pay</th>
+                                                        <th>Delivery Receipt</th>
                                                         <th>Product</th>
                                                         <th>Qty</th>
                                                         <th class="text-right">Amount Due</th>
-                                                        <th class="text-center">To Pay</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {{#each unpaidCustomerArr.[0].orderDetails}}
                                                         <tr>
-                                                            <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name="" style="background-color: inherit !important; border: none !important;"></td>
+
+                                                            <!-- <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name="" style="background-color: inherit !important; border: none !important;"></td> -->
+
+                                                            <td class="text-center"><input type="checkbox" class="checkbox_payment" value="{{this.totalAmt}}" id="{{@index}}" onclick="checkbox_add()"></td>
+                                                            <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name=""></td>
+
                                                             <td>{{this.productName}}</td>
                                                             <td>{{this.qty}}</td>
                                                             <td class="text-right">Php {{this.totalAmt}}</td>
-                                                            <td class="text-center"><input type="checkbox" class="checkbox_payment" value="{{this.totalAmt}}" id="{{@index}}" onclick="checkbox_add()"></td>
                                                         </tr>
                                                     {{/each}}
                                                 </tbody>

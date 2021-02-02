@@ -169,7 +169,7 @@ $(document).ready(function() {
 			$(".pickup").removeAttr("hidden");
 		}
 		else{
-			$(".pickup").hide();
+			$(".pickup").attr("hidden", "");
 		}
 	});
 

@@ -2,8 +2,7 @@ var mysql = require('./connectionModel');
 mysql = mysql.connection;
 
 exports.createNotif = function(query, next) {
-	var sql = "insert into notification (url,description,time_created,user,creator,contents) select ?,?,now(),employee_id,?,? from user_table where role_id = ?";
-	sql = mysql.format(sql, query.url);
+	var sql = "insert into notification (url,description,time_created,user,creator,contents) select TEMP*,?,now(),employee_id,?,? from user_table where role_id = ?";
 	sql = mysql.format(sql, query.desc);
 	sql = mysql.format(sql, query.id);
 	sql = mysql.format(sql, query.contents);
@@ -14,11 +13,14 @@ exports.createNotif = function(query, next) {
 			sql += ' or role_id ="'+query.roles[i]+'"';
 		}
 	}
+
+	sql = sql.replace('TEMP*', query.url);
+	console.log(sql);
 	mysql.query(sql, next);
 };
 
 exports.getNotifs = function(query, next) {
-	var sql = "select date_format(nt.time_created, '%M %e, %Y %h:%i %p') as formattedDate, ut.role_id,nt.* from notification as nt join user_table as ut on creator = ut.employee_id where nt.user = ? order by time_created desc limit 10";
+	var sql = "select date_format(nt.time_created, '%M %e, %Y %h:%i %p') as formattedDate, ut.role_id,nt.* from notification as nt join user_table as ut on creator = ut.employee_id where nt.user = ? order by time_created desc limit 6";
 	sql = mysql.format(sql, query);
 	mysql.query(sql, next);
 };

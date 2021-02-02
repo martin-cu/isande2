@@ -353,22 +353,24 @@ exports.postCreatePurchase = function(req,res){
 								}
 								else{
 									var query = {
-									url: '/schedule_delivery',
-									desc: 'New Purchase of ' + product[0].product_name,
+									url: '"/schedule_delivery?id='+record.supplier_lo+'&&type=Restock"',
+									desc: 'Purchase',
 									id: req.session.employee_id,
 									roles: dataformatter.getNotifRoles('L'),
-									contents: 'New Purchase of ' + product[0].product_name
+									contents: 'New purchase of '+product[0].product_name
 									}
+									
 									/* Creating a Sale Record for Delivery sends a notification to Logistics */
 									notificationModel.createNotif(query, function(err, notif) {
-										if (err)
-											throw err;
+										if (err) {
+											req.flash("error_msg", "Oops something went wrong!");
+											res.redirect('/home');
+										}
 										else {
-											
+											req.flash("dialog_success_msg", "Record successfully added!");
+											res.redirect("/view_purchase_details/" + record.supplier_lo);	
 										}
 									});
-									req.flash("dialog_success_msg", "Record successfully added!");
-									res.redirect("/view_purchase_details/" + record.supplier_lo);
 								}
 							});
 						}
@@ -399,35 +401,32 @@ exports.postCreatePurchase = function(req,res){
 						else{
 							productModel.getProductDetails(parseInt(req.body.purchase_product), function(err, product){
 								if(err){
-									throw err;
 									req.flash("dialog_error_msg", "There is an error adding a purchase.");
 									res.redirect("/view_purchase_records");
 								}
 								else{
 									var query = {
-									url: '/schedule_delivery',
-									desc: 'New Purchase of ' + product[0].product_name,
+									url: '"/schedule_delivery?id='+record.supplier_lo+'&&type=Restock"',
+									desc: 'Purchase',
 									id: req.session.employee_id,
 									roles: dataformatter.getNotifRoles('L'),
-									contents: 'New Purchase of ' + product[0].product_name
+									contents: 'New purchase of '+product[0].product_name
 									}
 									/* Creating a Sale Record for Delivery sends a notification to Logistics */
 									notificationModel.createNotif(query, function(err, notif) {
-										if (err)
-											throw err;
+										if (err) {
+											req.flash("error_msg", "Oops something went wrong!");
+											res.redirect("/view_purchase_records");
+										}
 										else {
 											req.flash('dialog_success_msg', 'Successfully created sale record!');
 											res.redirect("/view_purchase_details/" + record.supplier_lo);
 										}
 									});
-									req.flash("dialog_success_msg", "Record successfully added!");
-									res.redirect("/view_purchase_details/" + record.supplier_lo);
 								}
 							});
 						}
 					});
-					req.flash("dialog_success_msg", "Record successfully added!");
-					res.redirect("/view_purchase_details/" + record.supplier_lo);
 			}
 		}
 	});

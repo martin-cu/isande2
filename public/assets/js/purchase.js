@@ -21,7 +21,7 @@ function purchase_review(){
 	$("#p_qty").hide();
 	$("#p_qty_review").show();
 
-	$("#total_amt_review").text($("#total_amt").val());
+	$("#total_amt_review").text($("#total_amt").val() + ".00");
 	$("#total_amt").hide();
 	$("#total_amt_review").show();
 }

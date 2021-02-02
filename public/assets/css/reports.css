@@ -208,3 +208,7 @@ select[readonly] {
 .seen:hover {
 	background-color: #E8E8E8;
 }
+
+.Unpaid {
+	color : red;
+}

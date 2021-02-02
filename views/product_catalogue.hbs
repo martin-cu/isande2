@@ -206,8 +206,8 @@
                                                 <tr>
                                                 <td>{{this.start_date}}<br></td>
                                                 <td>{{this.product_name}}<br></td>
-                                                <td>Php {{this.purchase_price}}/bag<br></td>
-                                                <td>Php {{this.selling_price}}/bag<br></td>
+                                                <td>Php {{this.purchase_price}}.00/bag<br></td>
+                                                <td>Php {{this.selling_price}}.00/bag<br></td>
                                                 {{#if ../purchasing_role}}
                                                 <td class="text-center">
                                                     <div><a class="btn btn-primary btn-lg" role="button" data-toggle="modal" href="#myModal{{this.product_name}}" style="width: 42px;height: 38px;margin: 2px;padding: 0px;background: rgb(55,171,56);"><i class="fas fa-pencil-alt" style="margin: 8px;"></i></a>
@@ -227,9 +227,11 @@
                                                                                             <div class="col-md-12"><input class="form-control d-none" type="text" id="lp-formID" value="vr-campus-tours"><input class="form-control d-none" type="text" id="lp-pathID" value="<?php echo $_GET['path'];?>"></div>
                                                                                             <div class="col-6 col-sm-6 col-md-6">
                                                                                                 <div id="lp-name-wrapper">
-                                                                                                    <h5 class="text-left" style="font-weight: bold;">Product</h5><select class="form-control" id="product_id" name="product_id">
+                                                                                                    <h5 class="text-left" style="font-weight: bold;">Product</h5><!-- <select class="form-control" id="product_id" name="product_id">
                                                                                                         <option value="{{this.product_id}}">{{this.product_name}}</option>
-                                                                                                    </select>
+                                                                                                    </select> -->
+                                                                                                    <input class="form-control" id="product_id" name="product_id" value="{{this.product_id}}" hidden>
+                                                                                                    <input class="form-control" value="{{this.product_name}}" readonly>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="col-6 col-sm-6 col-md-6">
@@ -358,8 +360,8 @@
                                                 <tr>
                                                     <td>{{this.start_date}}</td>
                                                     <td>{{this.product_name}}</td>
-                                                    <td>Php {{this.purchase_price}}/bag<br></td>
-                                                    <td>Php {{this.selling_price}}/bag</td>
+                                                    <td>Php {{this.purchase_price}}.00/bag<br></td>
+                                                    <td>Php {{this.selling_price}}.00/bag</td>
                                                 </tr>
                                             {{/each}}
                                            <!--  <tr>

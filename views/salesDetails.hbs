@@ -156,7 +156,7 @@
                                                     <td style="font-weight: normal;">Pick-up Plate No.</td>
                                                     <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.pickup_plate}}</span><!-- <input type="text" required="" readonly="" value="{{sale_record.pickup_plate}}"> --></td>
                                                     <td style="width: 100px;">Payment Status</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem" class="paid">{{sale_record.payment_status}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem" class="{{#compareTwoValues sale_record.payment_status 'Paid' operator='==='}}paid{{/compareTwoValues}}{{#compareTwoValues sale_record.payment_status 'Paid' operator='!='}}Unpaid{{/compareTwoValues}}">{{sale_record.payment_status}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                                             <option value="Paid" selected="">{{sale_record.payment_status}}</option>
                                                         </select> --></td>
                                                 </tr>

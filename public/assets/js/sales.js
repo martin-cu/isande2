@@ -49,7 +49,7 @@ function sales_review(){
 	$("#qty").hide();
 	$("#qty_review").show();
 
-	$("#total_review").text($("#total").val());
+	$("#total_review").text($("#total").val() + ".00 ");
 	$("#total").hide();
 	$("#total_review").show();
 }

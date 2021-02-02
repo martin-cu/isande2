@@ -69,7 +69,7 @@ exports.subtractProductQty = function(product, qty, next){
 
 	sql = mysql.format(sql, qty);
 	sql = mysql.format(sql, product);
-	
+	console.log(sql);
 	mysql.query(sql,next);
 }
 

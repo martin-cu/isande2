@@ -148,6 +148,10 @@ exports.getSaleOrderForm = function(req, res) {
 exports.createSaleRecord = function(req, res) {
 	var { dateScheduled, customerName, qty,
 		orderType, saleAddress, product, paymentTerms, pickup_plate } = req.body;
+
+	if (paymentTerms != 'Cash') {
+		paymentTerms = paymentTerms.substring(0, 3)+' '+paymentTerms.substring(3, paymentTerms.length);
+	}
 	salesModel.getMonthlyCount(function(err, monthlyCount) {
 		if (err) {
 			req.flash('error_msg', 'Oops something went wrong!');
@@ -209,9 +213,22 @@ exports.createSaleRecord = function(req, res) {
 										res.redirect('/create_sales');
 									}
 									else {
-										res.locals.success_msg = 'Successfully created sale record with DR '+result.delivery_receipt;
-										res.redirect('/create_sales');
-
+										var product_name;
+										if (product == '1')
+											product_name = 'FCC';
+										else {
+											product_name = 'RCC';
+										}
+										productModel.subtractProductQty(product_name, parseInt(qty), function(err){
+											if(err){
+												req.flash('error_msg', 'Oops something went wrong!');
+												res.redirect('/create_sales');
+											}
+											else{
+												req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
+												res.redirect('/create_sales');
+											}
+										});
 									}
 								});
 							}
@@ -252,7 +269,8 @@ exports.createSaleRecord = function(req, res) {
 															else {
 																salesModel.getSaleRecordDetail({delivery_receipt : dr}, function(err, record){
 																	if (err) {
-
+																		req.flash('error_msg', 'Oops something went wrong!');
+																		res.redirect('/create_sales');
 																	}
 																	else {
 																		var query = {
@@ -312,6 +330,7 @@ exports.getPaymentsPage = function(req, res) {
 							res.redirect('/home');
 						}
 						else {
+							var today = dataformatter.formatDate(new Date(), 'YYYY-MM-DD');
 							var groupedCustomer;
 							groupedCustomer = dataformatter.groupUnpaidCustomerOrders(unpaidCustomers);
 
@@ -319,7 +338,8 @@ exports.getPaymentsPage = function(req, res) {
 								notifCount: notifCount[0],
 								unpaidOrderArr: unpaidOrders,
 								unpaidCustomerArr: groupedCustomer,
-								groupedUnpaidOrder: JSON.stringify(groupedCustomer)
+								groupedUnpaidOrder: JSON.stringify(groupedCustomer),
+								today: today
 							};
 
 							html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'payments_tab');
@@ -333,12 +353,10 @@ exports.getPaymentsPage = function(req, res) {
 }
 
 exports.postPaymentForm = function(req, res) {
-	console.log(req.body);
 	var { paymentDR, paymentType, amountPaid, bankID, checkNo, paymentDate } = req.body;
 
 	salesModel.getSaleRecordDetail({ delivery_receipt: paymentDR }, function(err, saleRecord) {
 		if (err) {
-			console.log('1');
 			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
@@ -349,14 +367,12 @@ exports.postPaymentForm = function(req, res) {
 
 			paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
 				if (err) {
-					console.log('2');
 					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
 					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.payment_id }, { delivery_receipt: paymentDR }, function(err, newRecord) {
 						if(err) {
-							console.log('3');
 							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/home');
 						}

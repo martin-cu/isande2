@@ -72,6 +72,6 @@ exports.getMonthlyRevenue = function(next) {
 }
 
 exports.getCOGS = function(next) {
-	var sql = "select sh.delivery_receipt, pt.product_name, format(pct.purchase_price, 2) as buyingPrice, format(sh.qty*pct.purchase_price, 2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) join product_catalogue_table as pct using(product_id) where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
+	var sql = "select sh.delivery_receipt, pt.product_name, format(pct.purchase_price, 2) as buyingPrice, format(sh.qty*pct.purchase_price, 2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) join product_catalogue_table as pct using(product_id) where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
 	mysql.query(sql, next);
 }

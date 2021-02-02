@@ -39,7 +39,6 @@ exports.getSaleRecordDetail = function(query, next) {
 		}
 	}
 	sql = temp[0]+temp[1];
-	console.log(sql);
 	mysql.query(sql, next);
 }
 

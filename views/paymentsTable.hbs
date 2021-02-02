@@ -42,7 +42,7 @@
                                 <div class="col-4 col-sm-2 col-md-5">
                                     <div id="lp-select1-wrapper" class="input-group">
                                         <div class="input-group-addon"></div>
-                                    </div><label>Date</label><input class="form-control" type="date" name="paymentDate" required="">
+                                    </div><label>Date</label><input class="form-control" type="date" name="paymentDate" required="" value="{{today}}">
                                 </div>
                                 <div class="col-8 col-sm-4 col-md-7">
                                     <div id="lp-telnumber-wrapper"></div>
@@ -91,11 +91,14 @@
                                         <option value="Check">Check</option>
                                     </select></div>
                                 <div class="col-4 col-sm-2 col-md-5 col-xl-7 d-flex flex-column"><label>Check No.</label>
-                                    <div class="d-flex"><select class="form-control d-flex float-left" id="bankID" name="bankID" disabled style="width: 80px !important;">
+                                    <div class="d-flex">
+                                        <select class="form-control d-flex float-left" id="bankID" name="bankID" disabled style="width: 80px !important;">
                                             <option value="MTB">MTB</option>
                                             <option value="BDO">BDO</option>
                                             <option value="BPI">BPI</option>
-                                        </select><input class="form-control d-flex float-left align-items-xl-center" type="text" id="checkNo" name="checkNo" disabled placeholder="Check no."></div>
+                                        </select>
+                                        <input class="form-control d-flex float-left"  type="text" id="checkNo" name="checkNo" disabled placeholder="Check no." style="height: 30.8px !important; width: 70%;">
+                                    </div>
                                 </div>
                                 <div class="col-4 col-sm-2 col-md-5 col-xl-7 offset-xl-5 d-flex flex-column"><label>Amount Paid</label>
                                     <div class="d-flex"><input class="form-control d-flex float-left align-items-xl-center" type="text" id="amountPaid" name="amountPaid" placeholder="Amount " required>

@@ -295,11 +295,11 @@ exports.formatDueDate = function(date, terms) {
 	var add_days;
 	if (terms == 'Cash')
 		add_days = 0;
-	else if (terms == 'NET7')
+	else if (terms == 'NET 7')
 		add_days = 7;
-	else if (terms == 'NET15')
+	else if (terms == 'NET 15')
 		add_days = 15;
-	else if (terms == 'NET30')
+	else if (terms == 'NET 30')
 		add_days = 30;
 	
 	return new Date( Date.parse(date) + add_days * 24 * 60 * 60 * 1000);

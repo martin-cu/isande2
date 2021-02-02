@@ -62,16 +62,16 @@ exports.pendingRequestsRecord = function(next) {
 };
 
 exports.getSalesByCustomerReport = function(next) {
-	var sql = "select ct.customer_name, date_format(sh.scheduled_date, '%Y/%m/%d') as formattedDate, pt.product_name, format((sh.qty*sh.amount), 2) as formattedAmount , sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.void = 0 and month(now()) = month(sh.scheduled_date) order by sh.customer_id, sh.scheduled_date";
+	var sql = "select ct.customer_name, date_format(sh.scheduled_date, '%Y/%m/%d') as formattedDate, pt.product_name, format((sh.qty*sh.amount), 2) as formattedAmount , sh.* from sales_history as sh join customer_table as ct using(customer_id) join product_table as pt using(product_id) where sh.void = 0 and sh.payment_status = 'Paid' and month(now()) = month(sh.scheduled_date) order by sh.customer_id, sh.scheduled_date";
 	mysql.query(sql,next);
 }
 
 exports.getMonthlyRevenue = function(next) {
-	var sql = "select sh.delivery_receipt, date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, sh.qty, format((sh.qty*sh.amount),2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
+	var sql = "select sh.delivery_receipt, date_format(sh.scheduled_date, '%m/%d/%Y') as formattedDate, pt.product_name, sh.qty, format((sh.qty*sh.amount),2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) where sh.void != 1 and sh.payment_status = 'Paid' and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
 	mysql.query(sql, next);
 }
 
 exports.getCOGS = function(next) {
-	var sql = "select sh.delivery_receipt, pt.product_name, format(pct.purchase_price, 2) as buyingPrice, format(sh.qty*pct.purchase_price, 2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) join product_catalogue_table as pct using(product_id) where sh.void != 1 and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
+	var sql = "select sh.delivery_receipt, pt.product_name, format(pct.purchase_price, 2) as buyingPrice, format(sh.qty*pct.purchase_price, 2) as formattedAmount from sales_history as sh join product_table as pt using(product_id) join product_catalogue_table as pct using(product_id) where sh.void != 1 and sh.payment_status = 'Paid' and month(now()) = month(sh.scheduled_date) and year(now()) = year(sh.scheduled_date) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end order by sh.time_recorded, sh.delivery_receipt, sh.product_id";
 	mysql.query(sql, next);
 }

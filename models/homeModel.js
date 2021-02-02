@@ -2,8 +2,7 @@ var mysql = require('./connectionModel');
 mysql = mysql.connection;
 
 exports.getNetIncomeData = function(next) {
-	var sql = "select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'yearly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' union select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'monthly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where month(sh.scheduled_date) = month(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end and sh.payment_status = 'Paid' ";
-	
+	var sql = "select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'yearly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end and sh.payment_status = 'Paid' union select distinct case when format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) is null then 0 else format(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 2) end as net_income, 'monthly' as type from product_catalogue_table as pct left join sales_history as sh using(product_id) where month(sh.scheduled_date) = month(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end and sh.payment_status = 'Paid'";
 	mysql.query(sql, next);
 }
 
@@ -25,8 +24,7 @@ exports.getRecentSales = function(next) {
 }
 
 exports.getMonthlySales = function(next) {
-	var sql = "select date_format(sh.scheduled_date, '%b') as month, round(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 0) as net_income, 'yearly' as type from sales_history as sh join product_catalogue_table as pct using(product_id) where sh.void != 1 and year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then now() else pct.end_date end group by month(sh.scheduled_date)";
-
+	var sql = "select date_format(sh.scheduled_date, '%b') as month, round(sum(((pct.selling_price - pct.purchase_price)*sh.qty)), 0) as net_income, 'yearly' as type from sales_history as sh join product_catalogue_table as pct using(product_id) where sh.void != 1 and year(sh.scheduled_date) = year(now()) and sh.scheduled_date between pct.start_date and case when pct.end_date is null then sh.scheduled_date else pct.end_date end group by month(sh.scheduled_date) and sh.payment_status = 'Paid'";
 	mysql.query(sql, next);
 }
 

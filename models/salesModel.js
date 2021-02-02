@@ -34,9 +34,12 @@ exports.getSaleRecordDetail = function(query, next) {
 	var temp = sql.split('where');
 	temp[1] = ' where '+temp[1];
 	if (query.delivery_receipt.length >= 2) {
-		temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+		while (temp[1].includes(',')) {
+			temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+		}
 	}
 	sql = temp[0]+temp[1];
+	console.log(sql);
 	mysql.query(sql, next);
 }
 
@@ -47,7 +50,9 @@ exports.updateSaleRecord = function(update, query, next) {
 	var temp = sql.split('where');
 	temp[1] = ' where '+temp[1];
 	if (query.delivery_receipt.length >= 2) {
-		temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+		while (temp[1].includes(',')) {
+			temp[1] = temp[1].replace(',', ' or delivery_receipt =');
+		}
 	}
 	sql = temp[0]+temp[1];
 	mysql.query(sql, next);

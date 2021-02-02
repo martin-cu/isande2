@@ -6,7 +6,6 @@ exports.getTrackDelivery = function(query, next) {
 	while (sql.includes('?')) {
 		sql = mysql.format(sql, query);
 	}
-	
 	mysql.query(sql, next);
 }
 

@@ -335,7 +335,7 @@ exports.groupUnpaidCustomerOrders = function(arr) {
 		};
 		customerObj['orderDetails'].push(orderObj);
 		if (i < arr.length - 1) {
-			while (arr[i].customer_id === arr[i+1].customer_id) {
+			while (arr[i].customer_id === arr[i+1].customer_id && i < arr.length - 2) {
 				orderObj = {
 					deliveryReceipt: arr[i+1].delivery_receipt,
 					productName: arr[i+1].product_name,

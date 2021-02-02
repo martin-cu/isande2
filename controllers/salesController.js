@@ -296,19 +296,19 @@ exports.createSaleRecord = function(req, res) {
 exports.getPaymentsPage = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
 			salesModel.getUnpaidOrders(function(err, unpaidOrders) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
 					customerModel.queryUnpaidCustomers(function(err, unpaidCustomers) {
 						if (err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/home');
 						}
 						else {
@@ -333,11 +333,13 @@ exports.getPaymentsPage = function(req, res) {
 }
 
 exports.postPaymentForm = function(req, res) {
+	console.log(req.body);
 	var { paymentDR, paymentType, amountPaid, bankID, checkNo, paymentDate } = req.body;
 
 	salesModel.getSaleRecordDetail({ delivery_receipt: paymentDR }, function(err, saleRecord) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			console.log('1');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
@@ -347,13 +349,15 @@ exports.postPaymentForm = function(req, res) {
 
 			paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					console.log('2');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
 					salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.payment_id }, { delivery_receipt: paymentDR }, function(err, newRecord) {
 						if(err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							console.log('3');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/home');
 						}
 						else {
@@ -369,13 +373,13 @@ exports.postPaymentForm = function(req, res) {
 exports.getTrackOrdersPage = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
 			salesModel.getTrackOrders(0, function(err, orders) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
@@ -404,13 +408,13 @@ exports.getTrackOrdersPage = function(req, res) {
 exports.getSalesRecords = function(req, res) {
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount){
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
 			salesModel.getAllSaleRecords(function(err, records) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
@@ -583,26 +587,26 @@ exports.viewSalesDetails = function(req,res){
 
 	salesModel.getSaleRecordDetail(query, function(err, record) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/home');
 		}
 		else {
 			salesModel.getDeliveryCarriers({ delivery_receipt: record[0].delivery_receipt },function(err, carriers) {
 				if (err) {
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/home');
 				}
 				else {
 					sale_date = dataformatter.formatDate(record[0].time_recorded, 'YYYY-MM-DD')
 					productModel.getProductPriceByDate(sale_date, function(err, products) {
 						if (err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/home');
 						}
 						else {
 							customerModel.queryLocationbyCustomer(function(err, customers) {
 								if (err) {
-									req.flash('dialog_error_msg', 'Oops something went wrong!');
+									req.flash('error_msg', 'Oops something went wrong!');
 									res.redirect('/home');
 								}
 								else {
@@ -620,7 +624,7 @@ exports.viewSalesDetails = function(req,res){
 									if(record[0].delivery_address != null){
 										salesModel.getCustomerLocation(record[0].delivery_address ,function(err, location){
 											if(err) {
-												req.flash('dialog_error_msg', 'Oops something went wrong!');
+												req.flash('error_msg', 'Oops something went wrong!');
 												res.redirect('/home');
 											}
 											else{
@@ -1089,7 +1093,7 @@ exports.confirmPayment = function(req, res) {
 				else {
 					salesModel.updateSaleRecord({ payment_id: payment_det.insertId }, { delivery_receipt: dr }, function(err, last) {
 						if (err) {
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/sales_record/'+dr);
 						}
 						else {
@@ -1110,21 +1114,21 @@ exports.confirmOrder = function(req, res) {
 
 	salesModel.updateSaleRecord({ order_status: 'Completed', pickup_plate: plate }, { delivery_receipt: dr }, function(err, sale_status) {
 		if (err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/sales_record/'+dr);
 		}
 		else {
 			if (sale_order_type === 'Delivery') {
 				deliveryDetailModel.singleQuery({ delivery_receipt: dr }, function(err, exists) {
 					if (err) {
-						req.flash('dialog_error_msg', 'Oops something went wrong!');
+						req.flash('error_msg', 'Oops something went wrong!');
 						res.redirect('/sales_record/'+dr);
 					}
 					else {
 						if (exists.length) {
 							deliveryDetailModel.editDeliveryDetails({ delivery_receipt: dr }, { status: 'Completed' }, function(err, details) {
 								if (err) {
-									req.flash('dialog_error_msg', 'Oops something went wrong!');
+									req.flash('error_msg', 'Oops something went wrong!');
 									res.redirect('/sales_record/'+dr);
 								}
 								else {
@@ -1135,7 +1139,7 @@ exports.confirmOrder = function(req, res) {
 						}
 						else {
 							//Send an error message!!
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/sales_record/'+dr);
 						}
 					}

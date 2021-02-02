@@ -396,7 +396,7 @@ exports.getTrackOrdersPage = function(req, res) {
 						weeklyDate: dates,
 						weeklyOrders: dataformatter.groupByDayofWeek(dates, orders)
 					}
-					
+					console.log(orders);
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'track_orders_tab');
 					res.render('trackSalesOrders', html_data);
 				}

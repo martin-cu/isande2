@@ -50,7 +50,7 @@
                         </tr>
                         <tr class="text-center" id="calendarCards">
                             {{#each weeklyOrders}}
-                                <td class="text-center" style="width: 170px">
+                                <td class="text-center" style="width: 170px;">
                                     {{#each this.orders}}
                                         <div href="/view_sales_details/{{this.deliveryReceipt}}" class="text-center {{#compareTwoValues this.status 'Pending' operator='==='}}Pending{{/compareTwoValues}}{{#compareTwoValues this.status 'Completed' operator='==='}}Completed{{/compareTwoValues}}{{#compareTwoValues this.status 'Processing' operator='==='}}Processing{{/compareTwoValues}}">
                                             <p class="text-center status-data">{{this.customer}}</p>

@@ -4,6 +4,40 @@ button, input, optgroup, select, textarea {
   margin: 0;
 }
 
+input:not([type=checkbox]):not(.form-control), select, option, textarea {
+	border-radius: .35rem;
+	padding: .15rem 0.25rem !important;
+	font-weight: 400;
+	background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    height: calc(1.5em + .3rem + 2px) !important;
+    font-size: inherit !important;
+    width: 180px;
+}
+
+input:not(:read-only):not(.form-control):focus, select:not(:disabled):focus {
+	color: #6e707e;
+    background-color: #fff;
+    border-color: #bac8f3;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(78 115 223 / 25%);
+}
+
+input:not(.form-control):read-only, input:not(.input-control):read-only, input:not(.input-control):disabled {
+	background-color: inherit !important;
+	border: none !important;
+	outline: none;
+}
+
+.input-control:disabled, .input-control:read-only {
+	background: #eee !important;
+}
+
+.form-control-plaintext {
+	min-width: 60px;
+}
+
 button, select {
   text-transform: none;
 }

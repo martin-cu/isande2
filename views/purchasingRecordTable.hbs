@@ -69,16 +69,21 @@
                         <tbody class="text-center">
             {{#each purchases}}
                             <tr onclick='location.href="/view_purchase_details/{{this.supplier_lo}}"'>
-                                <td><a class="btn btn-primary text-center btn-sm reset {{this.status}}" role="button" style="padding: 5px;margin: 2px;">{{this.status}}</a></td>
-                                <td>{{this.formattedDate}}<br></td>
-                                <td>{{this.supplier_lo}}<br></td>
-                                <td>{{this.product_name}}</td>
-                                <td>{{this.qty}} bags<br></td>
-                                <td>Php {{this.pricePiece}}</td>
-                                <td>Php {{this.formattedAmount}}</td>
-                                <td>{{this.driverName}}<br></td>
-                                <td>{{this.plate_num}}</td>
-                                <td>{{this.time_out}}</td>
+                                <td class="text-center"><a class="btn btn-primary text-center btn-sm reset {{this.status}}" role="button" style="padding: 5px;margin: 2px;">{{this.status}}</a></td>
+                                <td class="text-center">{{this.formattedDate}}<br></td>
+                                <td class="text-center">{{this.supplier_lo}}<br></td>
+                                <td class="text-center">{{this.product_name}}</td>
+                                <td class="text-left"><div class="ml-1">{{this.qty}}</div><br></td>
+                                <td class="text-center">{{this.pricePiece}}</td>
+                                <td class="text-right">
+                                    <div class="d-flex">
+                                        <div class="ml-1">Php</div>
+                                        <div class="ml-auto mr-1">{{this.formattedAmount}}</div>
+                                    </div>
+                                </td>
+                                <td class="text-left"><div class="ml-1">{{this.driverName}}</div><br></td>
+                                <td class="text-center">{{this.plate_num}}</td>
+                                <td class="text-center">{{this.time_out}}</td>
                             </tr>
             {{/each}}
             {{#each blanks}}

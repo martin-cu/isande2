@@ -6,6 +6,15 @@
 	margin-left: 0px;
 }
 
+.paginate_button.active {
+	background-color: rgb(3,52,97);
+	color: white;
+}
+.paginate_button.active:hover, .paginate_button.active a:hover {
+	background-color: rgb(3,52,97) !important;
+	color: white !important;
+}
+
 #TableSorterCard-1 div:nth-child(2) > div {
 	padding: inherit;
 }
@@ -27,10 +36,10 @@
 }
 
 .dataTables_wrapper div:nth-child(2) div {
-	padding-left: 0px !important;
-	padding-right: 0px !important;
-	margin-left: inherit !important;
-	margin-right: inherit !important;
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-left: inherit;
+	margin-right: inherit;
 	overflow-x: hidden !important;
 }
 

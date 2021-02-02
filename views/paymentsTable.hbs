@@ -70,7 +70,7 @@
                                                 <tbody>
                                                     {{#each unpaidCustomerArr.[0].orderDetails}}
                                                         <tr>
-                                                            <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name=""></td>
+                                                            <td style="font-weight: bold;"><input type="text" readonly class="regular-input" value="{{this.deliveryReceipt}}" name="" style="background-color: inherit !important; border: none !important;"></td>
                                                             <td>{{this.productName}}</td>
                                                             <td>{{this.qty}}</td>
                                                             <td class="text-right">Php {{this.totalAmt}}</td>
@@ -82,12 +82,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4 col-sm-2 col-md-5"><label>Payment Terms</label><select class="form-control" id="paymentType" name="paymentType" required="">
+                                <div class="col-4 col-sm-2 col-md-5"><label>Payment Terms</label><select class="form-control" id="paymentType" name="paymentType" required="" style="width: 150px !important;">
                                         <option value="Cash">Cash</option>
                                         <option value="Check">Check</option>
                                     </select></div>
                                 <div class="col-4 col-sm-2 col-md-5 col-xl-7 d-flex flex-column"><label>Check No.</label>
-                                    <div class="d-flex"><select class="form-control d-flex float-left" id="bankID" name="bankID" disabled style="width: 35%;">
+                                    <div class="d-flex"><select class="form-control d-flex float-left" id="bankID" name="bankID" disabled style="width: 80px !important;">
                                             <option value="MTB">MTB</option>
                                             <option value="BDO">BDO</option>
                                             <option value="BPI">BPI</option>

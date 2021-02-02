@@ -69,11 +69,12 @@
             {{#each deliveries}}
                             <tr onclick='location.href="/view_delivery_details/{{#compareTwoValues this.order_type 'Restock' operator='==='}}{{this.supplier_lo}}{{/compareTwoValues}}{{#compareTwoValues this.order_type 'Restock' operator='!='}}{{this.delivery_receipt}}{{/compareTwoValues}}"'>
                                 <td><a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a></td>
-                                <td>{{this.formattedDate}}<br></td>
-                                <td>{{this.plate_num}}<br></td>
-                                <td>{{this.driver}}</td>
-                                <td>{{this.order_type}}</td>
-                                <td>
+                                <td class="text-center">{{this.formattedDate}}<br></td>
+                                <td class="text-center">{{this.plate_num}}<br></td>
+                                <td class="text-left"><div class="ml-1">{{this.driver}}</div></td>
+                                <td class="text-center">{{this.order_type}}</td>
+                                <td class="text-left">
+                                    <div class="ml-1">
                                 {{#compareTwoValues this.order_type 'Sell-in' operator='==='}}
                                 DR {{this.delivery_receipt}}
                                 {{/compareTwoValues}}
@@ -86,10 +87,11 @@
                                 {{#compareTwoValues this.order_type 'Restock' operator='==='}}
                                 LO {{this.supplier_lo}}
                                 {{/compareTwoValues}}
+                                </div>
                                 </td>
-                                <td>{{this.product_name}}</td>
-                                <td>{{this.qty}} bags<br></td>
-                                <td>{{this.destination}}<br></td>
+                                <td class="text-center">{{this.product_name}}</td>
+                                <td class="text-left"><div class="ml-1">{{this.qty}}</div><br></td>
+                                <td class="text-left"><div class="ml-1">{{this.destination}}</div><br></td>
                             </tr>
             {{/each}}
             {{#each blanks}}

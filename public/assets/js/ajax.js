@@ -47,6 +47,7 @@ function changeCurrentDeliveryInfo(target, event) {
 	else {
 		type = $(target).find('option:selected').text().replace(/(\r\n|\n|\r)/gm, "").replace(/\s+/g, "");
 		id = $(target).val().substring(2);
+		type = type[0]+type[1];
 		if (type === 'LO')
 			type = 'Restock';
 		else
@@ -66,7 +67,7 @@ function changeCurrentDeliveryInfo(target, event) {
 
 			changeDisabledFields(type);
 		}
-
+		console.log(type);
 		if (type === 'Restock')
 			data.deliveryInfo.purchase_lo = 'LO'+data.deliveryInfo.purchase_lo;
 		else

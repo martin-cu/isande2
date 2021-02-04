@@ -133,7 +133,7 @@ function changeCustomerUnpaid() {
     if (groupedUnpaid[i].customerID == $('#unpaidCustomer').val()) {
       var row;
       for (var x = 0; x < groupedUnpaid[i].orderDetails.length; x++) {
-        row = '<tr><td class="text-center"><input type="checkbox" class="checkbox_payment" value="'+groupedUnpaid[i].orderDetails[x].totalAmt+'" id="0" onclick="checkbox_add()"></td> <td style="font-weight: bold;"><input type="text" readonly="" class="regular-input" value="'+groupedUnpaid[i].orderDetails[x].deliveryReceipt+'" name=""></td> <td>FCC</td> <td>'+groupedUnpaid[i].orderDetails[x].qty+'</td> <td class="text-right">Php '+groupedUnpaid[i].orderDetails[x].totalAmt+'</td> </tr>';
+        row = '<tr><td class="text-center"><input type="checkbox" class="checkbox_payment" value="'+groupedUnpaid[i].orderDetails[x].totalAmt+'" id="'+[x]+'" onclick="checkbox_add()"></td> <td style="font-weight: bold;"><input type="text" readonly="" class="regular-input" value="'+groupedUnpaid[i].orderDetails[x].deliveryReceipt+'" name=""></td> <td>FCC</td> <td>'+groupedUnpaid[i].orderDetails[x].qty+'</td> <td class="text-right">Php '+groupedUnpaid[i].orderDetails[x].totalAmt+'</td> </tr>';
         $('#unpaidOrderTable').append(row);
       }
     }

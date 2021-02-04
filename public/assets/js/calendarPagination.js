@@ -61,6 +61,7 @@ function appendCalendarCards(arr) {
 	var divParent;
 	var opaque = '';
 	var today = formatDate(new Date(), 'mm DD, YYYY');
+	var id;
 	for (var i = 0; i < arr.length; i++) {
 		td = document.createElement('td');
 		td.setAttribute('class', 'text-center');
@@ -82,7 +83,16 @@ function appendCalendarCards(arr) {
 				pContent2 = arr[i].orders[x].product+' - '+arr[i].orders[x].qty+' bags';
 			}
 			else if (view === 'Logistics Employee') {
-				href = '/view_delivery_details/'+arr[i].orders[x].supplier_lo;
+				id = arr[i].orders[x].supplier_lo || arr[i].orders[x].deliveryReceipt
+				if (arr[i].orders[x].status === 'Pending') {
+					href = '/schedule_delivery?id='+id+'&&type='+arr[i].orders[x].order_type;
+				}
+				else if (arr[i].orders[x].status === 'Processing') {
+					href = '/confirm_delivery?id='+id+'&&type='+arr[i].orders[x].order_type;
+				}
+				else {
+					href = '/view_delivery_details/'+id;
+				}
 				
 				if (arr[i].orders[x].order_type === 'Restock') {
 					pContent = 'Restock';

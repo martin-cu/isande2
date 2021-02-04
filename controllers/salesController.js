@@ -341,7 +341,6 @@ exports.getPaymentsPage = function(req, res) {
 								groupedUnpaidOrder: JSON.stringify(groupedCustomer),
 								today: today
 							};
-
 							html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'payments_tab');
 							res.render('paymentsTable', html_data);
 						}

@@ -1,4 +1,4 @@
-{{#each reportData}}
+{{#each reportData.page}}
 <div class="container-body">
     <div class="col" style="background: rgb(3,52,97);margin-bottom: 15px;padding: 5px;">
         <div><img class="d-block" src="../reportAssets/img/cropped_logo.png" style="width: 80px;margin-left: auto;margin-right: auto;">
@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div style="min-height: 792px !important;">
+    <div style="min-height: 792px !important; max-height: 792px !important;">
         {{#if this.revenueTitle}}
         <div class="d-block" style="background: #033461;">
             <h5 style="font-family: Alata, sans-serif;font-size: 16px;font-weight: normal;padding: 3px;margin-bottom: 2px;color: rgb(255,255,255);">{{this.revenueTitle}}</h5>

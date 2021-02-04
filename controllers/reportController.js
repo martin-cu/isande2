@@ -31,11 +31,10 @@ exports.viewReports = function(req, res){
 										throw err;
 									}
 									else {
-										var m = dataformatter.aggregateRevenueByPage(revenue, cogs);
 										html_data = {
 											notifCount: notifCount[0],
 											salesByCustomer: dataformatter.aggregateSalesByCustomer(salesByCustomer),
-											grossProfit: m[m.length-1].cogs[m[m.length-1].cogs.length-2].grossProfit
+											grossProfit: dataformatter.aggregateRevenueByPage(revenue, cogs).data
 										};
 										html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 										res.render('reports', html_data);
@@ -161,7 +160,7 @@ exports.viewSalesDetailedReport = function(req, res) {
 							reports: true,
 							dateRange: dateRange,
 							reportData: dataformatter.aggregateRevenueByPage(revenue, cogs),
-							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).length
+							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).page.length
 						};
 						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 						res.render('monthlyEarnings', html_data);

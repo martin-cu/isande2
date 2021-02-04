@@ -732,6 +732,7 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 		cogs: [] , cogsTitle: null,
 		cogsHeaders: []
 	};
+	var f_data;
 	rowCount = 2;
 	var pageLimit = 32, total = 0;
 	var revenueTotal = 0, cogsTotal = 0;
@@ -746,6 +747,7 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 	grossProfit['grossProfit'] = (revenueTotal - cogsTotal).toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
 	totalRevenue['totalAmount'] = revenueTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
 	totalCogs['totalAmount'] = cogsTotal.toLocaleString('en-US', {maximumFractionDigit:2, minimumFractionDigits:2});;
+	f_data = grossProfit.grossProfit;
 
 	revenue = JSON.parse(JSON.stringify(revenue));
 	revenue.push(blankRevenue);
@@ -756,7 +758,6 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 	cogs.push(totalCogs);
 	cogs.push(blankCogs);
 	cogs.push(grossProfit);
-	cogs.push(blankCogs);
 	
 	for (var i = 0; i < revenue.length; i++) {
 		rowCount++;
@@ -781,10 +782,12 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 			}
 		}
 	}
-
+	rowCount += 2;
+	
 	for (var i = 0; i < cogs.length; i++) {
 		rowCount++;
-		if (i == 0 && rowCount <= pageLimit) {
+
+		if (i != 0 && rowCount <= pageLimit) {
 			pageData.cogsTitle = 'Cost of Goods Sold';
 			pageData.cogsHeaders = [{ title: 'DR Number', class: '' },{ title: 'Product', class: 'text-center' },{ title: 'Buying Price', class: 'text-right' },{ title: 'Amount', class: 'text-right' }];
 		}
@@ -806,8 +809,18 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 					cogsHeaders: [{ title: 'DR Number', class: '' },{ title: 'Product', class: 'text-center' },{ title: 'Buying Price', class: 'text-right' },{ title: 'Amount', class: 'text-right' }]
 				};
 			}
+			else {
+				page.push(pageData);
+				rowCount = 2;
+				pageData = { 
+					revenue: [], revenueTitle: null, 
+					revenueHeaders: [],
+					cogs: [] , cogsTitle: 'Cost of Goods Sold',
+					cogsHeaders: [{ title: 'DR Number', class: '' },{ title: 'Product', class: 'text-center' },{ title: 'Buying Price', class: 'text-right' },{ title: 'Amount', class: 'text-right' }]
+				};
+			}
 		}
 	}
 
-	return page;
+	return { page: page, data: f_data };
 }

@@ -225,8 +225,36 @@ exports.createSaleRecord = function(req, res) {
 												res.redirect('/create_sales');
 											}
 											else{
-												req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
-												res.redirect('/create_sales');
+
+												salesModel.getPickupRecordDetail({ delivery_receipt: sale_obj.delivery_receipt }, function(err, saleRecord) {
+													if (err) {
+														req.flash('error_msg', 'Oops something went wrong!');
+														res.redirect('/home');
+													}
+													else {
+														var paymentObj = { amount: parseFloat(saleRecord[0].total_amt.replace(',','')), date_paid: new Date(saleRecord[0].scheduled_date) };
+														paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
+															if (err) {
+																throw err;
+																req.flash('error_msg', 'Oops something went wrong!');
+																res.redirect('/home');
+															}
+															else {
+																salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.insertId }, { delivery_receipt: sale_obj.delivery_receipt }, function(err, newRecord) {
+																	if(err) {
+																		throw err;
+																		req.flash('error_msg', 'Oops something went wrong!');
+																		res.redirect('/home');
+																	}
+																	else {
+																		req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
+																		res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+																	}
+																});
+															}
+														});
+													}
+												});
 											}
 										});
 									}
@@ -353,7 +381,6 @@ exports.getPaymentsPage = function(req, res) {
 
 exports.postPaymentForm = function(req, res) {
 	var { paymentDR, paymentType, amountPaid, bankID, checkNo, paymentDate } = req.body;
-
 	salesModel.getSaleRecordDetail({ delivery_receipt: paymentDR }, function(err, saleRecord) {
 		if (err) {
 			req.flash('error_msg', 'Oops something went wrong!');
@@ -412,7 +439,7 @@ exports.getTrackOrdersPage = function(req, res) {
 						weeklyOrders: dataformatter.groupByDayofWeek(dates, orders),
 						today: dataformatter.formatDate(new Date(), 'mm DD, YYYY')
 					}
-					console.log(orders);
+					
 					html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'track_orders_tab');
 					res.render('trackSalesOrders', html_data);
 				}

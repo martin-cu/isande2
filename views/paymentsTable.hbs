@@ -3,6 +3,35 @@
         <h3 class="text-dark mb-0" style="color: rgb(0,0,0);">Payments</h3>
     </div>
     <div class="row">
+        <div class="col-lg-5 col-xl-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <p class="text-primary m-0 font-weight-bold">Unpaid Orders</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-nowrap">Customer</th>
+                                    <th class="text-nowrap text-right">Amount Due</th>
+                                    <th data-toggle="tooltip" data-bs-tooltip="" title="DD/MM/YYYY">Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each unpaidOrderArr}}
+                                    <tr>
+                                        <td>{{this.customer_name}}</td>
+                                        <td class="text-right">Php {{this.total}}</td>
+                                        <td class="text-nowrap">{{this.formattedDue}}{{#if this.overdue}}<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i>{{/if}}</td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-7 col-xl-8">
         {{#if dialog_error_msg}}
             <div class="popup-dialog-msg error shadow">
@@ -114,35 +143,6 @@
                             </div>
                         </fieldset>
                     </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5 col-xl-4">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <p class="text-primary m-0 font-weight-bold">Unpaid Orders</p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th class="text-nowrap">Customer</th>
-                                    <th class="text-nowrap text-right">Amount Due</th>
-                                    <th data-toggle="tooltip" data-bs-tooltip="" title="DD/MM/YYYY">Due Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each unpaidOrderArr}}
-                                    <tr>
-                                        <td>{{this.customer_name}}</td>
-                                        <td class="text-right">Php {{this.total}}</td>
-                                        <td class="text-nowrap">{{this.formattedDue}}{{#if this.overdue}}<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i>{{/if}}</td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>

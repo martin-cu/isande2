@@ -148,12 +148,12 @@ function createBarChart(arr) {
 	    datasets: [
 	    {
 	      label: 'RCC',
-	      backgroundColor: "#008d93",
+	      backgroundColor: "#8affce",
 	      data: arr.rcc_series,
 	    }, 
 	    {
 	      label: 'FCC',
-	      backgroundColor: "#cd5c5c",
+	      backgroundColor: "#8abbff",
 	      data: arr.fcc_series,
 	    }
 	    ]

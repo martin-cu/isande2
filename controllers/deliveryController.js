@@ -95,7 +95,7 @@ exports.scheduleDelivery = function(req, res) {
 									for (var i = 0 ; i < pendingDeliveries.length; i++)
 										ids.push(pendingDeliveries[i].purchase_lo);
 
-									homeModel.getPendingDate(ids, function(err, dates){
+									homeModel.getPendingDate(ids, function(err, p_dates){
 										if(err){
 											throw err;
 										}
@@ -108,12 +108,13 @@ exports.scheduleDelivery = function(req, res) {
 												dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
 											}
 											console.log(dates[0]+'-'+dates[6]);
-											for(var x = 0; x < dates.length; x++){
+											console.log(dates);
+											for(var x = 0; x < p_dates.length; x++){
 												for(var y = 0; y < pendingDeliveries.length; y++)
-													if(pendingDeliveries[y].purchase_lo == dates[x].id)
-														pendingDeliveries[y]["date"] = dates[x].date;
+													if(pendingDeliveries[y].purchase_lo == p_dates[x].id)
+														pendingDeliveries[y]["date"] = p_dates[x].date;
 											}
-											
+											console.log( pendingDeliveries);
 											var html_data = {
 												notifCount: notifCount[0],
 												truckList: trucks,

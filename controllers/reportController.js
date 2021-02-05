@@ -137,7 +137,8 @@ exports.viewSalesDetailedReport = function(req, res) {
 					dateRange: dateRange,
 					reportData: dataformatter.aggregateSalesByCustomer(salesByCustomer),
 					pageLength: dataformatter.aggregateSalesByCustomer(salesByCustomer).pages.length,
-					today: today
+					today: today,
+					saleReports: true
 				};
 				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 				res.render('salesByCustomerReport', html_data);
@@ -162,7 +163,8 @@ exports.viewSalesDetailedReport = function(req, res) {
 							dateRange: dateRange,
 							reportData: dataformatter.aggregateRevenueByPage(revenue, cogs),
 							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).page.length,
-							today: today
+							today: today,
+							saleReports: true
 						};
 						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 						res.render('monthlyEarnings', html_data);

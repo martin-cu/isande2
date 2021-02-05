@@ -101,3 +101,8 @@ exports.subtractProductQty = function(update, query, next) {
     
     mysql.query(sql, next);
 }
+
+exports.dailyInventory = function(next){
+    var sql = 'SELECT t.date as date,  SUM(t.qty) as qty, SUM(t.damaged) as damaged FROM (SELECT s.scheduled_date as date, s.delivery_receipt as dr, (-1 * s.qty) as qty, ddt.damaged_bags as damaged FROM sales_history s JOIN delivery_detail_table ddt ON s.delivery_receipt = ddt.delivery_receipt WHERE s.order_status = "Completed" UNION SELECT p.date as date,p.supplier_lo as dr, p.qty as qty, null as damaged FROM purchase_history p WHERE p.status = "Completed") t GROUP BY t.date ORDER BY t.date desc LIMIT 10;';
+    mysql.query(sql, next);
+}

@@ -97,7 +97,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="width: 1px;">Date Scheduled</th>
-                                                    <th style="width: 50px; font-size: 1.2rem">{{sale_record.scheduled_date}}<!-- <input type="date" required="" readonly value="{{sale_record.scheduled_date}}"> --></th>
+                                                    <th style="width: 50px; font-size: 1.2rem; font-weight: normal">{{sale_record.scheduled_date}}<!-- <input type="date" required="" readonly value="{{sale_record.scheduled_date}}"> --></th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -111,20 +111,20 @@
                                                 </tr>
                                                 <tr></tr>
                                                 <tr>
-                                                    <td style="font-weight: bold; ">Customer Information</td>
+                                                    <td style=" ">Customer Information</td>
                                                     <td style="width: 50px;"></td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Customer</td>
-                                                    <td><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.customer_name}}</span><!-- <input type="text" value="{{sale_record.customer_name}}" readonly> --></td>
+                                                    <td><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.customer_name}}</span><!-- <input type="text" value="{{sale_record.customer_name}}" readonly> --></td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Customer Address</td>
-                                                    <td><span style="font-weight: bold; font-size: 1.2rem">{{customer_location}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 200px;" required="" readonly="">
+                                                    <td><span style="font-weight: normal; font-size: 1.2rem">{{customer_location}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 200px;" required="" readonly="">
                                                         <option value="{{customer_location}}">{{customer_location}}</option>
                                                     </select> --></td>
                                                     <td></td>
@@ -148,38 +148,38 @@
                                                         <div class="custom-control custom-radio"><input type="radio" id="customRadio1" class="custom-control-input" name="customRadio" checked=""><label class="custom-control-label" for="customRadio1" style="font-size: 1.2rem">{{sale_record.order_type}}</label></div>
                                                     </td>
                                                     <td style="width: 100px;">Payment Terms</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.payment_terms}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.payment_terms}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                                             <option value="Cash">{{sale_record.payment_terms}}</option>
                                                         </select> --></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Pick-up Plate No.</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.pickup_plate}}</span><!-- <input type="text" required="" readonly="" value="{{sale_record.pickup_plate}}"> --></td>
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.pickup_plate}}</span><!-- <input type="text" required="" readonly="" value="{{sale_record.pickup_plate}}"> --></td>
                                                     <td style="width: 100px;">Payment Status</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem" class="{{#compareTwoValues sale_record.payment_status 'Paid' operator='==='}}paid{{/compareTwoValues}}{{#compareTwoValues sale_record.payment_status 'Paid' operator='!='}}Unpaid{{/compareTwoValues}}">{{sale_record.payment_status}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem" class="{{#compareTwoValues sale_record.payment_status 'Paid' operator='==='}}paid{{/compareTwoValues}}{{#compareTwoValues sale_record.payment_status 'Paid' operator='!='}}Unpaid{{/compareTwoValues}}">{{sale_record.payment_status}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                                             <option value="Paid" selected="">{{sale_record.payment_status}}</option>
                                                         </select> --></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Product</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.product_name}}</span><!-- 
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.product_name}}</span><!-- 
                                                         <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                                             <option value="{{sale_record.product_name}}" selected="" readonly>{{sale_record.product_name}}</option>
                                                         </select> -->
                                                     </td>
                                                     <td style="width: 100px;">Check No.</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.check_num}}</span>
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.check_num}}</span>
                                                         <!-- <input type="text" required="" readonly="" value="{{sale_record.check_num}}"> --></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Product Price</td>
-                                                    <td style="width: 100px;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.price}}</span><span class="ml-2">Php</span></td>
+                                                    <td style="width: 100px;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.price}}</span><span class="ml-2">Php</span></td>
                                                     <td style="width: 100px;"></td>
                                                     <td style="width: 100px;"></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal;">Quantity</td>
-                                                    <td><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.qty}}</span><span class="ml-2">Bag/s</span></td>
+                                                    <td><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.qty}}</span><span class="ml-2">Bag/s</span></td>
                                                     <td></td>
                                                     <td>
                                                         <div>
@@ -190,7 +190,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: normal; ">Total Amount</td>
-                                                    <td style="font-weight: normal;"><span style="font-weight: bold; font-size: 1.2rem">{{sale_record.total_amt}}</span><span class="ml-2">Php</span></td>
+                                                    <td style="font-weight: normal;"><span style="font-weight: normal; font-size: 1.2rem">{{sale_record.total_amt}}</span><span class="ml-2">Php</span></td>
                                                     <td style="font-weight: normal;"></td>
                                                     <td class="d-xl-flex align-items-xl-center">
                                                         <div class="d-xl-flex align-items-xl-start"></div>
@@ -206,7 +206,5 @@
                 </div>
 
                 <style>
-                    .paid{
-                        color:#4ce600;
-                    }
+                    
                 </style>

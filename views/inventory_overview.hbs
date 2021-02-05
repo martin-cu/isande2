@@ -162,14 +162,22 @@
                                             <table class="table table-sm table tablesorter" id="ipi-table">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">DATE</th>
-                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">PRODUCT</th>
-                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">QUANTITY</th>
-                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">DAMAGED</th>
+                                                        <th style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none; text-align: center">DATE</th>
+                                                        <!-- <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none;">PRODUCT</th> -->
+                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none; text-align: right">QUANTITY</th>
+                                                        <th class="sorter-false" style="background: rgb(248,249,252);color: rgb(78,117,229);border-style: none; text-align: right">DAMAGED</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {{#each dailysales}}
+                                                    {{#each dailyInventory}}
+                                                    <tr>
+                                                        <td style="text-align: center">{{this.date}}</td>
+                                                        <!-- <td>{{this.pname}}</td> -->
+                                                        <td style="text-align: right">{{this.qty}} Bags</td>
+                                                        <td style="text-align: right">{{this.damaged}} Bags</td>
+                                                    </tr>
+                                                    {{/each}}
+                                                    <!-- {{#each dailysales}}
                                                     <tr>
                                                         <td>{{this.date}}</td>
                                                         <td>{{this.pname}}</td>
@@ -184,7 +192,7 @@
                                                         <td>{{this.qty}}</td>
                                                         <td>0</td>
                                                     </tr>
-                                                    {{/each}}
+                                                    {{/each}} -->
         
                                                 </tbody>
                                             </table>

@@ -101,6 +101,8 @@ function changeDriver(truck) {
 function applyRecommendedPurchase() {
 	if (selectedQty <= 0)
 		selectedQty = 1;
+	if (selectedQty > 648)
+		selectedQty = 648;
 	$('#purchase_product').find('option[text='+selectedProduct+']').prop('selected', true);
 	$('#purchase_product').trigger('change');
 	$('#p_qty').val(selectedQty);

@@ -339,7 +339,7 @@
                                     <td class="text-left align-middle">{{this.current_stock}} bags</td>
                                     <td class="text-left align-middle">{{this.moving_avg}} bags</td>
                                     <td class="text-left align-middle">{{this.safety_limit}} bags </td>
-                                    <td class="text-left align-middle">{{this.recommended}} bags </td>
+                                    <td class="text-left align-middle">{{this.recommended}} bags{{#compareTwoValues this.recommended '0' operator="!="}}<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Low Stock! "></i>{{/compareTwoValues}}</td>
                                     <td class="text-center align-middle">
                                         <button class="btn btn-primary" href="/create_purchase?product={{this.product_name}}&&qty={{this.recommended}}">Replenish</button>
                                     </td>

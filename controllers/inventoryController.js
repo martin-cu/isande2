@@ -148,9 +148,9 @@ exports.getProductInventory = function(req, res){
 								var count = 0;
 								var offset = parseInt(req.query.offset);
 
-								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailyInventory" : dailyInv};
+//								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailyInventory" : dailyInv};
 // =======
-// 								var html_data = { "currinv": dataformatter.formatMoney(currinv[0].currinventory, "") , "outgoing" : dataformatter.formatMoney(outgoing[0].outgoing, ""), "incoming" : dataformatter.formatMoney(incoming[0].incoming, ""), "dailysales" : dailysales, "dailypur" : dailypur};
+ 								var html_data = { "currinv": dataformatter.formatMoney(currinv[0].currinventory, "") , "outgoing" : dataformatter.formatMoney(outgoing[0].outgoing, ""), "incoming" : dataformatter.formatMoney(incoming[0].incoming, ""), "dailyInventory" : dailyInv};
 								
 								html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
 

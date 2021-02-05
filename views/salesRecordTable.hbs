@@ -75,8 +75,8 @@
                                         <a class="btn btn-primary text-center btn-sm reset {{this.order_status}}" role="button" style="padding: 5px;margin: 2px;">{{this.order_status}}</a>
                                     </div>
                                 </td>
-                                <td class="text-center">{{this.formattedDate}}<br></td>
-                                <td class="text-center">{{this.delivery_receipt}}<br></td>
+                                <td class="text-center">{{this.formattedDate}}</td>
+                                <td class="text-center">{{this.delivery_receipt}}</td>
                                 <td class="text-left"><div class="ml-1">{{this.customer_name}}</div></td>
                                 <td class="text-center">{{this.product_name}}</td>
                                 <td class="text-left"><div class="ml-1">{{this.qty}}</div></td>
@@ -89,7 +89,7 @@
                                 </td>
                                 <td class="text-center {{#compareTwoValues this.payment_status 'Paid' operator='==='}}paid{{/compareTwoValues}}{{#compareTwoValues this.payment_status 'Paid' operator='!='}}Unpaid{{/compareTwoValues}}">{{this.payment_status}}</td>
                                 <td class="text-center">{{this.order_type}}</td>
-                                <td class="text-center">{{this.formattedDamage}}<br></td>
+                                <td class="text-right"><div class="mr-1">{{this.formattedDamage}}</div></td>
                             </tr>
             {{/each}}
             {{#each blanks}}

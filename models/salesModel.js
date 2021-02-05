@@ -15,7 +15,7 @@ exports.createSales = function(query, next) {
 };
 
 exports.getUnpaidOrders = function(next) {
-	var sql = "SELECT c.customer_name , format((sh.qty*sh.amount), 2) as total , date_format(sh.due_date, '%m/%d/%Y') as formattedDue, case when datediff(now(), sh.due_date) > 0 then 1 else null end as overdue FROM sales_history as sh JOIN customer_table as c using(customer_id) where sh.payment_status = 'Unpaid' and sh.void != 1 order by due_date asc, customer_name";
+	var sql = "SELECT c.customer_name , format((sh.qty*sh.amount), 2) as total , date_format(sh.due_date, '%m/%d/%Y') as formattedDue, case when datediff(now(), sh.due_date) > 0 then 1 else null end as overdue FROM sales_history as sh JOIN customer_table as c using(customer_id) where sh.payment_status = 'Unpaid' and sh.void != 1 order by due_date asc, customer_name limit 12";
 
 	mysql.query(sql, next);
 };
@@ -80,7 +80,7 @@ exports.updateSaleDeliveryRecord = function(update1, update2, query, next) {
 }
 
 exports.getAllSaleRecords = function(next) {
-	var sql = "select date_format(t.scheduled_date, '%m/%d/%Y') as formattedDate, ct.customer_name, pt.product_name, case when t.damaged_bags is null then 'N/A' else t.damaged_bags end as formattedDamage, format(t.amount*t.qty,2) as formattedTotal, format(t.amount, 2) as formattedAmount, t.* from ( SELECT sh.*, ddt.damaged_bags FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id where sh.void != 1 union select sh.*, null from sales_history as sh where sh.void != 1) as t join customer_table as ct using(customer_id) join product_table as pt using(product_id) group by delivery_receipt order by t.order_status desc, (case when (t.order_status = 'Completed') then t.scheduled_date else t.scheduled_date end) desc, t.customer_id, t.time_recorded";
+	var sql = "select date_format(t.scheduled_date, '%m/%d/%Y') as formattedDate, ct.customer_name, pt.product_name, case when t.damaged_bags is null then 0 else t.damaged_bags end as formattedDamage, format(t.amount*t.qty,2) as formattedTotal, format(t.amount, 2) as formattedAmount, t.* from ( SELECT sh.*, ddt.damaged_bags FROM sales_history as sh join delivery_detail_table as ddt on sh.delivery_details = ddt.delivery_detail_id where sh.void != 1 union select sh.*, null from sales_history as sh where sh.void != 1) as t join customer_table as ct using(customer_id) join product_table as pt using(product_id) group by delivery_receipt order by t.order_status desc, (case when (t.order_status = 'Completed') then t.scheduled_date else t.scheduled_date end) desc, t.customer_id, t.time_recorded";
 	mysql.query(sql, next);
 }
 

@@ -82,7 +82,7 @@
                                 {{/compareTwoValues}}
 
                                 {{#compareTwoValues this.order_type 'Sell-out' operator='==='}}
-                                DR {{this.delivery_receipt}}<br>
+                                DR {{this.delivery_receipt}}
                                 LO {{this.supplier_lo}}
                                 {{/compareTwoValues}}
 
@@ -92,10 +92,10 @@
                                 </div>
                                 </td>
                                 <td class="text-center">{{this.product_name}}</td>
-                                <td class="text-left"><div class="ml-1">{{this.qty}}</div><br></td>
-                                <td class="text-center">{{this.plate_num}}<br></td>
+                                <td class="text-left"><div class="ml-1">{{this.qty}}</div></td>
+                                <td class="text-center">{{this.plate_num}}</td>
                                 <td class="text-left"><div class="ml-1">{{this.driver}}</div></td>
-                                <td class="text-left"><div class="ml-1">{{this.destination}}</div><br></td>
+                                <td class="text-left"><div class="ml-1">{{this.destination}}</div></td>
                             </tr>
             {{/each}}
             {{#each blanks}}

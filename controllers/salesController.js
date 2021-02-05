@@ -81,6 +81,7 @@ exports.getSaleOrderForm = function(req, res) {
 	var order_type = [
 		{ name: 'Delivery' }, { name: 'Pick-up' }
 	];
+	var today = dataformatter.formatDate(new Date(), 'YYYY-MM-DD');
 	notificationModel.getUnseenNotifCount(req.session.employee_id, function(err, notifCount) {
 		if (err) {
 			req.flash('error_msg', 'Oops something went wrong!');
@@ -128,7 +129,8 @@ exports.getSaleOrderForm = function(req, res) {
 												drCount: dr,
 												products: products,
 												customers: customer_arr,
-												try: customerArr
+												try: customerArr,
+												today: today
 											};
 											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'create_sales_tab');
 											res.render('createOrder', html_data);

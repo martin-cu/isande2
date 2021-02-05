@@ -22,7 +22,12 @@
                                 {{#each unpaidOrderArr}}
                                     <tr>
                                         <td>{{this.customer_name}}</td>
-                                        <td class="text-right">Php {{this.total}}</td>
+                                        <td class="text-right">
+                                            <div class="d-flex">
+                                                <div>Php</div>
+                                                <div class="ml-auto">{{this.total}}</div>
+                                            </div>
+                                        </td>
                                         <td class="text-nowrap">{{this.formattedDue}}{{#if this.overdue}}<i class="fa fa-warning" data-toggle="tooltip" data-bs-tooltip="" style="color: rgb(255,15,0);padding: 5px;border-style: none;" title="Overdue "></i>{{/if}}</td>
                                     </tr>
                                 {{/each}}

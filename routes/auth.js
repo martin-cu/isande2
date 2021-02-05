@@ -41,12 +41,14 @@ router.get('/AverageDailyPurchase', (req,res) => {
 })
 router.get("/LogiReport1", (req,res) => {
 	res.render("logistics_purchase_report",{
-		reports : true
+		reports : true,
+		LogiReport : true
 	});
 });
 router.get("/LogiReport2", (req,res) => {
 	res.render("logistics_sales_report",{
-		reports : true
+		reports : true,
+		LogiReport : true
 	});
 });
 //Inventory

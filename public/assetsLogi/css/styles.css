@@ -9,7 +9,7 @@ html {
 body {
   box-sizing: border-box;
   height: 11in;
-  margin: 0 auto;
+  margin: 0px auto !important;
   overflow: hidden;
   padding: 0.5in;
   width: 8.5in;

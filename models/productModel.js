@@ -54,6 +54,12 @@ exports.getProductDetails = function(product_id, next){
 
 	mysql.query(sql,next);
 }
+exports.getProductDetailsName = function(product_name, next){
+	var sql = "select * from product_table where product_name = ?";
+	sql = mysql.format(sql, product_name);
+
+	mysql.query(sql,next);
+}
 
 exports.addProductQty = function(product, qty, next){
 	var sql = "UPDATE product_table SET qty = qty + ? WHERE product_name = ?;";

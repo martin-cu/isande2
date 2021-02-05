@@ -209,58 +209,154 @@ exports.createSaleRecord = function(req, res) {
 							if (orderType === 'Pick-up') {
 								sale_obj["order_status"] = "Completed";
 								sale_obj["payment_status"] = "Paid";
-								salesModel.createSales(sale_obj, function(err, result) {
-									if (err) {
-										req.flash('error_msg', 'Oops something went wrong!');
-										res.redirect('/create_sales');
-									}
-									else {
-										var product_name;
-										if (product == '1')
-											product_name = 'FCC';
-										else {
-											product_name = 'RCC';
-										}
-										productModel.subtractProductQty(product_name, parseInt(qty), function(err){
-											if(err){
-												req.flash('error_msg', 'Oops something went wrong!');
-												res.redirect('/create_sales');
-											}
-											else{
 
-												salesModel.getPickupRecordDetail({ delivery_receipt: sale_obj.delivery_receipt }, function(err, saleRecord) {
-													if (err) {
-														req.flash('error_msg', 'Oops something went wrong!');
-														res.redirect('/home');
-													}
+								productModel.getProductDetails(sale_obj.product_id, function(err, curInv){
+									console.log(curInv);
+									if(err)
+										throw err;
+									else{
+										if(sale_obj.qty > curInv[0].qty){
+											req.flash('error_msg', 'Not enough inventory.');
+											res.redirect('/create_sales');
+										}
+										else{
+				
+											salesModel.createSales(sale_obj, function(err, result) {
+												if (err) {
+													req.flash('error_msg', 'Oops something went wrong!');
+													res.redirect('/create_sales');
+												}
+												else {
+													var product_name;
+													if (product == '1')
+														product_name = 'FCC';
 													else {
-														var paymentObj = { amount: parseFloat(saleRecord[0].total_amt.replace(',','')), date_paid: new Date(saleRecord[0].scheduled_date) };
-														paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
-															if (err) {
-																throw err;
-																req.flash('error_msg', 'Oops something went wrong!');
-																res.redirect('/home');
-															}
-															else {
-																salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.insertId }, { delivery_receipt: sale_obj.delivery_receipt }, function(err, newRecord) {
-																	if(err) {
-																		throw err;
-																		req.flash('error_msg', 'Oops something went wrong!');
-																		res.redirect('/home');
-																	}
-																	else {
-																		req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
-																		res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
-																	}
-																});
-															}
-														});
+														product_name = 'RCC';
 													}
-												});
-											}
-										});
+													productModel.subtractProductQty(product_name, parseInt(qty), function(err){
+														if(err){
+															req.flash('error_msg', 'Oops something went wrong!');
+															res.redirect('/create_sales');
+														}
+														else{
+
+															salesModel.getPickupRecordDetail({ delivery_receipt: sale_obj.delivery_receipt }, function(err, saleRecord) {
+																if (err) {
+																	req.flash('error_msg', 'Oops something went wrong!');
+																	res.redirect('/home');
+																}
+																else {
+																	var paymentObj = { amount: parseFloat(saleRecord[0].total_amt.replace(',','')), date_paid: new Date(saleRecord[0].scheduled_date) };
+																	paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
+																		if (err) {
+																			throw err;
+																			req.flash('error_msg', 'Oops something went wrong!');
+																			res.redirect('/home');
+																		}
+																		else {
+																			salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.insertId }, { delivery_receipt: sale_obj.delivery_receipt }, function(err, newRecord) {
+																				if(err) {
+																					throw err;
+																					req.flash('error_msg', 'Oops something went wrong!');
+																					res.redirect('/home');
+																				}
+																				else {
+																					req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
+																					res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+																				}
+																			});
+																		}
+																	});
+																}
+															});
+														}
+													});
+												}
+											});
+
+										}
 									}
 								});
+								// salesModel.getSaleRecordDetail( {delivery_receipt : dr}, function(err, sale_detail){
+								// 	console.log(sale_detail);
+								// 	if(err)
+								// 		throw err;
+								// 	else{
+								// 		if(sale_detail.length == 0){
+								// 			req.flash('error_msg', 'Oops! Something went wrong.');
+								// 			res.redirect('/create_sales');
+								// 		}
+								// 		else{
+								// 			productModel.getProductDetailsName(sale_detail[0].product_name, function(err, curInv){
+								// 				console.log(curInv);
+								// 				if(err)
+								// 					throw err;
+								// 				else{
+								// 					if(sale_detail[0].qty > curInv[0].qty){
+								// 						req.flash('error_msg', 'Not enough inventory.');
+								// 						res.redirect('/create_sales');
+								// 					}
+								// 					else{
+							
+								// 						salesModel.createSales(sale_obj, function(err, result) {
+								// 							if (err) {
+								// 								req.flash('error_msg', 'Oops something went wrong!');
+								// 								res.redirect('/create_sales');
+								// 							}
+								// 							else {
+								// 								var product_name;
+								// 								if (product == '1')
+								// 									product_name = 'FCC';
+								// 								else {
+								// 									product_name = 'RCC';
+								// 								}
+								// 								productModel.subtractProductQty(product_name, parseInt(qty), function(err){
+								// 									if(err){
+								// 										req.flash('error_msg', 'Oops something went wrong!');
+								// 										res.redirect('/create_sales');
+								// 									}
+								// 									else{
+
+								// 										salesModel.getPickupRecordDetail({ delivery_receipt: sale_obj.delivery_receipt }, function(err, saleRecord) {
+								// 											if (err) {
+								// 												req.flash('error_msg', 'Oops something went wrong!');
+								// 												res.redirect('/home');
+								// 											}
+								// 											else {
+								// 												var paymentObj = { amount: parseFloat(saleRecord[0].total_amt.replace(',','')), date_paid: new Date(saleRecord[0].scheduled_date) };
+								// 												paymentDetailModel.createPaymentRecord(paymentObj, function(err, paymentDetail) {
+								// 													if (err) {
+								// 														throw err;
+								// 														req.flash('error_msg', 'Oops something went wrong!');
+								// 														res.redirect('/home');
+								// 													}
+								// 													else {
+								// 														salesModel.updateSaleRecord({ payment_status: 'Paid', payment_id: paymentDetail.insertId }, { delivery_receipt: sale_obj.delivery_receipt }, function(err, newRecord) {
+								// 															if(err) {
+								// 																throw err;
+								// 																req.flash('error_msg', 'Oops something went wrong!');
+								// 																res.redirect('/home');
+								// 															}
+								// 															else {
+								// 																req.flash('success_msg', 'Successfully created sale record with DR '+sale_obj.delivery_receipt);
+								// 																res.redirect('/view_sales_details/' + sale_obj.delivery_receipt);
+								// 															}
+								// 														});
+								// 													}
+								// 												});
+								// 											}
+								// 										});
+								// 									}
+								// 								});
+								// 							}
+								// 						});
+
+								// 					}
+								// 				}
+								// 			});
+								// 		}
+								// 	}
+								// });
 							}
 							/********** DELIVERY**********/
 							else {

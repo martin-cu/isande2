@@ -147,42 +147,69 @@ exports.updateDelivery = function(req, res) {
 			var update1 = { order_status: req.body.orderStatus };
 			var update2 = { status: req.body.orderStatus, plate_no: req.body.deliveryTruck, driver: req.body.deliveryDriverId };
 			var query = { delivery_receipt: id };
-			salesModel.updateSaleDeliveryRecord(update1, update2, query, function(err, updatedSaleRecord) {
-				if (err)
+
+			salesModel.getSaleRecordDetail( query, function(err, sale_detail){
+				console.log(sale_detail);
+				if(err)
 					throw err;
-				else {
-					var query = {
-					url: '"/view_sales_details/' + req.body.deliveryReference.slice(2)+'"',
-					desc:  'Delivery Processing',
-					id: req.session.employee_id,
-					roles: dataformatter.getNotifRoles('S'),
-					contents: 'Order ' + req.body.deliveryReference.slice(2) + ' is being processed'
+				else{
+					if(sale_detail.length == 0){
+						req.flash('error_msg', 'Oops! Something went wrong.');
+						res.redirect('track_deliveries');
 					}
-					/* Creating a Sale Record for Delivery sends a notification to Logistics */
-					notificationModel.createNotif(query, function(err, notif) {
-						if (err)
-							throw err;
-						else {
-							salesModel.getSaleRecordDetail({delivery_receipt : req.body.deliveryReference.slice(2)}, function(err, details){
-								if(err){
-									throw err;
-									req.flash('error_msg', 'Error scheduling delivery!');
-									res.redirect('/schedule_delivery');
+					else{
+						productModel.getProductDetailsName(sale_detail[0].product_name, function(err, curInv){
+							console.log(curInv);
+							if(err)
+								throw err;
+							else{
+								if(sale_detail[0].qty > curInv[0].qty){
+									req.flash('error_msg', 'Not enough inventory.');
+									res.redirect('track_deliveries');
 								}
 								else{
-									productModel.subtractProductQty(details[0].product_name , details[0].qty, function(err){
-										if(err){
+									salesModel.updateSaleDeliveryRecord(update1, update2, query, function(err, updatedSaleRecord) {
+										if (err)
 											throw err;
-										}
-										else{
-											req.flash('success_msg', 'Successfully updated delivery!');
-											res.redirect('track_deliveries');
+										else {
+											var query = {
+											url: '"/view_sales_details/' + req.body.deliveryReference.slice(2)+'"',
+											desc:  'Delivery Processing',
+											id: req.session.employee_id,
+											roles: dataformatter.getNotifRoles('S'),
+											contents: 'Order ' + req.body.deliveryReference.slice(2) + ' is being processed'
+											}
+											/* Creating a Sale Record for Delivery sends a notification to Logistics */
+											notificationModel.createNotif(query, function(err, notif) {
+												if (err)
+													throw err;
+												else {
+													salesModel.getSaleRecordDetail({delivery_receipt : req.body.deliveryReference.slice(2)}, function(err, details){
+														if(err){
+															throw err;
+															req.flash('error_msg', 'Error scheduling delivery!');
+															res.redirect('/schedule_delivery');
+														}
+														else{
+															productModel.subtractProductQty(details[0].product_name , details[0].qty, function(err){
+																if(err){
+																	throw err;
+																}
+																else{
+																	req.flash('success_msg', 'Successfully updated delivery!');
+																	res.redirect('track_deliveries');
+																}
+															});
+														}
+													});
+												}
+											});
 										}
 									});
 								}
-							});
-						}
-					});
+							}
+						});
+					}
 				}
 			});
 		}

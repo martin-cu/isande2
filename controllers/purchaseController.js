@@ -10,7 +10,7 @@ const dataformatter = require('../public/assets/js/dataformatter.js');
 
 const bcrypt = require('bcrypt');
 
-exports.voidPurchase = function(req, res) {
+exports.voidPurchase = function(req, res) { 
 	userModel.queryAdmin({ role_id: 'System Admin' }, function(err, admin) {
 		if (err) {
 			throw err;

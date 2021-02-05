@@ -249,7 +249,7 @@ exports.updateDelivery = function(req, res) {
 		}
 		else {
 			var supplier_dr = req.body.confirmSupplierDR, time_out = req.body.confirmTimeOut;
-			if (supplier_dr === '')
+			if (supplier_dr == '' || supplier_dr == undefined)
 				supplier_dr = null;
 
 			var update = { status: req.body.orderStatus, time_out: req.body.confirmTimeOut, supplier_dr : req.body.confirmSupplierDR };

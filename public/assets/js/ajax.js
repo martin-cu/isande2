@@ -86,6 +86,7 @@ function changeTruck(trigger) {
 }
 
 function changeDriver(truck) {
+	console.log(truck);
 	$.get('/ajaxChangeDriver', { plate_no: truck }, function(data) {
 		if (ajaxView === 'scheduleDelivery') {
 			$('#deliveryDriver').val(data.truckData.driver);

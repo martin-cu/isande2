@@ -98,7 +98,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 1px;">Date Scheduled</th>
-                                    <th style="width: 50px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.formattedDate}}</span><!-- <input type="date" required="" readonly="" value="{{purchaseRecord.formattedDate}}"> --></th>
+                                    <th style="width: 50px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.formattedDate}}</span><!-- <input type="date" required="" readonly="" value="{{purchaseRecord.formattedDate}}"> --></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -113,18 +113,18 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">SO Number</td>
-                                    <td><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.supplier_so}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_so}}"> --></td>
+                                    <td><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.supplier_so}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_so}}"> --></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">DR Number</td>
-                                    <td><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.supplier_dr}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_dr}}"> --></td>
+                                    <td><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.supplier_dr}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.supplier_dr}}"> --></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: bold;"></td>
+                                    <td style="font-weight: normal;"></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -132,36 +132,36 @@
                                 <tr>
                                     <td style="font-weight: bold;">Order Details</td>
                                     <td style="width: 0px;"></td>
-                                    <td style="width: 0px;font-weight: bold;">Delivery Information</td>
+                                    <td style="width: 0px;font-weight: normal;">Delivery Information</td>
                                     <td style="width: 0px;"></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Product<br></td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.product_name}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.product_name}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                             <option value="12" selected="">{{purchaseRecord.product_name}}</option>
                                         </select> --></td>
                                     <td style="width: 100px;">Truck Plate Number</td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.newPlate}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.newPlate}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                         <option value="" selected>{{purchaseRecord.newPlate}}</option>
                                     </select> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Product Price<br></td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.pricePiece}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.pricePiece}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
                                     <td style="width: 100px;">Driver</td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.driverName}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.driverName}}</span><!-- <select style="height: 28px;padding-top: 3px;padding-bottom: 3px;font-size: 12px;width: 150px;" required="" readonly="">
                                         <option selected="" value="">{{purchaseRecord.driverName}}</option>
                                     </select> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Quantity</td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.qty}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.qty}}"> --><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.qty}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.qty}}"> --><input class="form-control-plaintext d-inline-flex" type="text" value="bag/s" readonly="" style="margin-left: 10px;width: 42px;"></td>
                                     <td style="width: 100px;">Time Out</td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.newTimeOut}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.newTimeOut}}"> --></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.newTimeOut}}</span><!-- <input type="text" required="" readonly="" value="{{purchaseRecord.newTimeOut}}"> --></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: normal;">Total Amount</td>
-                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: bold">{{purchaseRecord.formattedAmount}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
+                                    <td style="width: 100px;"><span style="font-size: 1.2rem; font-weight: normal">{{purchaseRecord.formattedAmount}}</span><input class="form-control-plaintext d-inline-flex align-items-xl-center" type="text" value="Php" readonly="" style="margin-left: 10px;width: 50px;"></td>
                                     <td style="width: 100px;"></td>
                                     <td style="width: 100px;"></td>
                                 </tr>

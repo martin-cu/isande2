@@ -37,6 +37,16 @@ router.get('/AverageDailyPurchase', (req,res) => {
 		reports:true,
 	});
 })
+router.get("/LogiReport1", (req,res) => {
+	res.render("logistics_purchase_report",{
+		reports : true
+	});
+});
+router.get("/LogiReport2", (req,res) => {
+	res.render("logistics_sales_report",{
+		reports : true
+	});
+});
 //Inventory
 router.get('/inventory', isPrivate, inventoryController.getProductInventory);
 router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);

@@ -118,7 +118,7 @@ exports.viewReports = function(req, res){
 exports.viewSalesDetailedReport = function(req, res) {
 	var type = req.params.type, param = req.query;
 	param = param[Object.keys(param)]
-
+	var today = dataformatter.formatDate(new Date(), 'MM DD, YYYY');
 	var date = new Date(), y = date.getFullYear(), m = date.getMonth();
 	var dateRange = {
 		firstDay: dataformatter.formatDate(new Date(y, m, 1), 'MM DD, YYYY'),
@@ -136,7 +136,8 @@ exports.viewSalesDetailedReport = function(req, res) {
 					reports: true,
 					dateRange: dateRange,
 					reportData: dataformatter.aggregateSalesByCustomer(salesByCustomer),
-					pageLength: dataformatter.aggregateSalesByCustomer(salesByCustomer).pages.length
+					pageLength: dataformatter.aggregateSalesByCustomer(salesByCustomer).pages.length,
+					today: today
 				};
 				html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 				res.render('salesByCustomerReport', html_data);
@@ -160,7 +161,8 @@ exports.viewSalesDetailedReport = function(req, res) {
 							reports: true,
 							dateRange: dateRange,
 							reportData: dataformatter.aggregateRevenueByPage(revenue, cogs),
-							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).page.length
+							pageLength: dataformatter.aggregateRevenueByPage(revenue, cogs).page.length,
+							today: today
 						};
 						html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'reports_tab');
 						res.render('monthlyEarnings', html_data);

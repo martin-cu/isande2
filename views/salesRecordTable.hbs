@@ -87,7 +87,7 @@
                                         <div class="ml-auto mr-1">{{this.formattedTotal}}</div>
                                     </div>
                                 </td>
-                                <td class="text-center">{{this.payment_status}}</td>
+                                <td class="text-center {{#compareTwoValues this.payment_status 'Paid' operator='==='}}paid{{/compareTwoValues}}{{#compareTwoValues this.payment_status 'Paid' operator='!='}}Unpaid{{/compareTwoValues}}">{{this.payment_status}}</td>
                                 <td class="text-center">{{this.order_type}}</td>
                                 <td class="text-center">{{this.formattedDamage}}<br></td>
                             </tr>

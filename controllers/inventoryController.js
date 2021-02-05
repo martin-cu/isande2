@@ -136,24 +136,42 @@ exports.getProductInventory = function(req, res){
 						res.redirect('/inventory');
 					}
 					else {
-						inventoryModel.DailyInventorySales(function(err, dailysales) {
-							if (err){
+						inventoryModel.dailyInventory(function(err, dailyInv){
+							if(err){
 								req.flash('error_msg', 'Oops something went wrong!');
-								res.redirect('/inventory');
+								res.redirect('/inventory')
 							}
-							else {
-								inventoryModel.DailyInventoryPurchases(function(err, dailypur) {
+							else{
+								for(var i =0 ; i < dailyInv.length ; i++){
+									dailyInv[i].date =  dataformatter.formatDate(dailyInv[i].date, 'mm DD, YYYY');
+								}
 								var count = 0;
 								var offset = parseInt(req.query.offset);
-								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailysales" : dailysales, "dailypur" : dailypur};
+								var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailyInventory" : dailyInv};
 								
 								html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
 
 								res.render('inventory_overview', html_data);
-								})
-								
 							}
-						})
+						});
+						// inventoryModel.DailyInventorySales(function(err, dailysales) {
+						// 	if (err){
+						// 		req.flash('error_msg', 'Oops something went wrong!');
+						// 		res.redirect('/inventory');
+						// 	}
+						// 	else {
+						// 		inventoryModel.DailyInventoryPurchases(function(err, dailypur) {
+						// 		var count = 0;
+						// 		var offset = parseInt(req.query.offset);
+						// 		var html_data = { "currinv": currinv[0].currinventory , "outgoing" : outgoing[0].outgoing, "incoming" : incoming[0].incoming, "dailysales" : dailysales, "dailypur" : dailypur};
+								
+						// 		html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, 'inventory_overview')
+
+						// 		res.render('inventory_overview', html_data);
+						// 		})
+								
+						// 	}
+						// })
 				
 				}
 			});

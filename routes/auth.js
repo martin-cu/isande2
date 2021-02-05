@@ -30,11 +30,13 @@ router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetai
 router.get('/MonthlyPurchaseperProduct', (req,res) => {
 	res.render('MonthlyPurchaseperProduct', {
 		reports:true,
+		purchaseReports: true,
 	});
 })
 router.get('/AverageDailyPurchase', (req,res) => {
 	res.render('AverageDailyPurchase', {
 		reports:true,
+		purchaseReports: true,
 	});
 })
 router.get("/LogiReport1", (req,res) => {

@@ -12,7 +12,7 @@ exports.getOutgoingProducts = function(next){
 }
 
 exports.getIncomingProducts = function(next){
-    var sql = "select sum(qty) as incoming from purchase_history WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE());";
+    var sql = "select sum(qty) as incoming from purchase_history WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE()) AND DATEDIFF(curdate(), date) >= 0 AND status != 'Completed';";
     mysql.query(sql, next);
 }
 

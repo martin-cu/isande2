@@ -100,6 +100,14 @@ exports.scheduleDelivery = function(req, res) {
 											throw err;
 										}
 										else{
+											var dates = [], curdate = dataformatter.startOfWeek(new Date());
+
+											dates.push(curdate);
+											curdate = new Date(curdate.toString());
+											for (var i = 1; i < 7; i++) {
+												dates.push(dataformatter.formatDate(new Date(curdate.setDate(curdate.getDate() + 1)), 'mm DD, YYYY') );
+											}
+											console.log(dates[0]+'-'+dates[6]);
 											for(var x = 0; x < dates.length; x++){
 												for(var y = 0; y < pendingDeliveries.length; y++)
 													if(pendingDeliveries[y].purchase_lo == dates[x].id)
@@ -111,7 +119,8 @@ exports.scheduleDelivery = function(req, res) {
 												truckList: trucks,
 												pendingDeliveries: pendingDeliveries,
 												pendingList: pendingList,
-												selectedItem: { id: req.query.id, type: req.query.type }
+												selectedItem: { id: req.query.id, type: req.query.type },
+												weekNow: { start: dates[0], end: dates[6] }
 											}
 											
 											html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'schedule_delivery_tab');

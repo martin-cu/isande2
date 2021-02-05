@@ -156,7 +156,7 @@ exports.updateDelivery = function(req, res) {
 							salesModel.getSaleRecordDetail({delivery_receipt : req.body.deliveryReference.slice(2)}, function(err, details){
 								if(err){
 									throw err;
-									req.flash('dialog_error_msg', 'Error scheduling delivery!');
+									req.flash('error_msg', 'Error scheduling delivery!');
 									res.redirect('/schedule_delivery');
 								}
 								else{
@@ -165,7 +165,7 @@ exports.updateDelivery = function(req, res) {
 											throw err;
 										}
 										else{
-											req.flash('dialog_success_msg', 'Successfully updated delivery!');
+											req.flash('success_msg', 'Successfully updated delivery!');
 											res.redirect('track_deliveries');
 										}
 									});
@@ -195,7 +195,7 @@ exports.updateDelivery = function(req, res) {
 						if (err)
 							throw err;
 						else {
-							req.flash('dialog_success_msg', 'Successfully updated delivery!');
+							req.flash('success_msg', 'Successfully updated delivery!');
 							res.redirect('track_deliveries');
 						}
 					});
@@ -228,7 +228,7 @@ exports.updateDelivery = function(req, res) {
 								if (err)
 									throw err;
 								else {
-									req.flash('dialog_success_msg', 'Successfully updated delivery!');
+									req.flash('success_msg', 'Successfully updated delivery!');
 									res.redirect('track_deliveries');
 								}
 							});
@@ -276,7 +276,7 @@ exports.updateDelivery = function(req, res) {
 													console.log("Error adding product quantity");
 												}
 												else{
-													req.flash('dialog_success_msg', 'Successfully updated delivery!');
+													req.flash('success_msg', 'Successfully updated delivery!');
 													res.redirect('track_deliveries');
 												}
 											});	

@@ -28,7 +28,7 @@ exports.voidPurchase = function(req, res) {
 					});
 				}
 				else {
-					req.flash('dialog_error_msg', 'Incorrect admin password!');
+					req.flash('error_msg', 'Incorrect admin password!');
 					res.redirect('/view_purchase_details/'+req.params.lo);
 				}
 			});
@@ -137,7 +137,7 @@ exports.getAllPurchases = function(req,res){
 	// purchaseModel.getAll(function(err, count){
 	purchaseModel.getAllPagination(offset, limit, function(err, count){
 		if(err){
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect('/');
 		}
 		else{
@@ -178,7 +178,7 @@ exports.getAllPurchases = function(req,res){
 			console.log(html_data.blank);
 			purchaseModel.getDrivers(function(err, driver){
 				if(err){
-					req.flash('dialog_error_msg', 'Oops something went wrong!');
+					req.flash('error_msg', 'Oops something went wrong!');
 					res.redirect('/');
 				}							
 
@@ -198,7 +198,7 @@ exports.getAllPurchases = function(req,res){
 
 				purchaseModel.getCustomers(function(err, customer){//add to driver
 						if(err){
-							req.flash('dialog_error_msg', 'Oops something went wrong!');
+							req.flash('error_msg', 'Oops something went wrong!');
 							res.redirect('/');
 						}							
 						if(customer.length == 0){ 
@@ -223,7 +223,7 @@ exports.getAllPurchases = function(req,res){
 						}
 						purchaseModel.getFilterPrice(function(err, price){//add to customer
 								if(err){
-									req.flash('dialog_error_msg', 'Oops something went wrong!');
+									req.flash('error_msg', 'Oops something went wrong!');
 									res.redirect('/');
 								}	
 								if(price.length == 0){
@@ -323,7 +323,7 @@ exports.postCreatePurchase = function(req,res){
 	console.log(req.query);
 	purchaseModel.getDatePrice( parseInt(req.body.purchase_product), req.body.date, function(err, price){
 		if(err){
-			req.flash("dialog_error_msg", "Error getting price.");
+			req.flash("error_msg", "Error getting price.");
 			res.redirect("/home");
 		}
 		else{
@@ -341,14 +341,14 @@ exports.postCreatePurchase = function(req,res){
 					};
 					purchaseModel.addPurchase(record ,function(err){
 						if(err){
-							req.flash("dialog_error_msg", "There is an error adding a purchase.");
+							req.flash("error_msg", "There is an error adding a purchase.");
 							res.redirect("/view_purchase_records");
 						}
 						else{
 							productModel.getProductDetails(parseInt(req.body.purchase_product), function(err, product){
 								if(err){
 									throw err;
-									req.flash("dialog_error_msg", "There is an error adding a purchase.");
+									req.flash("error_msg", "There is an error adding a purchase.");
 									res.redirect("/view_purchase_records");
 								}
 								else{
@@ -367,7 +367,7 @@ exports.postCreatePurchase = function(req,res){
 											res.redirect('/home');
 										}
 										else {
-											req.flash("dialog_success_msg", "Record successfully added!");
+											req.flash("success_msg", "Record successfully added!");
 											res.redirect("/view_purchase_details/" + record.supplier_lo);	
 										}
 									});
@@ -394,14 +394,14 @@ exports.postCreatePurchase = function(req,res){
 						if(err){
 							console.log(err);
 							console.log("DUPLICATE");
-							req.flash("dialog_success_msg", "LO Number already exists.");
+							req.flash("success_msg", "LO Number already exists.");
 							res.redirect("/view_purchase_records");
 
 						}
 						else{
 							productModel.getProductDetails(parseInt(req.body.purchase_product), function(err, product){
 								if(err){
-									req.flash("dialog_error_msg", "There is an error adding a purchase.");
+									req.flash("error_msg", "There is an error adding a purchase.");
 									res.redirect("/view_purchase_records");
 								}
 								else{
@@ -419,7 +419,7 @@ exports.postCreatePurchase = function(req,res){
 											res.redirect("/view_purchase_records");
 										}
 										else {
-											req.flash('dialog_success_msg', 'Successfully created sale record!');
+											req.flash('success_msg', 'Successfully created sale record!');
 											res.redirect("/view_purchase_details/" + record.supplier_lo);
 										}
 									});
@@ -489,7 +489,7 @@ exports.postAddPurchase = function(req,res){
 	var amount = 0;
 	purchaseModel.getDatePrice( parseInt(req.body.purchase_product), req.body.purchase_schedule.toString(), function(err, price){
 		if(err){
-			req.flash("dialog_error_msg", "Error getting price.");
+			req.flash("error_msg", "Error getting price.");
 			res.redirect("/purchase_history");
 		}
 		else{
@@ -509,7 +509,7 @@ exports.postAddPurchase = function(req,res){
 
 					purchaseModel.addPurchase(record ,function(err){
 						if(err){
-							req.flash("dialog_error_msg", "LO Number already exists.");
+							req.flash("error_msg", "LO Number already exists.");
 							res.redirect("/purchase_history");
 						}
 						else{
@@ -522,7 +522,7 @@ exports.postAddPurchase = function(req,res){
 
 								});
 							}
-							req.flash("dialog_success_msg", "Record successfully added!");
+							req.flash("success_msg", "Record successfully added!");
 							res.redirect("/purchase_history");
 						}
 					});
@@ -549,7 +549,7 @@ exports.postAddPurchase = function(req,res){
 						if(err){
 							console.log(err);
 							console.log("DUPLICATE");
-							req.flash("dialog_success_msg", "LO Number already exists.");
+							req.flash("success_msg", "LO Number already exists.");
 							res.redirect("/purchase_history");
 
 						}
@@ -565,7 +565,7 @@ exports.postAddPurchase = function(req,res){
 							}
 						}
 					});
-					req.flash("dialog_success_msg", "Record successfully added!");
+					req.flash("success_msg", "Record successfully added!");
 					res.redirect("/purchase_history");
 			}
 		}
@@ -578,7 +578,7 @@ exports.getPurchaseDetails = function(req,res){
 
 	purchaseModel.getPurchaseDetails(req.params.lo, function(err, details){
 		if(err) {
-			req.flash('dialog_error_msg', 'Oops something went wrong!');
+			req.flash('error_msg', 'Oops something went wrong!');
 			res.redirect("/");
 		}
 		else{
@@ -697,25 +697,25 @@ exports.getPurchaseRecords = function(req, res) {
 // 	console.log(to);
 // 	purchaseModel.updatePurchaseInfo(date,to.toString(),dr,req.params.lo, function(err){
 // 		if(err){
-// 			req.flash('dialog_error_msg', 'Oops something went wrong!');
+// 			req.flash('error_msg', 'Oops something went wrong!');
 // 			res.redirect("/purchase_record/" + req.params.lo);
 // 		}
 // 		else{
 // 			if(req.body.location != "WAREHOUSE")
 // 			purchaseModel.updateSalesLo(req.body.location, req.params.lo, function(err){
 // 				if(err){
-// 					req.flash('dialog_error_msg', 'Oops something went wrong!');
+// 					req.flash('error_msg', 'Oops something went wrong!');
 // 					res.redirect("/purchase_record/" + req.params.lo);
 // 				}
 // 				else{
 // 					deliveryDetailModel.updateDeliveryToSellout(req.body.location, function(err){
-// 						req.flash('dialog_success_msg', 'Successfully updated purchase record!');
+// 						req.flash('success_msg', 'Successfully updated purchase record!');
 // 						res.redirect("/purchase_record/" + req.params.lo);
 // 				});
 // 				}			
 // 			});
 // 			else{
-// 				req.flash('dialog_success_msg', 'Successfully updated purchase record!');
+// 				req.flash('success_msg', 'Successfully updated purchase record!');
 // 				res.redirect("/purchase_record/" + req.params.lo);
 // 			}
 // 		}

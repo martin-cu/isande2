@@ -27,6 +27,16 @@ router.get('/home', isPrivate, homeController.viewDashboard);
 router.get('/reports', isPrivate, reportController.viewReports);
 router.get('/reports/:type', isPrivate, reportController.viewSalesDetailedReport);
 router.get('/reports/:type/:product', isPrivate, reportController.viewSalesDetailedReport);
+router.get('/MonthlyPurchaseperProduct', (req,res) => {
+	res.render('MonthlyPurchaseperProduct', {
+		reports:true,
+	});
+})
+router.get('/AverageDailyPurchase', (req,res) => {
+	res.render('AverageDailyPurchase', {
+		reports:true,
+	});
+})
 //Inventory
 router.get('/inventory', isPrivate, inventoryController.getProductInventory);
 router.get('/product_catalogue', isPrivate, inventoryController.getProductCatalogue);

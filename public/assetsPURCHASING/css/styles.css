@@ -9,11 +9,12 @@ html {
 body {
   box-sizing: border-box;
   height: 11in;
-  margin: 0 auto;
+  margin: 0px auto !important;
   overflow: hidden;
   padding: 0.5in;
   width: 8.5in;
-  background: #FFF;
+  background: #FFFFFF !important;
+  color: #000000 !important;
   border-radius: 1px;
   box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
 }
@@ -22,3 +23,10 @@ body {
   position: sticky;
 }
 
+.table {
+  color: black !important;
+}
+
+.form-control-plaintext{
+ color: black !important;
+}

@@ -7,12 +7,12 @@ exports.getCurrentInventory = function(next){
 }
 
 exports.getOutgoingProducts = function(next){
-    var sql = "select sum(qty) as outgoing from sales_history WHERE MONTH(scheduled_date) = MONTH(CURRENT_DATE()) AND YEAR(scheduled_date) = YEAR(CURRENT_DATE());";
+    var sql = "select sum(qty) as outgoing from sales_history WHERE MONTH(scheduled_date) = MONTH(CURRENT_DATE()) AND YEAR(scheduled_date) = YEAR(CURRENT_DATE()) AND DATEDIFF(curdate(), scheduled_date) >= 0 AND order_status != 'Completed';";
     mysql.query(sql, next);
 }
 
 exports.getIncomingProducts = function(next){
-    var sql = "select sum(qty) as incoming from purchase_history WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE());";
+    var sql = "select sum(qty) as incoming from purchase_history WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE()) AND DATEDIFF(curdate(), date) >= 0 AND status != 'Completed';";
     mysql.query(sql, next);
 }
 

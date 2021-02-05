@@ -220,6 +220,10 @@
 
 <script type="text/javascript">
     var ajaxView = 'confirmDelivery';
+    {{#if selectedItem.id}}
+    var selectedId = '{{selectedItem.id}}';
+    var selectedType = '{{selectedItem.type}}';
+    {{/if}}
 </script>
 
 <script src="../assets/js/ajax.js"></script>

@@ -62,6 +62,8 @@ function changeCurrentDeliveryInfo(target, event) {
 				'purchase_lo'];
 		}
 		else if (ajaxView === 'confirmDelivery') {
+			console.log(type);
+			console.log(id);
 			dbFields = ['formattedDate', 'customer_name', 'destination', 'qty', 'product_name', 'plate_num',
 				'purchase_lo'];
 

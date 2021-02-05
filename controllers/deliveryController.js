@@ -314,7 +314,8 @@ exports.getConfirmDelivery = function(req, res) {
 										notifCount: notifCount[0],
 										processingDeliveries: processingDeliveries,
 										processingDeliveriesAll: processingDeliveriesAll,
-										truckList: trucks
+										truckList: trucks,
+										selectedItem: { id: req.query.id, type: req.query.type }
 									};
 									
 									html_data = js.init_session(html_data, req.session.authority, req.session.initials, req.session.username, req.session.employee_id, 'confirm_delivery_tab');

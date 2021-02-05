@@ -10,7 +10,7 @@ exports.getTrackOrders = function(query, next) {
 }
 
 exports.getAllPurchaseRecords = function(next) {
-	var sql = "select * from ( select concat(et.last_name, ', ',et.first_name) as driverName ,format((ph.amount/ph.qty),2) as pricePiece, date_format(ph.date, '%m/%d/%Y') as formattedDate, format(ph.amount, 2) as formattedAmount, pt.product_name, ph.* from purchase_history as ph join product_table as pt using(product_id) join employee_table as et on ph.driver = et.employee_id where ph.void != 1 union select null ,format((ph.amount/ph.qty),2) as pricePiece, date_format(ph.date, '%m/%d/%Y') as formattedDate, format(ph.amount, 2) as formattedAmount, pt.product_name, ph.* from purchase_history as ph join product_table as pt using(product_id) where ph.void != 1) as t group by supplier_lo order by field (t.status ,'Pending', 'Processing', 'Completed'), t.date, t.supplier_lo";
+	var sql = "select * from ( select concat(et.last_name, ', ',et.first_name) as driverName ,format((ph.amount/ph.qty),2) as pricePiece, date_format(ph.date, '%m/%d/%Y') as formattedDate, format(ph.amount, 2) as formattedAmount, pt.product_name, ph.* from purchase_history as ph join product_table as pt using(product_id) join employee_table as et on ph.driver = et.employee_id where ph.void != 1 union select null ,format((ph.amount/ph.qty),2) as pricePiece, date_format(ph.date, '%m/%d/%Y') as formattedDate, format(ph.amount, 2) as formattedAmount, pt.product_name, ph.* from purchase_history as ph join product_table as pt using(product_id) where ph.void != 1) as t group by supplier_lo order by field (t.status ,'Pending', 'Processing', 'Completed'), (case when (t.status = 'Completed') then t.date else t.date end) desc, t.supplier_lo";
 	mysql.query(sql, next);
 }
 

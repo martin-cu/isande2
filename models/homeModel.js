@@ -74,7 +74,7 @@ exports.getPendingDate = function(id, next){
 		if(i == 0)
 			sql = sql + "WHERE p.supplier_lo = ";
 
-		sql = sql + '"' + id + '"';
+		sql = sql + '"' + id[i] + '"';
 
 		if(i != id.length - 1)
 			sql = sql + " || ";
@@ -84,11 +84,12 @@ exports.getPendingDate = function(id, next){
 		if(i == 0)
 			sql = sql + "WHERE s.delivery_receipt = ";
 
-		sql = sql + '"' + id + '"';
+		sql = sql + '"' + id[i] + '"';
 
 		if(i != id.length - 1)
-			sql = sql + " || ";
+			sql = sql + " || s.delivery_receipt =";
 	}
+	console.log(sql);
 	mysql.query(sql, next);
 }
 /*

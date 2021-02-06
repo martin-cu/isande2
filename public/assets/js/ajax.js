@@ -76,7 +76,7 @@ function changeCurrentDeliveryInfo(target, event) {
 			data.deliveryInfo.purchase_lo = 'DR'+data.deliveryInfo.purchase_lo;
 
 		clearDeliveryFields(data.deliveryInfo, dbFields);
-
+		$("#confirmDamaged").val(0);
 	});
 }
 

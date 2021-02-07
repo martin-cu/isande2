@@ -728,9 +728,11 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 	var grossProfit = { delivery_receipt: '', product_name: '', qty: '', grossProfit: '' };
 	var page = [], pageData = { 
 		revenue: [], revenueTitle: 'Revenue', 
-		revenueHeaders: [{ title: 'DR Number', class: '' }, { title: 'Transaction Date', class: 'text-center' }, { title: 'Product', class: 'text-center' }, { title: 'Qty', class: 'text-center' }, { title: 'Amount', class: 'text-right' }], 
-		cogs: [] , cogsTitle: null,
-		cogsHeaders: []
+		revenueHeaders: [], 
+		cogs: [] , cogsTitle: 'Cost of Goods Sold',
+		cogsHeaders: [],
+		total: [],
+		totalTitle: 'Operating Profit'
 	};
 	var f_data;
 	rowCount = 2;
@@ -758,7 +760,15 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 	cogs.push(totalCogs);
 	cogs.push(blankCogs);
 	cogs.push(grossProfit);
-	
+
+	pageData.revenue.push(totalRevenue);
+	pageData.cogs.push(totalCogs);
+	pageData.total.push(grossProfit);
+	page.push(pageData);
+	console.log(pageData);
+	console.log(totalRevenue);
+	console.log(totalCogs);
+	/*
 	for (var i = 0; i < revenue.length; i++) {
 		rowCount++;
 		if (rowCount < pageLimit && i < revenue.length) {
@@ -821,6 +831,7 @@ exports.aggregateRevenueByPage = function(revenue, cogs) {
 			}
 		}
 	}
+	*/
 
 	return { page: page, data: f_data };
 }

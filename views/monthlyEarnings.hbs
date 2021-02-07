@@ -26,16 +26,8 @@
                 <tbody>
                     {{#each this.revenue}}
                     <tr style="padding: 2px;">
-                        <td style="font-family: Alata, sans-serif;font-weight: bold;font-size: 12px;border-style: none;padding: 3px;">{{{this.delivery_receipt}}}</td>
-                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedDate}}</td>
-                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.product_name}}</td>
-                        {{#if this.totalAmount}}
-                        <td class="text-right font-weight-bold" style="font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Net Sales</td>
-                        <td class="text-right font-weight-bold" style="width: 15%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.totalAmount}}</td>
-                        {{else}}
-                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.qty}}</td>
-                        <td class="text-right" style="width: 15%;font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedAmount}}</td>
-                        {{/if}}
+                        <td style="font-family: Alata, sans-serif;font-weight: normal;font-size: 12px;border-style: none;padding: 3px;">Sales</td>
+                        <td class="text-right" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">Php {{this.totalAmount}}</td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -59,18 +51,28 @@
                 <tbody>
                     {{#each this.cogs}}
                     <tr style="padding: 2px;">
-                        <td style="font-family: Alata, sans-serif;font-weight: bold;font-size: 12px;border-style: none;padding: 3px;">{{{this.delivery_receipt}}}</td>
-                        <td class="text-center" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.product_name}}</td>
-                        {{#if this.totalAmount}}
-                        <td class="text-right font-weight-bold" style="width: 20%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Total Cost of Goods Sold</td>
-                        <td class="text-right font-weight-bold" style="width: 21%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.totalAmount}}</td>
-                        {{else if this.grossProfit}}
-                        <td class="text-right font-weight-bold" style="width: 20%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Gross Profit</td>
-                        <td class="text-right font-weight-bold" style="width: 21%;font-family: Alata, sans-serif;background: #fbb35a;font-size: 12px;font-weight: normal;">Php {{this.grossProfit}}</td>
-                        {{else}}
-                        <td class="text-right" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.buyingPrice}}</td>
-                        <td class="text-right" style="width: 21%;font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">{{this.formattedAmount}}</td>
-                        {{/if}}
+                        <td style="font-family: Alata, sans-serif;font-weight: normal;font-size: 12px;border-style: none;padding: 3px;">Materials</td>
+                        <td class="text-right" style="font-family: Alata, sans-serif;font-size: 12px;font-weight: normal;border-style: none;padding: 3px;">Php {{this.totalAmount}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if this.totalTitle}}
+        <div class="d-block" style="background: #033461;">
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                </thead>
+                <tbody>
+                    {{#each this.total}}
+                    <tr style="padding: 2px;">
+                        <th class="{{this.class}}" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">{{../this.totalTitle}}</th>
+                        <th class="text-right" style="border-style: none;background: rgb(251,179,90);font-family: Alata, sans-serif;font-size: 14px;padding: 3px;">Php {{this.grossProfit}}</th>
                     </tr>
                     {{/each}}
                 </tbody>

@@ -99,7 +99,7 @@ document.addEventListener("click", function (e) {
 }
 
 function changePrice() {
-	$('#total').val( ($('#qty').val() * curPrice) );
+	$('#total').val( formatMoney(($('#qty').val() * curPrice), "" ) + ".00");
 }
 
 function changeSelectedProduct(val) {

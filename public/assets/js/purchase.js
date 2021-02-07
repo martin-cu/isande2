@@ -143,6 +143,7 @@ $(document).ready(function() {
 		if($("#date").val())
 			$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
 				var total = result.price * $("#p_qty").val();
+				total = formatMoney(total, "") + ".00";
 				$("#total_amt").val(total);
 			});
 	});
@@ -152,6 +153,7 @@ $(document).ready(function() {
 		if($("#date").val())
 			$.get("/get_price", {product : $("#purchase_product").val(), date : $("#date").val()}, function(result){
 				var total = result.price * $("#p_qty").val();
+				total = formatMoney(total, "") + ".00";
 				$("#total_amt").val(total);
 			});
 	});

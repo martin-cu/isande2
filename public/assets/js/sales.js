@@ -1,5 +1,16 @@
+
+
 function view_sale_details(type){
 
+}
+
+function formatMoney(amt, label) {
+	if (amt === undefined || amt === null)
+		amt = 0.00;
+
+	var num_parts = amt.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return label+num_parts.join(".");
 }
 
 function checkbox_add(){
@@ -19,7 +30,9 @@ function checkbox_add(){
 			total = total + parseFloat(temp);
 		}
 	}
-
+	
+	total = formatMoney(total, "") + ".00";
+	
 	$("#amountPaid").val(total);
 }
 
